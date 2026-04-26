@@ -49,36 +49,3 @@ function sbtl_enqueue_editor_assets() {
 	) );
 }
 add_action( 'enqueue_block_editor_assets', 'sbtl_enqueue_editor_assets' );
-
-/*
-add_action('wp_footer', function () {
-    $styles = wp_styles();
-    if (isset($styles->registered['block-style-variation-styles'])) {
-        $inline = $styles->get_data(
-            'block-style-variation-styles',
-            'after'
-        );
-        if ($inline) {
-            echo '<style>' . implode('', $inline) . '</style>';
-        }
-    }
-}, 1);
-
-add_filter('render_block_data', function ($parsed_block) {
-    if ($parsed_block['blockName'] === 'sbtl/icon-button') {
-        $tree = WP_Theme_JSON_Resolver::get_merged_data();
-        $raw = $tree->get_raw_data();
-    }
-    return $parsed_block;
-}, 9);
-// Before Gutenberg's variation handler (priority 10)
-add_filter('render_block_data', function ($parsed_block) {
-    if ($parsed_block['blockName'] === 'sbtl/icon-button') {
-        $class_name = $parsed_block['attrs']['className'] ?? '';
-        if (str_contains($class_name, 'is-style-')) {
-            $parsed_block['attrs']['_sbtl_original_name'] = 'sbtl/icon-button';
-            $parsed_block['blockName'] = 'core/button';
-        }
-    }
-    return $parsed_block;
-}, 9);*/
