@@ -157,9 +157,9 @@ function getPresetInfo( value ) {
 		return undefined;
 	}
 
-	const match = value.trim().match(
-		/^var\(--wp--preset--(color|gradient)--([^)]+)\)$/
-	);
+	const match = value
+		.trim()
+		.match( /^var\(--wp--preset--(color|gradient)--([^)]+)\)$/ );
 
 	if ( ! match ) {
 		return undefined;
@@ -243,7 +243,7 @@ function stripCoreButtonDefaultAppearance( style ) {
  * Resolves the icon-button default appearance from the current schema.
  *
  * The icon-button block stores its default visuals at the root of
-	 * `stateAppearance`.
+ * `stateAppearance`.
  * Transforms should use that canonical source.
  *
  * @param {Object|undefined} stateAppearance Stateful appearance settings.
@@ -335,7 +335,7 @@ function unwrapButtonTextValue( value ) {
 function getButtonText( attributes = {} ) {
 	return unwrapButtonTextValue(
 		normalizeRichTextValue( attributes.text ) ??
-		normalizeRichTextValue( attributes.content )
+			normalizeRichTextValue( attributes.content )
 	);
 }
 
@@ -429,8 +429,7 @@ function iconButtonToCoreButtonAttributes( attributes ) {
 			backgroundPreset?.type === 'color'
 				? backgroundPreset.slug
 				: undefined,
-		textColor:
-			textPreset?.type === 'color' ? textPreset.slug : undefined,
+		textColor: textPreset?.type === 'color' ? textPreset.slug : undefined,
 		gradient:
 			backgroundPreset?.type === 'gradient'
 				? backgroundPreset.slug
@@ -506,14 +505,7 @@ function paragraphToIconButtonAttributes( attributes ) {
  * @return {{ content: string }} Paragraph attributes containing serialized HTML.
  */
 function iconButtonToParagraphAttributes( attributes ) {
-	const {
-		tagName,
-		text,
-		url,
-		title,
-		linkTarget,
-		rel,
-	} = attributes;
+	const { tagName, text, url, title, linkTarget, rel } = attributes;
 
 	if ( ! text && ! url ) {
 		return { content: '' };
@@ -554,24 +546,34 @@ const transforms = {
 			isMatch: ( attributes, innerBlocks ) => innerBlocks.length <= 1,
 			transform( attributes, innerBlocks ) {
 				const firstItem = innerBlocks[ 0 ]?.attributes ?? {};
-				return createBlock(
-					'sbtl/icon-button',
-					{
-						disabledDefaultTrailingIcon: true,
-						...( attributes.icon ? { leadingIcon: attributes.icon } : {} ),
-						...( attributes.iconSlug ? { leadingIconSlug: attributes.iconSlug } : {} ),
-						...( attributes.icon && attributes.iconOptions && Object.keys( attributes.iconOptions ).length
-							? { iconOptions: { leading: attributes.iconOptions } } : {} ),
-						...( attributes.anchor ? { anchor: attributes.anchor } : {} ),
-						...( firstItem.content !== undefined ? { text: firstItem.content } : {} ),
-						tagName: firstItem.url ? 'a' : 'button',
-						...( firstItem.url ? {
-							url: firstItem.url,
-							linkTarget: firstItem.linkTarget,
-							rel: firstItem.rel,
-						} : {} ),
-					}
-				);
+				return createBlock( 'sbtl/icon-button', {
+					disabledDefaultTrailingIcon: true,
+					...( attributes.icon
+						? { leadingIcon: attributes.icon }
+						: {} ),
+					...( attributes.iconSlug
+						? { leadingIconSlug: attributes.iconSlug }
+						: {} ),
+					...( attributes.icon &&
+					attributes.iconOptions &&
+					Object.keys( attributes.iconOptions ).length
+						? { iconOptions: { leading: attributes.iconOptions } }
+						: {} ),
+					...( attributes.anchor
+						? { anchor: attributes.anchor }
+						: {} ),
+					...( firstItem.content !== undefined
+						? { text: firstItem.content }
+						: {} ),
+					tagName: firstItem.url ? 'a' : 'button',
+					...( firstItem.url
+						? {
+								url: firstItem.url,
+								linkTarget: firstItem.linkTarget,
+								rel: firstItem.rel,
+						  }
+						: {} ),
+				} );
 			},
 		},
 		{
@@ -579,10 +581,10 @@ const transforms = {
 			blocks: [ 'core/button' ],
 			priority: 5,
 			transform: ( attributes ) =>
-				createBlock(
-					'sbtl/icon-button',
-					{ disabledDefaultTrailingIcon: true, ...coreButtonToIconButtonAttributes( attributes ) }
-				),
+				createBlock( 'sbtl/icon-button', {
+					disabledDefaultTrailingIcon: true,
+					...coreButtonToIconButtonAttributes( attributes ),
+				} ),
 		},
 		{
 			type: 'block',
@@ -611,30 +613,38 @@ const transforms = {
 			priority: 10,
 			transform( attributes ) {
 				const hasLeading = !! attributes.leadingIcon;
-				const icon = hasLeading ? attributes.leadingIcon : attributes.trailingIcon;
-				const iconSlug = hasLeading ? attributes.leadingIconSlug : attributes.trailingIconSlug;
+				const icon = hasLeading
+					? attributes.leadingIcon
+					: attributes.trailingIcon;
+				const iconSlug = hasLeading
+					? attributes.leadingIconSlug
+					: attributes.trailingIconSlug;
 				const slotOptions = hasLeading
 					? attributes.iconOptions?.leading
 					: attributes.iconOptions?.trailing;
-				const listItem = createBlock(
-					'sbtl/icon-list-item',
-					{
-						...( attributes.text !== undefined ? { content: attributes.text } : {} ),
-						...( attributes.tagName === 'a' && attributes.url ? {
-							url: attributes.url,
-							linkTarget: attributes.linkTarget,
-							rel: attributes.rel,
-						} : {} ),
-					}
-				);
+				const listItem = createBlock( 'sbtl/icon-list-item', {
+					...( attributes.text !== undefined
+						? { content: attributes.text }
+						: {} ),
+					...( attributes.tagName === 'a' && attributes.url
+						? {
+								url: attributes.url,
+								linkTarget: attributes.linkTarget,
+								rel: attributes.rel,
+						  }
+						: {} ),
+				} );
 				return createBlock(
 					'sbtl/icon-list',
 					{
 						...( icon ? { icon } : {} ),
 						...( iconSlug ? { iconSlug } : {} ),
 						...( slotOptions && Object.keys( slotOptions ).length
-							? { iconOptions: slotOptions } : {} ),
-						...( attributes.anchor ? { anchor: attributes.anchor } : {} ),
+							? { iconOptions: slotOptions }
+							: {} ),
+						...( attributes.anchor
+							? { anchor: attributes.anchor }
+							: {} ),
 					},
 					[ listItem ]
 				);

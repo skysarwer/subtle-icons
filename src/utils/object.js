@@ -26,8 +26,14 @@ export function cleanValue( value ) {
 	if ( isPlainObject( value ) ) {
 		const nextObject = Object.fromEntries(
 			Object.entries( value )
-				.map( ( [ key, nestedValue ] ) => [ key, cleanValue( nestedValue ) ] )
-				.filter( ( [ , nestedValue ] ) => nestedValue != null && nestedValue !== '' )
+				.map( ( [ key, nestedValue ] ) => [
+					key,
+					cleanValue( nestedValue ),
+				] )
+				.filter(
+					( [ , nestedValue ] ) =>
+						nestedValue != null && nestedValue !== ''
+				)
 		);
 
 		return Object.keys( nextObject ).length ? nextObject : undefined;

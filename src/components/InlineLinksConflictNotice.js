@@ -1,6 +1,9 @@
 import { __ } from '@wordpress/i18n';
 import { Button } from '@wordpress/components';
-import { extractFirstInlineAnchorLink, removeInlineAnchors } from '../utils/inline-links';
+import {
+	extractFirstInlineAnchorLink,
+	removeInlineAnchors,
+} from '../utils/inline-links';
 
 /**
  * Popover notice shown inside LinkControl when richtext content has inline
@@ -52,7 +55,8 @@ const InlineLinksConflictNotice = ( {
 				<Button
 					variant="secondary"
 					onClick={ () => {
-						const nextLink = extractFirstInlineAnchorLink( content );
+						const nextLink =
+							extractFirstInlineAnchorLink( content );
 
 						if ( ! nextLink.url ) {
 							return;

@@ -34,7 +34,7 @@ export function useBlockAttributes( attributes, setAttributes ) {
 	 */
 	const setNested = useCallback(
 		( attrKey, stateKey, partial ) => {
-			const current      = attributes[ attrKey ] || {};
+			const current = attributes[ attrKey ] || {};
 			const currentState = current[ stateKey ] || {};
 			const cleanedState = cleanValue( {
 				...currentState,

@@ -6,7 +6,14 @@ import {
 	__experimentalToolsPanel as ToolsPanel,
 	__experimentalToolsPanelItem as ToolsPanelItem,
 } from '@wordpress/components';
-import { justifyBottom, justifyCenterVertical, justifyTop, justifyLeft, justifyCenter, justifyRight } from '@wordpress/icons';
+import {
+	justifyBottom,
+	justifyCenterVertical,
+	justifyTop,
+	justifyLeft,
+	justifyCenter,
+	justifyRight,
+} from '@wordpress/icons';
 
 import LinkedField from './LinkedField';
 import RangedUnitControl from './RangedUnitControl';
@@ -51,15 +58,18 @@ export default function LinkedIconOptionsPanel( {
 } ) {
 	if ( ! groups?.length ) return null;
 
-	const slotOptions = ( key ) => groups.reduce( ( acc, group ) => {
-		acc[ group.key ] = slots?.[ group.key ]?.[ key ] ?? undefined;
-		return acc;
-	}, {} );
+	const slotOptions = ( key ) =>
+		groups.reduce( ( acc, group ) => {
+			acc[ group.key ] = slots?.[ group.key ]?.[ key ] ?? undefined;
+			return acc;
+		}, {} );
 
 	const applyLinkedValues = ( key, nextValues, mapValue = ( v ) => v ) => {
 		const partials = {};
 		groups.forEach( ( group ) => {
-			partials[ group.key ] = { [ key ]: mapValue( nextValues[ group.key ] ) };
+			partials[ group.key ] = {
+				[ key ]: mapValue( nextValues[ group.key ] ),
+			};
 		} );
 		setSlotOptions( partials );
 	};
@@ -75,7 +85,9 @@ export default function LinkedIconOptionsPanel( {
 			<ToolsPanelItem
 				label={ __( 'Size', 'subtle-icons' ) }
 				isShownByDefault={ sizeShownByDefault }
-				hasValue={ () => groups.some( ( g ) => !! slots?.[ g.key ]?.size ) }
+				hasValue={ () =>
+					groups.some( ( g ) => !! slots?.[ g.key ]?.size )
+				}
 				onDeselect={ () => resetOption( 'size' ) }
 				__nextHasNoMarginBottom
 				{ ...panelIdProps }
@@ -88,16 +100,28 @@ export default function LinkedIconOptionsPanel( {
 						return acc;
 					}, {} ) }
 					allowReset={ false }
-					onChange={ ( nextValues ) => applyLinkedValues( 'size', nextValues ) }
+					onChange={ ( nextValues ) =>
+						applyLinkedValues( 'size', nextValues )
+					}
 					renderField={ ( field ) => (
 						<RangedUnitControl
 							label={ field.isLinked ? undefined : field.label }
 							value={ field.value ?? undefined }
 							onChange={ field.onChange }
 							units={ [
-								{ value: 'em', label: 'em', step: 0.125, max: 4 },
+								{
+									value: 'em',
+									label: 'em',
+									step: 0.125,
+									max: 4,
+								},
 								{ value: 'px', label: 'px', step: 1, max: 64 },
-								{ value: 'rem', label: 'rem', step: 0.125, max: 4 },
+								{
+									value: 'rem',
+									label: 'rem',
+									step: 0.125,
+									max: 4,
+								},
 							] }
 							rangeByUnit={ {
 								px: { min: 0, max: 64, step: 1 },
@@ -111,7 +135,9 @@ export default function LinkedIconOptionsPanel( {
 
 			<ToolsPanelItem
 				label={ __( 'Gap', 'subtle-icons' ) }
-				hasValue={ () => groups.some( ( g ) => !! slots?.[ g.key ]?.gap ) }
+				hasValue={ () =>
+					groups.some( ( g ) => !! slots?.[ g.key ]?.gap )
+				}
 				onDeselect={ () => resetOption( 'gap' ) }
 				__nextHasNoMarginBottom
 				{ ...panelIdProps }
@@ -124,16 +150,28 @@ export default function LinkedIconOptionsPanel( {
 						return acc;
 					}, {} ) }
 					allowReset={ false }
-					onChange={ ( nextValues ) => applyLinkedValues( 'gap', nextValues ) }
+					onChange={ ( nextValues ) =>
+						applyLinkedValues( 'gap', nextValues )
+					}
 					renderField={ ( field ) => (
 						<RangedUnitControl
 							label={ field.isLinked ? undefined : field.label }
 							value={ field.value ?? undefined }
 							onChange={ field.onChange }
 							units={ [
-								{ value: 'em', label: 'em', step: 0.05, max: 4 },
+								{
+									value: 'em',
+									label: 'em',
+									step: 0.05,
+									max: 4,
+								},
 								{ value: 'px', label: 'px', step: 1, max: 64 },
-								{ value: 'rem', label: 'rem', step: 0.05, max: 4 },
+								{
+									value: 'rem',
+									label: 'rem',
+									step: 0.05,
+									max: 4,
+								},
 							] }
 							rangeByUnit={ {
 								em: { min: 0, max: 4, step: 0.05 },
@@ -147,7 +185,11 @@ export default function LinkedIconOptionsPanel( {
 
 			<ToolsPanelItem
 				label={ __( 'Thickness', 'subtle-icons' ) }
-				hasValue={ () => groups.some( ( g ) => slots?.[ g.key ]?.stroke !== undefined ) }
+				hasValue={ () =>
+					groups.some(
+						( g ) => slots?.[ g.key ]?.stroke !== undefined
+					)
+				}
 				onDeselect={ () => resetOption( 'stroke' ) }
 				__nextHasNoMarginBottom
 				{ ...panelIdProps }
@@ -160,12 +202,16 @@ export default function LinkedIconOptionsPanel( {
 						return acc;
 					}, {} ) }
 					allowReset={ false }
-					onChange={ ( nextValues ) => applyLinkedValues( 'stroke', nextValues ) }
+					onChange={ ( nextValues ) =>
+						applyLinkedValues( 'stroke', nextValues )
+					}
 					renderField={ ( field ) => (
 						<RangeControl
 							label={ field.isLinked ? undefined : field.label }
 							value={ field.value ?? undefined }
-							onChange={ ( value ) => field.onChange( value ?? undefined ) }
+							onChange={ ( value ) =>
+								field.onChange( value ?? undefined )
+							}
 							min={ 0.5 }
 							max={ 10 }
 							step={ 0.5 }
@@ -179,15 +225,25 @@ export default function LinkedIconOptionsPanel( {
 
 			{ showAlign && (
 				<ToolsPanelItem
-					label={ alignConfig === 'horizontal' ? __( 'Vertical align', 'subtle-icons' ) : __( 'Justify', 'subtle-icons' ) }
+					label={
+						alignConfig === 'horizontal'
+							? __( 'Vertical align', 'subtle-icons' )
+							: __( 'Justify', 'subtle-icons' )
+					}
 					isShownByDefault
-					hasValue={ () => groups.some( ( g ) => !! slots?.[ g.key ]?.align ) }
+					hasValue={ () =>
+						groups.some( ( g ) => !! slots?.[ g.key ]?.align )
+					}
 					onDeselect={ () => resetOption( 'align' ) }
 					__nextHasNoMarginBottom
 					{ ...panelIdProps }
 				>
 					<LinkedField
-						label={ alignConfig === 'horizontal' ? __( 'Vertical align', 'subtle-icons' ) : __( 'Justify', 'subtle-icons' ) }
+						label={
+							alignConfig === 'horizontal'
+								? __( 'Vertical align', 'subtle-icons' )
+								: __( 'Justify', 'subtle-icons' )
+						}
 						groups={ groups }
 						values={ groups.reduce( ( acc, g ) => {
 							acc[ g.key ] = slots?.[ g.key ]?.align || 'center';
@@ -198,12 +254,17 @@ export default function LinkedIconOptionsPanel( {
 							applyLinkedValues(
 								'align',
 								nextValues,
-								( value ) => ( value && value !== 'center' ? value : undefined )
+								( value ) =>
+									value && value !== 'center'
+										? value
+										: undefined
 							)
 						}
 						renderField={ ( field ) => (
 							<ToggleGroupControl
-								label={ field.isLinked ? undefined : field.label }
+								label={
+									field.isLinked ? undefined : field.label
+								}
 								value={ field.value || 'center' }
 								onChange={ field.onChange }
 								__next40pxDefaultSize
@@ -213,20 +274,41 @@ export default function LinkedIconOptionsPanel( {
 								<ToggleGroupControlOptionIcon
 									value="start"
 									label={ __( 'Start', 'subtle-icons' ) }
-									icon={ alignConfig === 'horizontal' ? justifyTop : justifyLeft }
-									aria-label={ __( 'Align icon to the start', 'subtle-icons' ) }
+									icon={
+										alignConfig === 'horizontal'
+											? justifyTop
+											: justifyLeft
+									}
+									aria-label={ __(
+										'Align icon to the start',
+										'subtle-icons'
+									) }
 								/>
 								<ToggleGroupControlOptionIcon
 									value="center"
 									label={ __( 'Center', 'subtle-icons' ) }
-									icon={ alignConfig === 'horizontal' ? justifyCenterVertical : justifyCenter }
-									aria-label={ __( 'Align icon to the center', 'subtle-icons' ) }
+									icon={
+										alignConfig === 'horizontal'
+											? justifyCenterVertical
+											: justifyCenter
+									}
+									aria-label={ __(
+										'Align icon to the center',
+										'subtle-icons'
+									) }
 								/>
 								<ToggleGroupControlOptionIcon
 									value="end"
 									label={ __( 'End', 'subtle-icons' ) }
-									icon={ alignConfig === 'horizontal' ? justifyBottom : justifyRight }
-									aria-label={ __( 'Align icon to the end', 'subtle-icons' ) }
+									icon={
+										alignConfig === 'horizontal'
+											? justifyBottom
+											: justifyRight
+									}
+									aria-label={ __(
+										'Align icon to the end',
+										'subtle-icons'
+									) }
 								/>
 							</ToggleGroupControl>
 						) }

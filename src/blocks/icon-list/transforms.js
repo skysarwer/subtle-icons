@@ -94,10 +94,16 @@ const transforms = {
 			transform( attributes, innerBlocks ) {
 				const sharedAttrs = {
 					...( attributes.icon ? { icon: attributes.icon } : {} ),
-					...( attributes.iconSlug ? { iconSlug: attributes.iconSlug } : {} ),
-					...( attributes.iconOptions && Object.keys( attributes.iconOptions ).length
-						? { iconOptions: attributes.iconOptions } : {} ),
-					...( attributes.iconColor ? { iconColor: attributes.iconColor } : {} ),
+					...( attributes.iconSlug
+						? { iconSlug: attributes.iconSlug }
+						: {} ),
+					...( attributes.iconOptions &&
+					Object.keys( attributes.iconOptions ).length
+						? { iconOptions: attributes.iconOptions }
+						: {} ),
+					...( attributes.iconColor
+						? { iconColor: attributes.iconColor }
+						: {} ),
 				};
 
 				if ( ! innerBlocks.length ) {
@@ -106,18 +112,19 @@ const transforms = {
 
 				return innerBlocks.map( ( item ) => {
 					const itemAttrs = item.attributes;
-					return createBlock(
-						'sbtl/icon-text',
-						{
-							...sharedAttrs,
-							...( itemAttrs.content !== undefined ? { content: itemAttrs.content } : {} ),
-							...( itemAttrs.url ? {
-								url: itemAttrs.url,
-								linkTarget: itemAttrs.linkTarget,
-								rel: itemAttrs.rel,
-							} : {} ),
-						}
-					);
+					return createBlock( 'sbtl/icon-text', {
+						...sharedAttrs,
+						...( itemAttrs.content !== undefined
+							? { content: itemAttrs.content }
+							: {} ),
+						...( itemAttrs.url
+							? {
+									url: itemAttrs.url,
+									linkTarget: itemAttrs.linkTarget,
+									rel: itemAttrs.rel,
+							  }
+							: {} ),
+					} );
 				} );
 			},
 		},
@@ -128,11 +135,20 @@ const transforms = {
 			transform( attributes, innerBlocks ) {
 				const sharedAttrs = {
 					disabledDefaultTrailingIcon: true,
-					...( attributes.icon ? { leadingIcon: attributes.icon } : {} ),
-					...( attributes.iconSlug ? { leadingIconSlug: attributes.iconSlug } : {} ),
-					...( attributes.icon && attributes.iconOptions && Object.keys( attributes.iconOptions ).length
-						? { iconOptions: { leading: attributes.iconOptions } } : {} ),
-					...( attributes.anchor ? { anchor: attributes.anchor } : {} ),
+					...( attributes.icon
+						? { leadingIcon: attributes.icon }
+						: {} ),
+					...( attributes.iconSlug
+						? { leadingIconSlug: attributes.iconSlug }
+						: {} ),
+					...( attributes.icon &&
+					attributes.iconOptions &&
+					Object.keys( attributes.iconOptions ).length
+						? { iconOptions: { leading: attributes.iconOptions } }
+						: {} ),
+					...( attributes.anchor
+						? { anchor: attributes.anchor }
+						: {} ),
 				};
 
 				if ( ! innerBlocks.length ) {
@@ -141,19 +157,20 @@ const transforms = {
 
 				return innerBlocks.map( ( item ) => {
 					const itemAttrs = item.attributes;
-					return createBlock(
-						'sbtl/icon-button',
-						{
-							...sharedAttrs,
-							...( itemAttrs.content !== undefined ? { text: itemAttrs.content } : {} ),
-							tagName: 'a',
-							...( itemAttrs.url ? {
-								url: itemAttrs.url,
-								linkTarget: itemAttrs.linkTarget,
-								rel: itemAttrs.rel,
-							} : {} ),
-						}
-					);
+					return createBlock( 'sbtl/icon-button', {
+						...sharedAttrs,
+						...( itemAttrs.content !== undefined
+							? { text: itemAttrs.content }
+							: {} ),
+						tagName: 'a',
+						...( itemAttrs.url
+							? {
+									url: itemAttrs.url,
+									linkTarget: itemAttrs.linkTarget,
+									rel: itemAttrs.rel,
+							  }
+							: {} ),
+					} );
 				} );
 			},
 		},
@@ -198,26 +215,35 @@ const transforms = {
 			blocks: [ 'sbtl/icon-text' ],
 			priority: 7,
 			transform( attributes ) {
-				const listItem = createBlock(
-					'sbtl/icon-list-item',
-					{
-						...( attributes.content !== undefined ? { content: attributes.content } : {} ),
-						...( attributes.url ? {
-							url: attributes.url,
-							linkTarget: attributes.linkTarget,
-							rel: attributes.rel,
-						} : {} ),
-					}
-				);
+				const listItem = createBlock( 'sbtl/icon-list-item', {
+					...( attributes.content !== undefined
+						? { content: attributes.content }
+						: {} ),
+					...( attributes.url
+						? {
+								url: attributes.url,
+								linkTarget: attributes.linkTarget,
+								rel: attributes.rel,
+						  }
+						: {} ),
+				} );
 				return createBlock(
 					'sbtl/icon-list',
 					{
 						...( attributes.icon ? { icon: attributes.icon } : {} ),
-						...( attributes.iconSlug ? { iconSlug: attributes.iconSlug } : {} ),
-						...( attributes.iconOptions && Object.keys( attributes.iconOptions ).length
-							? { iconOptions: attributes.iconOptions } : {} ),
-						...( attributes.iconColor ? { iconColor: attributes.iconColor } : {} ),
-						...( attributes.anchor ? { anchor: attributes.anchor } : {} ),
+						...( attributes.iconSlug
+							? { iconSlug: attributes.iconSlug }
+							: {} ),
+						...( attributes.iconOptions &&
+						Object.keys( attributes.iconOptions ).length
+							? { iconOptions: attributes.iconOptions }
+							: {} ),
+						...( attributes.iconColor
+							? { iconColor: attributes.iconColor }
+							: {} ),
+						...( attributes.anchor
+							? { anchor: attributes.anchor }
+							: {} ),
 					},
 					[ listItem ]
 				);
@@ -231,23 +257,28 @@ const transforms = {
 			transform( blocksAttributesList ) {
 				const first = blocksAttributesList[ 0 ] ?? {};
 				const hasLeading = !! first.leadingIcon;
-				const icon = hasLeading ? first.leadingIcon : first.trailingIcon;
-				const iconSlug = hasLeading ? first.leadingIconSlug : first.trailingIconSlug;
+				const icon = hasLeading
+					? first.leadingIcon
+					: first.trailingIcon;
+				const iconSlug = hasLeading
+					? first.leadingIconSlug
+					: first.trailingIconSlug;
 				const slotOptions = hasLeading
 					? first.iconOptions?.leading
 					: first.iconOptions?.trailing;
 				const listItems = blocksAttributesList.map( ( attrs ) =>
-					createBlock(
-						'sbtl/icon-list-item',
-						{
-							...( attrs.text !== undefined ? { content: attrs.text } : {} ),
-							...( attrs.tagName === 'a' && attrs.url ? {
-								url: attrs.url,
-								linkTarget: attrs.linkTarget,
-								rel: attrs.rel,
-							} : {} ),
-						}
-					)
+					createBlock( 'sbtl/icon-list-item', {
+						...( attrs.text !== undefined
+							? { content: attrs.text }
+							: {} ),
+						...( attrs.tagName === 'a' && attrs.url
+							? {
+									url: attrs.url,
+									linkTarget: attrs.linkTarget,
+									rel: attrs.rel,
+							  }
+							: {} ),
+					} )
 				);
 				return createBlock(
 					'sbtl/icon-list',
@@ -255,7 +286,8 @@ const transforms = {
 						...( icon ? { icon } : {} ),
 						...( iconSlug ? { iconSlug } : {} ),
 						...( slotOptions && Object.keys( slotOptions ).length
-							? { iconOptions: slotOptions } : {} ),
+							? { iconOptions: slotOptions }
+							: {} ),
 						...( first.anchor ? { anchor: first.anchor } : {} ),
 					},
 					listItems
@@ -270,26 +302,33 @@ const transforms = {
 			transform( blocksAttributesList ) {
 				const first = blocksAttributesList[ 0 ] ?? {};
 				const listItems = blocksAttributesList.map( ( attrs ) =>
-					createBlock(
-						'sbtl/icon-list-item',
-						{
-							...( attrs.content !== undefined ? { content: attrs.content } : {} ),
-							...( attrs.url ? {
-								url: attrs.url,
-								linkTarget: attrs.linkTarget,
-								rel: attrs.rel,
-							} : {} ),
-						}
-					)
+					createBlock( 'sbtl/icon-list-item', {
+						...( attrs.content !== undefined
+							? { content: attrs.content }
+							: {} ),
+						...( attrs.url
+							? {
+									url: attrs.url,
+									linkTarget: attrs.linkTarget,
+									rel: attrs.rel,
+							  }
+							: {} ),
+					} )
 				);
 				return createBlock(
 					'sbtl/icon-list',
 					{
 						...( first.icon ? { icon: first.icon } : {} ),
-						...( first.iconSlug ? { iconSlug: first.iconSlug } : {} ),
-						...( first.iconOptions && Object.keys( first.iconOptions ).length
-							? { iconOptions: first.iconOptions } : {} ),
-						...( first.iconColor ? { iconColor: first.iconColor } : {} ),
+						...( first.iconSlug
+							? { iconSlug: first.iconSlug }
+							: {} ),
+						...( first.iconOptions &&
+						Object.keys( first.iconOptions ).length
+							? { iconOptions: first.iconOptions }
+							: {} ),
+						...( first.iconColor
+							? { iconColor: first.iconColor }
+							: {} ),
 						...( first.anchor ? { anchor: first.anchor } : {} ),
 					},
 					listItems

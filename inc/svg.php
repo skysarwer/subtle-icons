@@ -1,4 +1,8 @@
-<?php 
+<?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 function sbtl_default_svg__chevron_down() {
     $filtered_svg = apply_filters( 'sbtl_default_svg__chevron_down', '' );

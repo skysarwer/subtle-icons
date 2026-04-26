@@ -28,7 +28,9 @@ function focusBlockEditable( clientId, attempt = 0 ) {
 	if ( editable ) {
 		editable.focus();
 	} else {
-		requestAnimationFrame( () => focusBlockEditable( clientId, attempt + 1 ) );
+		requestAnimationFrame( () =>
+			focusBlockEditable( clientId, attempt + 1 )
+		);
 	}
 }
 

@@ -1,4 +1,9 @@
-<?php 
+<?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Enqueue shared editor styles for custom UI components.
  */

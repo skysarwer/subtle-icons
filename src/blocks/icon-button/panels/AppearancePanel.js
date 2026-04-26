@@ -10,9 +10,21 @@ import {
 } from '../appearance';
 
 const APPEARANCE_TABS = [
-	{ name: 'default', title: __( 'Default', 'subtle-icons' ), className: 'sbtl-tab-default' },
-	{ name: 'hover', title: __( 'Hover', 'subtle-icons' ), className: 'sbtl-tab-hover' },
-	{ name: 'active', title: __( 'Active', 'subtle-icons' ), className: 'sbtl-tab-active' },
+	{
+		name: 'default',
+		title: __( 'Default', 'subtle-icons' ),
+		className: 'sbtl-tab-default',
+	},
+	{
+		name: 'hover',
+		title: __( 'Hover', 'subtle-icons' ),
+		className: 'sbtl-tab-hover',
+	},
+	{
+		name: 'active',
+		title: __( 'Active', 'subtle-icons' ),
+		className: 'sbtl-tab-active',
+	},
 ];
 
 const APPEARANCE_TABS_WITHOUT_ACTIVE = APPEARANCE_TABS.filter(
@@ -30,7 +42,9 @@ export default function AppearancePanel( {
 	const lastBackgroundChangeRef = useRef( null );
 	const hoverHasActive = hasAppearanceValues( stateAppearance?.hover );
 	const activeHasActive = hasAppearanceValues( stateAppearance?.active );
-	const tabs = activeHasActive ? APPEARANCE_TABS : APPEARANCE_TABS_WITHOUT_ACTIVE;
+	const tabs = activeHasActive
+		? APPEARANCE_TABS
+		: APPEARANCE_TABS_WITHOUT_ACTIVE;
 
 	return (
 		<StateTabPanel
@@ -42,7 +56,10 @@ export default function AppearancePanel( {
 			} }
 		>
 			{ ( stateTab ) => {
-				const currentAppearance = getAppearanceForState( stateAppearance, stateTab.name );
+				const currentAppearance = getAppearanceForState(
+					stateAppearance,
+					stateTab.name
+				);
 
 				const setAppearanceValue = ( partial ) => {
 					if ( stateTab.name === 'default' ) {
@@ -54,7 +71,8 @@ export default function AppearancePanel( {
 				};
 
 				const setBackgroundValue = ( source, value ) => {
-					const lastBackgroundChange = lastBackgroundChangeRef.current;
+					const lastBackgroundChange =
+						lastBackgroundChangeRef.current;
 					const shouldIgnoreMirroredReset =
 						value == null &&
 						lastBackgroundChange?.state === stateTab.name &&
@@ -85,10 +103,14 @@ export default function AppearancePanel( {
 					},
 					{
 						label: __( 'Background', 'subtle-icons' ),
-						colorValue: isGradientBackgroundValue( currentAppearance.background )
+						colorValue: isGradientBackgroundValue(
+							currentAppearance.background
+						)
 							? undefined
 							: currentAppearance.background,
-						gradientValue: isGradientBackgroundValue( currentAppearance.background )
+						gradientValue: isGradientBackgroundValue(
+							currentAppearance.background
+						)
 							? currentAppearance.background
 							: undefined,
 						onColorChange: ( value ) =>
@@ -104,23 +126,34 @@ export default function AppearancePanel( {
 							setAppearanceValue( { color: value } ),
 						clearable: true,
 					},
-                    ...( hasLeadingIcon
-						? [ {
-							label: __( 'Leading icon', 'subtle-icons' ),
-							colorValue: currentAppearance.leadingIcon,
-							onColorChange: ( value ) =>
-								setAppearanceValue( { leadingIcon: value } ),
-							clearable: true,
-						} ]
+					...( hasLeadingIcon
+						? [
+								{
+									label: __( 'Leading icon', 'subtle-icons' ),
+									colorValue: currentAppearance.leadingIcon,
+									onColorChange: ( value ) =>
+										setAppearanceValue( {
+											leadingIcon: value,
+										} ),
+									clearable: true,
+								},
+						  ]
 						: [] ),
 					...( hasTrailingIcon
-						? [ {
-							label: __( 'Trailing icon', 'subtle-icons' ),
-							colorValue: currentAppearance.trailingIcon,
-							onColorChange: ( value ) =>
-								setAppearanceValue( { trailingIcon: value } ),
-							clearable: true,
-						} ]
+						? [
+								{
+									label: __(
+										'Trailing icon',
+										'subtle-icons'
+									),
+									colorValue: currentAppearance.trailingIcon,
+									onColorChange: ( value ) =>
+										setAppearanceValue( {
+											trailingIcon: value,
+										} ),
+									clearable: true,
+								},
+						  ]
 						: [] ),
 				];
 
@@ -135,10 +168,15 @@ export default function AppearancePanel( {
 						/>
 						<ShadowControl
 							label={ __( 'Shadow', 'subtle-icons' ) }
-							ariaLabel={ __( 'Icon Button Shadow', 'subtle-icons' ) }
+							ariaLabel={ __(
+								'Icon Button Shadow',
+								'subtle-icons'
+							) }
 							value={ currentAppearance.shadow }
 							onChange={ ( value ) =>
-								setAppearanceValue( { shadow: value || undefined } )
+								setAppearanceValue( {
+									shadow: value || undefined,
+								} )
 							}
 						/>
 					</>

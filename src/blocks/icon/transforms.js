@@ -58,7 +58,9 @@ const transforms = {
 					tagName: 'a',
 					...( iconMarkup ? { leadingIcon: iconMarkup } : {} ),
 					...( iconSlug ? { leadingIconSlug: iconSlug } : {} ),
-					...( slotOptions ? { iconOptions: { leading: slotOptions } } : {} ),
+					...( slotOptions
+						? { iconOptions: { leading: slotOptions } }
+						: {} ),
 					disabledDefaultTrailingIcon: true,
 				} );
 			},
@@ -68,8 +70,11 @@ const transforms = {
 			blocks: [ 'sbtl/accordions' ],
 			priority: 15,
 			transform( { iconMarkup, iconSlug, size, stroke } ) {
-				const featureIconOptions = iconOptionsFromIconBlock( size, stroke ) ?? {};
-				const groupName = `sbtl-accordions-${ Math.random().toString( 36 ).substring( 2, 10 ) }`;
+				const featureIconOptions =
+					iconOptionsFromIconBlock( size, stroke ) ?? {};
+				const groupName = `sbtl-accordions-${ Math.random()
+					.toString( 36 )
+					.substring( 2, 10 ) }`;
 				const accordionItem = createBlock( 'sbtl/accordion', {
 					groupName,
 					...( iconMarkup ? { featureIcon: iconMarkup } : {} ),
@@ -79,7 +84,9 @@ const transforms = {
 					'sbtl/accordions',
 					{
 						groupName,
-						...( Object.keys( featureIconOptions ).length ? { featureIconOptions } : {} ),
+						...( Object.keys( featureIconOptions ).length
+							? { featureIconOptions }
+							: {} ),
 					},
 					[ accordionItem ]
 				);
@@ -98,7 +105,9 @@ const transforms = {
 				return createBlock(
 					'sbtl/tabs',
 					{
-						groupName: `sbtl-tabs-${ Math.random().toString( 36 ).substring( 2, 10 ) }`,
+						groupName: `sbtl-tabs-${ Math.random()
+							.toString( 36 )
+							.substring( 2, 10 ) }`,
 						...( iconOptions ? { IconOptions: iconOptions } : {} ),
 					},
 					[ tabItem ]

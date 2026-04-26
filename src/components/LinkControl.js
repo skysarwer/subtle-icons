@@ -1,5 +1,10 @@
 import { __ } from '@wordpress/i18n';
-import { BaseControl, Button, Popover, __experimentalHStack as HStack } from '@wordpress/components';
+import {
+	BaseControl,
+	Button,
+	Popover,
+	__experimentalHStack as HStack,
+} from '@wordpress/components';
 import { __experimentalLinkControl as WpLinkControl } from '@wordpress/block-editor';
 import { useRef, useState } from '@wordpress/element';
 import { link, reset, copy, check } from '@wordpress/icons';
@@ -8,7 +13,10 @@ function normalizeUrl( inputUrl = '' ) {
 	const trimmedUrl = inputUrl.trim();
 	const hasScheme = /^[a-z][a-z\d+.-]*:/i.test( trimmedUrl );
 	const startsRelative = /^[/?#]/.test( trimmedUrl );
-	const looksLikeDomain = /^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}(?::\d{2,5})?(?:[/?#].*)?$/i.test( trimmedUrl );
+	const looksLikeDomain =
+		/^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}(?::\d{2,5})?(?:[/?#].*)?$/i.test(
+			trimmedUrl
+		);
 
 	if ( ! trimmedUrl ) {
 		return '';
@@ -36,7 +44,8 @@ const LinkControl = ( {
 	popoverContent,
 } ) => {
 	const [ isVisible, setIsVisible ] = useState( false );
-	const [ showCustomPopoverContent, setShowCustomPopoverContent ] = useState( true );
+	const [ showCustomPopoverContent, setShowCustomPopoverContent ] =
+		useState( true );
 	const [ isCopied, setIsCopied ] = useState( false );
 	const anchorRef = useRef( null );
 
@@ -45,12 +54,14 @@ const LinkControl = ( {
 		setIsVisible( true );
 	};
 
-	const resolvedPopoverContent = typeof popoverContent === 'function'
-		? popoverContent( {
-			showDefaultContent: () => setShowCustomPopoverContent( false ),
-			closePopover: () => setIsVisible( false ),
-		} )
-		: popoverContent;
+	const resolvedPopoverContent =
+		typeof popoverContent === 'function'
+			? popoverContent( {
+					showDefaultContent: () =>
+						setShowCustomPopoverContent( false ),
+					closePopover: () => setIsVisible( false ),
+			  } )
+			: popoverContent;
 
 	//const { createNotice } = useDispatch( 'core/notices' );
 
@@ -93,7 +104,7 @@ const LinkControl = ( {
 							} }
 							tabIndex={ -1 }
 						/>
-						{value && (
+						{ value && (
 							<Button
 								icon={ reset }
 								label={ __( 'Remove Link', 'subtle-icons' ) }
@@ -109,7 +120,11 @@ const LinkControl = ( {
 					{ value && (
 						<Button
 							icon={ isCopied ? check : copy }
-							label={ isCopied ? __( 'Link Copied!', 'subtle-icons' ) : __( 'Copy Link', 'subtle-icons' ) }
+							label={
+								isCopied
+									? __( 'Link Copied!', 'subtle-icons' )
+									: __( 'Copy Link', 'subtle-icons' )
+							}
 							variant="link"
 							onClick={ ( event ) => {
 								event.stopPropagation();
@@ -135,11 +150,15 @@ const LinkControl = ( {
 							resolvedPopoverContent
 						) : (
 							<WpLinkControl
-								searchInputPlaceholder={ searchInputPlaceholder }
+								searchInputPlaceholder={
+									searchInputPlaceholder
+								}
 								value={ { url: value || '' } }
 								onChange={ ( nextValue ) => {
 									if ( nextValue && nextValue.url ) {
-										onChange( normalizeUrl( nextValue.url ) );
+										onChange(
+											normalizeUrl( nextValue.url )
+										);
 									}
 								} }
 								showInitialSuggestions={ true }

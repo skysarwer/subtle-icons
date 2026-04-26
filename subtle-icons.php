@@ -12,11 +12,11 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       subtle-icons
  *
- * @package           subtle-icons
+ * @package           sbtl
  */
 
-DEFINE( 'SBTL_BLOCKS_PLUGIN_FILE',  __FILE__ );
-DEFINE( 'SBTL_BLOCKS_VERSION', '0.1.0' );
+define( 'SBTL_BLOCKS_PLUGIN_FILE', __FILE__ );
+define( 'SBTL_BLOCKS_VERSION', '0.1.0' );
 
 /**
  * Registers the block using the metadata loaded from the `block.json` file.
@@ -35,18 +35,17 @@ function create_block_sbtl_icons_block_init() {
 		'icon',
 	);
 
-	foreach ($blocks as $block) {
+	foreach ( $blocks as $block ) {
 
 		$registry = WP_Block_Type_Registry::get_instance();
-		
-		//Array for passing block arguments outside of block.json. Mainly for render_callback property
+
+		// Array for passing block arguments outside of block.json. Mainly for render_callback property.
 		$block_args = array();
 
-		
-		if ( ! $registry->get_registered( 'sbtl/'.$block ) ) {
+		if ( ! $registry->get_registered( 'sbtl/' . $block ) ) {
 
-			register_block_type ( plugin_dir_path(__FILE__) . '/build/blocks/' . $block, $block_args );
-		
+			register_block_type( plugin_dir_path( __FILE__ ) . '/build/blocks/' . $block, $block_args );
+
 		}
 	}
 }
@@ -55,20 +54,18 @@ add_action( 'init', 'create_block_sbtl_icons_block_init' );
 
 function sbtl_block_categories( $categories ) {
 
-    $category_slugs = wp_list_pluck( $categories, 'slug' );
-
 	$sbtl_category = array(
-		'slug'  => "sbtl",
-		'title' => __( 'Subtle Icons', "subtle-icons" ),
+		'slug'  => 'sbtl',
+		'title' => __( 'Subtle Icons', 'subtle-icons' ),
 		'icon'  => null,
 	);
 
 	$categories_sorted = array();
-    $categories_sorted[0] = $sbtl_category;
+	$categories_sorted[0] = $sbtl_category;
 
-    foreach ($categories as $category) {
-        $categories_sorted[] = $category;
-    }
+	foreach ( $categories as $category ) {
+		$categories_sorted[] = $category;
+	}
 
     return $categories_sorted;
 

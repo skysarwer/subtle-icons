@@ -38,7 +38,7 @@ const LIST_STYLE_OPTIONS = [
 
 const OrderedListSettings = ( { setAttributes, reversed, start, type } ) => {
 	// Refactored to remove dependencies on internal tools panel hooks
-	
+
 	const controls = (
 		<>
 			<SelectControl
@@ -47,9 +47,7 @@ const OrderedListSettings = ( { setAttributes, reversed, start, type } ) => {
 				label={ __( 'List style' ) }
 				options={ LIST_STYLE_OPTIONS }
 				value={ type }
-				onChange={ ( newValue ) =>
-					setAttributes( { type: newValue } )
-				}
+				onChange={ ( newValue ) => setAttributes( { type: newValue } ) }
 			/>
 			<TextControl
 				__next40pxDefaultSize
@@ -64,11 +62,7 @@ const OrderedListSettings = ( { setAttributes, reversed, start, type } ) => {
 						start: isNaN( int ) ? undefined : int,
 					} );
 				} }
-				value={
-					Number.isInteger( start )
-						? start.toString( 10 )
-						: ''
-				}
+				value={ Number.isInteger( start ) ? start.toString( 10 ) : '' }
 				step="1"
 			/>
 			<ToggleControl

@@ -78,7 +78,9 @@ const v1 = {
 					style: {
 						listStyleType:
 							ordered && type !== 'decimal' ? type : undefined,
-						'--sbtl-icon-size': iconSize ? `${ iconSize }px` : undefined,
+						'--sbtl-icon-size': iconSize
+							? `${ iconSize }px`
+							: undefined,
 						'--sbtl-icon-color': iconColor || undefined,
 						'--sbtl-icon-link-hover-color':
 							iconLinkHoverColor || undefined,

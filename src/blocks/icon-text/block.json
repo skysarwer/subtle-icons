@@ -1,100 +1,100 @@
 {
-  "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 3,
-  "name": "sbtl/icon-text",
-  "title": "Icon + Text",
-  "category": "sbtl",
-  "description": "Pair an icon with a text label. Useful for notices, callouts and rich headings.",
-  "keywords": ["icon", "text", "notice", "callout", "heading", "rich"],
-  "textdomain": "subtle-icons",
-  "icon": "info",
-  "attributes": {
-    "content": {
-      "type": "rich-text",
-      "source": "rich-text",
-      "selector": ".sbtl-icon-text__content",
-      "role": "content"
-    },
-    "level": {
-      "type": "number",
-      "default": 0
-    },
-    "icon": {
-      "type": "string",
-      "default": ""
-    },
-    "iconSlug": {
-      "type": "string",
-      "default": ""
-    },
-    "iconOptions": {
-      "type": "object",
-      "default": {}
-    },
-    "iconPosition": {
-      "type": "string",
-      "default": "left"
-    },
-    "iconColor": {
-      "type": "string"
-    },
-    "url": {
-      "type": "string"
-    },
-    "linkTarget": {
-      "type": "string"
-    },
-    "rel": {
-      "type": "string"
-    },
-    "placeholder": {
-      "type": "string"
-    },
-    "shadow": {
-      "type": "string"
-    },
-    "disabledDefaultIcon": {
-      "type": "boolean",
-      "default": false
-    }
-  },
-  "supports": {
-    "anchor": true,
-    "className": true,
-    "splitting": true,
-    "align": ["wide", "full"],
-    "__unstablePasteTextInline": true,
-    "color": {
-      "gradients": true,
-      "link": true,
-      "__experimentalDefaultControls": {
-        "background": true,
-        "text": true,
-        "link": false
-      }
-    },
-    "spacing": {
-      "margin": true,
-      "padding": true,
-      "__experimentalDefaultControls": {
-        "margin": false,
-        "padding": false
-      }
-    },
-    "typography": {
-      "fontSize": true,
-      "lineHeight": true,
-      "textAlign": true,
-      "__experimentalFontFamily": true,
-      "__experimentalFontWeight": true,
-      "__experimentalLetterSpacing": true,
-      "__experimentalTextDecoration": true,
-      "__experimentalTextTransform": true,
-      "__experimentalDefaultControls": {
-        "fontSize": true
-      }
-    },
-    "__experimentalBorder": {
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "sbtl/icon-text",
+	"title": "Icon + Text",
+	"category": "sbtl",
+	"description": "Pair an icon with a text label. Useful for notices, callouts and rich headings.",
+	"keywords": [ "icon", "text", "notice", "callout", "heading", "rich" ],
+	"textdomain": "subtle-icons",
+	"icon": "info",
+	"attributes": {
+		"content": {
+			"type": "rich-text",
+			"source": "rich-text",
+			"selector": ".sbtl-icon-text__content",
+			"role": "content"
+		},
+		"level": {
+			"type": "number",
+			"default": 0
+		},
+		"icon": {
+			"type": "string",
+			"default": ""
+		},
+		"iconSlug": {
+			"type": "string",
+			"default": ""
+		},
+		"iconOptions": {
+			"type": "object",
+			"default": {}
+		},
+		"iconPosition": {
+			"type": "string",
+			"default": "left"
+		},
+		"iconColor": {
+			"type": "string"
+		},
+		"url": {
+			"type": "string"
+		},
+		"linkTarget": {
+			"type": "string"
+		},
+		"rel": {
+			"type": "string"
+		},
+		"placeholder": {
+			"type": "string"
+		},
+		"shadow": {
+			"type": "string"
+		},
+		"disabledDefaultIcon": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"className": true,
+		"splitting": true,
+		"align": [ "wide", "full" ],
+		"__unstablePasteTextInline": true,
+		"color": {
+			"gradients": true,
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true,
+				"link": false
+			}
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"__experimentalDefaultControls": {
+				"margin": false,
+				"padding": false
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"textAlign": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalTextTransform": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"__experimentalBorder": {
 			"color": false,
 			"radius": true,
 			"style": true,
@@ -107,13 +107,13 @@
 				"width": true
 			}
 		},
-    "interactivity": {
-      "clientNavigation": true
-    }
-  },
-  "selectors": {
-    "root": ".wp-block-sbtl-icon-text"
-  },
-  "editorScript": "file:./index.js",
-  "style": "file:./style-index.css"
+		"interactivity": {
+			"clientNavigation": true
+		}
+	},
+	"selectors": {
+		"root": ".wp-block-sbtl-icon-text"
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css"
 }

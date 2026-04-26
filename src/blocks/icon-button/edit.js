@@ -27,9 +27,18 @@ import {
 import { useMergeRefs } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
 import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
-import { link, linkOff, arrowDown, arrowRight, reusableBlock } from '@wordpress/icons';
+import {
+	link,
+	linkOff,
+	arrowDown,
+	arrowRight,
+	reusableBlock,
+} from '@wordpress/icons';
 
-import IconPicker, { IconPickerTrigger, IconPickerPreview } from '../../components/IconPicker';
+import IconPicker, {
+	IconPickerTrigger,
+	IconPickerPreview,
+} from '../../components/IconPicker';
 import IconPickerModal from '../../components/IconPicker/IconPickerModal';
 import useIconAutoResolve from '../../components/IconPicker/useIconAutoResolve';
 import { useBlockAttributes } from '../../hooks/use-block-attributes';
@@ -42,7 +51,14 @@ import {
 	getIconSlotStyle,
 } from './shared';
 
-function IconSlot( { icon, toggleIcon, className = '', style, onOpen, editLabel } ) {
+function IconSlot( {
+	icon,
+	toggleIcon,
+	className = '',
+	style,
+	onOpen,
+	editLabel,
+} ) {
 	if ( ! icon && ! toggleIcon ) return null;
 	if ( onOpen ) {
 		return (
@@ -54,14 +70,34 @@ function IconSlot( { icon, toggleIcon, className = '', style, onOpen, editLabel 
 					className="sbtl-button__icon"
 					showPlaceholder={ false }
 				/>
-				{ toggleIcon && <span className="sbtl-button__icon sbtl-icon" data-variant="toggle" dangerouslySetInnerHTML={ { __html: toggleIcon } } aria-hidden="true" /> }
+				{ toggleIcon && (
+					<span
+						className="sbtl-button__icon sbtl-icon"
+						data-variant="toggle"
+						dangerouslySetInnerHTML={ { __html: toggleIcon } }
+						aria-hidden="true"
+					/>
+				) }
 			</div>
 		);
 	}
 	return (
 		<div className={ className } style={ style }>
-			{ icon && <span className="sbtl-button__icon sbtl-icon" dangerouslySetInnerHTML={ { __html: icon } } aria-hidden="true" /> }
-			{ toggleIcon && <span className="sbtl-button__icon sbtl-icon" data-variant="toggle" dangerouslySetInnerHTML={ { __html: toggleIcon } } aria-hidden="true" /> }
+			{ icon && (
+				<span
+					className="sbtl-button__icon sbtl-icon"
+					dangerouslySetInnerHTML={ { __html: icon } }
+					aria-hidden="true"
+				/>
+			) }
+			{ toggleIcon && (
+				<span
+					className="sbtl-button__icon sbtl-icon"
+					data-variant="toggle"
+					dangerouslySetInnerHTML={ { __html: toggleIcon } }
+					aria-hidden="true"
+				/>
+			) }
 		</div>
 	);
 }
@@ -171,12 +207,11 @@ function WidthPanel( { selectedWidth, setAttributes } ) {
 	);
 }
 
-export default function Edit( {
-	attributes,
-	setAttributes,
-	isSelected,
-} ) {
-	const { setClean, setNested } = useBlockAttributes( attributes, setAttributes );
+export default function Edit( { attributes, setAttributes, isSelected } ) {
+	const { setClean, setNested } = useBlockAttributes(
+		attributes,
+		setAttributes
+	);
 	const {
 		tagName,
 		type,
@@ -198,7 +233,9 @@ export default function Edit( {
 	const normalizedIconOptions = getObjectValue( iconOptions );
 	const normalizedStateAppearanceInput = getObjectValue( stateAppearance );
 	const leadingIconOptions = getObjectValue( normalizedIconOptions.leading );
-	const trailingIconOptions = getObjectValue( normalizedIconOptions.trailing );
+	const trailingIconOptions = getObjectValue(
+		normalizedIconOptions.trailing
+	);
 	const TagName = getTagNameValue( tagName );
 	const isButtonTag = TagName === 'button';
 	const opensInNewTab = linkTarget === NEW_TAB_TARGET;
@@ -228,7 +265,11 @@ export default function Edit( {
 	}, [ isSelected ] );
 
 	useEffect( () => {
-		if ( trailingIcon || disabledDefaultTrailingIcon || ! DEFAULT_TRAILING_ICON ) {
+		if (
+			trailingIcon ||
+			disabledDefaultTrailingIcon ||
+			! DEFAULT_TRAILING_ICON
+		) {
 			return;
 		}
 
@@ -262,12 +303,24 @@ export default function Edit( {
 		'trailingIcon'
 	);
 	const leadingIconStyle = cleanObject( {
-		...getIconSlotStyle( leadingIconOptions, defaultAppearance.leadingIcon ),
-		...getIconAppearanceStateStyle( normalizedStateAppearance, 'leadingIcon' ),
+		...getIconSlotStyle(
+			leadingIconOptions,
+			defaultAppearance.leadingIcon
+		),
+		...getIconAppearanceStateStyle(
+			normalizedStateAppearance,
+			'leadingIcon'
+		),
 	} );
 	const trailingIconStyle = cleanObject( {
-		...getIconSlotStyle( trailingIconOptions, defaultAppearance.trailingIcon ),
-		...getIconAppearanceStateStyle( normalizedStateAppearance, 'trailingIcon' ),
+		...getIconSlotStyle(
+			trailingIconOptions,
+			defaultAppearance.trailingIcon
+		),
+		...getIconAppearanceStateStyle(
+			normalizedStateAppearance,
+			'trailingIcon'
+		),
 	} );
 
 	const wrapperClasses = clsx(
@@ -310,7 +363,10 @@ export default function Edit( {
 
 	const setIconSlotOptions = ( slot, partial ) => {
 		setIconOptions( {
-			[ slot ]: cleanMerge( normalizedIconOptions?.[ slot ] || {}, partial ),
+			[ slot ]: cleanMerge(
+				normalizedIconOptions?.[ slot ] || {},
+				partial
+			),
 		} );
 	};
 
@@ -409,7 +465,9 @@ export default function Edit( {
 				leading: nextIconOptions.trailing,
 				trailing: nextIconOptions.leading,
 			} ),
-			stateAppearance: swapStateAppearanceIcons( normalizedStateAppearance ),
+			stateAppearance: swapStateAppearanceIcons(
+				normalizedStateAppearance
+			),
 		} );
 	};
 
@@ -438,7 +496,10 @@ export default function Edit( {
 						) }
 						style={ leadingIconStyle }
 						onOpen={ () => setActiveIconSlot( 'leading' ) }
-						editLabel={ __( 'Change leading icon', 'subtle-icons' ) }
+						editLabel={ __(
+							'Change leading icon',
+							'subtle-icons'
+						) }
 					/>
 					<RichText
 						ref={ richTextRef }
@@ -446,7 +507,9 @@ export default function Edit( {
 						tagName="span"
 						className="wp-block-button__link-text"
 						aria-label={ __( 'Button text', 'subtle-icons' ) }
-						placeholder={ placeholder || __( 'Add text…', 'subtle-icons' ) }
+						placeholder={
+							placeholder || __( 'Add text…', 'subtle-icons' )
+						}
 						value={ text }
 						onChange={ ( value ) =>
 							setAttributes( {
@@ -464,7 +527,10 @@ export default function Edit( {
 						) }
 						style={ trailingIconStyle }
 						onOpen={ () => setActiveIconSlot( 'trailing' ) }
-						editLabel={ __( 'Change trailing icon', 'subtle-icons' ) }
+						editLabel={ __(
+							'Change trailing icon',
+							'subtle-icons'
+						) }
 					/>
 				</div>
 			</div>
@@ -473,7 +539,9 @@ export default function Edit( {
 					<ToolbarButton
 						icon={ url ? linkOff : link }
 						title={
-							url ? __( 'Unlink', 'subtle-icons' ) : __( 'Link', 'subtle-icons' )
+							url
+								? __( 'Unlink', 'subtle-icons' )
+								: __( 'Link', 'subtle-icons' )
 						}
 						onClick={ () => {
 							if ( url ) {
@@ -508,8 +576,7 @@ export default function Edit( {
 								getUpdatedLinkAttributes( {
 									rel,
 									url: nextValue.url,
-									opensInNewTab:
-										nextValue.opensInNewTab,
+									opensInNewTab: nextValue.opensInNewTab,
 									nofollow: nextValue.nofollow,
 								} )
 							)
@@ -519,14 +586,22 @@ export default function Edit( {
 				</Popover>
 			) }
 			<InspectorControls>
-				<PanelBody title={ __( 'Icon', 'subtle-icons' ) } initialOpen={ true }>
+				<PanelBody
+					title={ __( 'Icon', 'subtle-icons' ) }
+					initialOpen={ true }
+				>
 					<IconPickerTrigger
 						label={ __( 'Leading icon', 'subtle-icons' ) }
 						value={ leadingIcon }
 						onOpen={ () => setActiveIconSlot( 'leading' ) }
-					onClear={ () => setAttributes( { leadingIcon: '', leadingIconSlug: '' } ) }
+						onClear={ () =>
+							setAttributes( {
+								leadingIcon: '',
+								leadingIconSlug: '',
+							} )
+						}
 					/>
-					{/* ( leadingIcon || leadingIconOptions.toggleIcon ) && (
+					{ /* ( leadingIcon || leadingIconOptions.toggleIcon ) && (
 						<IconPicker
 							label={ __( 'Leading toggle icon', 'subtle-icons' ) }
 							value={ leadingIconOptions.toggleIcon }
@@ -534,7 +609,7 @@ export default function Edit( {
 								setIconSlotOptions( 'leading', { toggleIcon: value } )
 							}
 						/>
-					) */}
+					) */ }
 					<IconPickerTrigger
 						label={ __( 'Trailing icon', 'subtle-icons' ) }
 						value={ trailingIcon }
@@ -549,9 +624,12 @@ export default function Edit( {
 								setIconSlotOptions( 'trailing', { toggleIcon: value } )
 							}
 						/>
-					) */}
+					) */ }
 					{ ( leadingIcon || trailingIcon ) && (
-						<HStack align="bottom" style={{ alignItems: 'flex-end'}}>
+						<HStack
+							align="bottom"
+							style={ { alignItems: 'flex-end' } }
+						>
 							<Button
 								variant="secondary"
 								icon={ reusableBlock }
@@ -570,19 +648,53 @@ export default function Edit( {
 									setAttributes( { iconLayout: value } )
 								}
 							>
-								<ToggleGroupControlOptionIcon icon={ arrowRight } value="horizontal" label={ __( 'Horizontal', 'subtle-icons' ) } />
-								<ToggleGroupControlOptionIcon icon={ arrowDown } value="vertical" label={ __( 'Vertical', 'subtle-icons' ) } />
+								<ToggleGroupControlOptionIcon
+									icon={ arrowRight }
+									value="horizontal"
+									label={ __( 'Horizontal', 'subtle-icons' ) }
+								/>
+								<ToggleGroupControlOptionIcon
+									icon={ arrowDown }
+									value="vertical"
+									label={ __( 'Vertical', 'subtle-icons' ) }
+								/>
 							</ToggleGroupControl>
 						</HStack>
 					) }
 				</PanelBody>
-				{ ( leadingIcon || trailingIcon || leadingIconOptions?.toggleIcon || trailingIconOptions?.toggleIcon ) && (
+				{ ( leadingIcon ||
+					trailingIcon ||
+					leadingIconOptions?.toggleIcon ||
+					trailingIconOptions?.toggleIcon ) && (
 					<LinkedIconOptionsPanel
 						groups={ [
-							...( leadingIcon ? [ { key: 'leading', label: __( 'Leading icon', 'subtle-icons' ) } ] : [] ),
-							...( trailingIcon ? [ { key: 'trailing', label: __( 'Trailing icon', 'subtle-icons' ) } ] : [] ),
+							...( leadingIcon
+								? [
+										{
+											key: 'leading',
+											label: __(
+												'Leading icon',
+												'subtle-icons'
+											),
+										},
+								  ]
+								: [] ),
+							...( trailingIcon
+								? [
+										{
+											key: 'trailing',
+											label: __(
+												'Trailing icon',
+												'subtle-icons'
+											),
+										},
+								  ]
+								: [] ),
 						] }
-						slots={ { leading: leadingIconOptions, trailing: trailingIconOptions } }
+						slots={ {
+							leading: leadingIconOptions,
+							trailing: trailingIconOptions,
+						} }
 						resetAll={ resetAllIconOptions }
 						resetOption={ resetIconOption }
 						setSlotOptions={ setMultipleIconSlotOptions }
@@ -595,12 +707,24 @@ export default function Edit( {
 				/>
 			</InspectorControls>
 			<InspectorControls group="styles">
-				<PanelBody title={ __( 'Colors & Shadow', 'subtle-icons' ) } initialOpen={ true } className="sbtl-priority-styles-panel">
+				<PanelBody
+					title={ __( 'Colors & Shadow', 'subtle-icons' ) }
+					initialOpen={ true }
+					className="sbtl-priority-styles-panel"
+				>
 					<AppearancePanel
-						PanelColorGradientSettings={ PanelColorGradientSettings }
+						PanelColorGradientSettings={
+							PanelColorGradientSettings
+						}
 						stateAppearance={ normalizedStateAppearance }
-						hasLeadingIcon={ !! ( leadingIcon || leadingIconOptions.toggleIcon ) }
-						hasTrailingIcon={ !! ( trailingIcon || trailingIconOptions.toggleIcon ) }
+						hasLeadingIcon={
+							!! ( leadingIcon || leadingIconOptions.toggleIcon )
+						}
+						hasTrailingIcon={
+							!! (
+								trailingIcon || trailingIconOptions.toggleIcon
+							)
+						}
 						setDefaultAppearance={ setDefaultAppearance }
 						setInteractiveAppearance={ setInteractiveAppearance }
 					/>
@@ -609,8 +733,14 @@ export default function Edit( {
 			<IconPickerModal
 				isOpen={ activeIconSlot !== null }
 				onClose={ () => setActiveIconSlot( null ) }
-				initialValue={ activeIconSlot === 'leading' ? leadingIcon : trailingIcon }
-				initialSlug={ activeIconSlot === 'leading' ? leadingIconSlug : trailingIconSlug }
+				initialValue={
+					activeIconSlot === 'leading' ? leadingIcon : trailingIcon
+				}
+				initialSlug={
+					activeIconSlot === 'leading'
+						? leadingIconSlug
+						: trailingIconSlug
+				}
 				onSelect={ ( svg ) => {
 					if ( activeIconSlot === 'leading' ) {
 						setAttributes( { leadingIcon: svg } );

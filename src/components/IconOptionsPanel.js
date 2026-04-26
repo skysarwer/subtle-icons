@@ -96,7 +96,9 @@ export default function IconOptionsPanel( {
 				<RangeControl
 					label={ __( 'Thickness', 'subtle-icons' ) }
 					value={ iconOptions?.stroke }
-					onChange={ ( value ) => onChange( { stroke: value || undefined } ) }
+					onChange={ ( value ) =>
+						onChange( { stroke: value || undefined } )
+					}
 					min={ 0.5 }
 					max={ 10 }
 					step={ 0.5 }
@@ -129,7 +131,9 @@ export default function IconOptionsPanel( {
 					/>
 					<ToggleGroupControlOptionIcon
 						value="center"
-						icon={ isHorizontal ? justifyCenterVertical : justifyCenter }
+						icon={
+							isHorizontal ? justifyCenterVertical : justifyCenter
+						}
 						label={ __( 'Center', 'subtle-icons' ) }
 					/>
 					<ToggleGroupControlOptionIcon

@@ -12,7 +12,10 @@ const APPEARANCE_KEYS = [
 export function getAppearanceValues( appearance = {} ) {
 	return cleanObject(
 		Object.fromEntries(
-			APPEARANCE_KEYS.map( ( key ) => [ key, appearance?.[ key ] ?? undefined ] )
+			APPEARANCE_KEYS.map( ( key ) => [
+				key,
+				appearance?.[ key ] ?? undefined,
+			] )
 		)
 	);
 }
@@ -21,7 +24,10 @@ export function getDefaultAppearance( stateAppearance = {} ) {
 	return getAppearanceValues( stateAppearance );
 }
 
-export function getAppearanceForState( stateAppearance = {}, stateKey = 'default' ) {
+export function getAppearanceForState(
+	stateAppearance = {},
+	stateKey = 'default'
+) {
 	if ( stateKey === 'default' ) {
 		return getDefaultAppearance( stateAppearance );
 	}
@@ -33,7 +39,10 @@ export function hasAppearanceValues( appearance = {} ) {
 	return !! Object.values( appearance || {} ).some( Boolean );
 }
 
-export function mergeDefaultAppearanceState( stateAppearance = {}, partial = {} ) {
+export function mergeDefaultAppearanceState(
+	stateAppearance = {},
+	partial = {}
+) {
 	const nextDefaultAppearance = cleanValue( {
 		...getDefaultAppearance( stateAppearance ),
 		...partial,
@@ -77,9 +86,9 @@ export function getPresetInfo( value ) {
 		return undefined;
 	}
 
-	const match = value.trim().match(
-		/^var\(--wp--preset--(color|gradient)--([^)]+)\)$/
-	);
+	const match = value
+		.trim()
+		.match( /^var\(--wp--preset--(color|gradient)--([^)]+)\)$/ );
 
 	if ( ! match ) {
 		return undefined;
@@ -129,9 +138,16 @@ export function getIconAppearanceStateStyle( stateAppearance = {}, slotKey ) {
 	} );
 }
 
-export function getIconAppearanceStateClassNames( stateAppearance = {}, slotKey ) {
+export function getIconAppearanceStateClassNames(
+	stateAppearance = {},
+	slotKey
+) {
 	return cleanValue( {
-		'has-hover-icon-color': stateAppearance?.hover?.[ slotKey ] ? true : undefined,
-		'has-active-icon-color': stateAppearance?.active?.[ slotKey ] ? true : undefined,
+		'has-hover-icon-color': stateAppearance?.hover?.[ slotKey ]
+			? true
+			: undefined,
+		'has-active-icon-color': stateAppearance?.active?.[ slotKey ]
+			? true
+			: undefined,
 	} );
 }

@@ -19,7 +19,8 @@ const DEFAULT_UNITS = [
 	{ value: 'em', label: 'em', step: 0.1, default: 0 },
 ];
 
-const isFiniteNumber = ( value ) => typeof value === 'number' && Number.isFinite( value );
+const isFiniteNumber = ( value ) =>
+	typeof value === 'number' && Number.isFinite( value );
 
 function toNumber( value ) {
 	const parsed = typeof value === 'number' ? value : parseFloat( value );
@@ -35,7 +36,9 @@ function parseValue( value ) {
 		return { quantity: value, unit: undefined };
 	}
 
-	const match = `${ value }`.trim().match( /^(-?(?:\d+|\d*\.\d+))([a-zA-Z%]*)$/ );
+	const match = `${ value }`
+		.trim()
+		.match( /^(-?(?:\d+|\d*\.\d+))([a-zA-Z%]*)$/ );
 	if ( ! match ) {
 		return { quantity: undefined, unit: undefined };
 	}
@@ -75,7 +78,6 @@ function getUnitSettings( unit, units, rangeByUnit, fallback ) {
 			: activeUnit?.default,
 	};
 }
-
 
 /**
  * A control that combines `UnitControl` and `RangeControl`.
@@ -159,7 +161,11 @@ export default function RangedUnitControl( {
 	}, [ parsed.unit ] );
 
 	const unitSettings = useMemo( () => {
-		return getUnitSettings( activeUnit, units, rangeByUnit, { min, max, step } );
+		return getUnitSettings( activeUnit, units, rangeByUnit, {
+			min,
+			max,
+			step,
+		} );
 	}, [ activeUnit, units, rangeByUnit, min, max, step ] );
 
 	const sliderValue = clamp(
@@ -178,7 +184,11 @@ export default function RangedUnitControl( {
 			step,
 		} );
 
-		if ( nextQuantity === undefined || nextQuantity === null || nextQuantity === '' ) {
+		if (
+			nextQuantity === undefined ||
+			nextQuantity === null ||
+			nextQuantity === ''
+		) {
 			onChange?.( undefined );
 			return;
 		}
@@ -189,7 +199,11 @@ export default function RangedUnitControl( {
 			return;
 		}
 
-		const clamped = clamp( quantity, targetUnitSettings.min, targetUnitSettings.max );
+		const clamped = clamp(
+			quantity,
+			targetUnitSettings.min,
+			targetUnitSettings.max
+		);
 		onChange?.( `${ clamped }${ unit }` );
 	};
 
@@ -203,11 +217,11 @@ export default function RangedUnitControl( {
 			label={ label }
 			help={ help }
 		>
-			<Grid 
-				className="sbtl-ranged-unit-control" 
-				columns={3} 
-				templateColumns="1fr 1fr min-content" 
-				role="group" 
+			<Grid
+				className="sbtl-ranged-unit-control"
+				columns={ 3 }
+				templateColumns="1fr 1fr min-content"
+				role="group"
 				aria-label={ label }
 			>
 				<RangeControl
@@ -234,8 +248,14 @@ export default function RangedUnitControl( {
 					} }
 					onUnitChange={ ( nextUnitValue, changeProps ) => {
 						setActiveUnit( nextUnitValue );
-						if ( isResetValueOnUnitChange && changeProps?.data?.default !== undefined ) {
-							emitValue( changeProps.data.default, nextUnitValue );
+						if (
+							isResetValueOnUnitChange &&
+							changeProps?.data?.default !== undefined
+						) {
+							emitValue(
+								changeProps.data.default,
+								nextUnitValue
+							);
 							return;
 						}
 						emitValue( parsed.quantity, nextUnitValue );

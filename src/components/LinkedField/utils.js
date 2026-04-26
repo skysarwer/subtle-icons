@@ -16,7 +16,9 @@ export function isEqualValue( left, right ) {
 	if ( Array.isArray( left ) && Array.isArray( right ) ) {
 		if ( left.length !== right.length ) return false;
 
-		return left.every( ( item, index ) => isEqualValue( item, right[ index ] ) );
+		return left.every( ( item, index ) =>
+			isEqualValue( item, right[ index ] )
+		);
 	}
 
 	if ( isPlainObject( left ) && isPlainObject( right ) ) {
@@ -25,7 +27,9 @@ export function isEqualValue( left, right ) {
 
 		if ( leftKeys.length !== rightKeys.length ) return false;
 
-		return leftKeys.every( ( key ) => isEqualValue( left[ key ], right[ key ] ) );
+		return leftKeys.every( ( key ) =>
+			isEqualValue( left[ key ], right[ key ] )
+		);
 	}
 
 	return false;
@@ -55,7 +59,11 @@ export function normalizeGroups( groups = [] ) {
 		.filter( Boolean );
 }
 
-export function getManagedValues( values = {}, groups = [], defaultValues = {} ) {
+export function getManagedValues(
+	values = {},
+	groups = [],
+	defaultValues = {}
+) {
 	return groups.reduce( ( accumulator, group ) => {
 		const currentValue = values?.[ group.key ];
 		const defaultValue = defaultValues?.[ group.key ];
@@ -83,7 +91,9 @@ export function areGroupValuesEqual( values = {}, groups = [] ) {
 	const [ firstGroup, ...otherGroups ] = groups;
 	const firstValue = values?.[ firstGroup.key ];
 
-	return otherGroups.every( ( group ) => isEqualValue( firstValue, values?.[ group.key ] ) );
+	return otherGroups.every( ( group ) =>
+		isEqualValue( firstValue, values?.[ group.key ] )
+	);
 }
 
 export function getLinkedValue( values = {}, groups = [], defaultValues = {} ) {
@@ -107,7 +117,11 @@ export function applyLinkedValue( groups = [], nextValue ) {
 	}, {} );
 }
 
-export function mergeManagedValues( currentValues = {}, nextManagedValues = {}, groups = [] ) {
+export function mergeManagedValues(
+	currentValues = {},
+	nextManagedValues = {},
+	groups = []
+) {
 	const nextValues = { ...currentValues };
 
 	groups.forEach( ( group ) => {

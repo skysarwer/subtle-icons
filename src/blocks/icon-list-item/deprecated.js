@@ -23,7 +23,8 @@ const v1 = {
 				{ ...useBlockProps.save( {
 					style: {
 						'--sbtl-icon-color': iconColor || undefined,
-						'--sbtl-icon-link-hover-color': iconLinkHoverColor || undefined,
+						'--sbtl-icon-link-hover-color':
+							iconLinkHoverColor || undefined,
 					},
 				} ) }
 			>

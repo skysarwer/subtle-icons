@@ -17,7 +17,8 @@ const v1 = {
 	migrate( { width, ...rest } ) {
 		return {
 			...rest,
-			size: typeof width === 'number' ? `${ width }px` : ( width || undefined ),
+			size:
+				typeof width === 'number' ? `${ width }px` : width || undefined,
 		};
 	},
 

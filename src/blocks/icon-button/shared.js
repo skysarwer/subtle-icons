@@ -49,7 +49,9 @@ export function IconSlot( { icon, toggleIcon, className = '', style } ) {
 	return (
 		<div className={ className } style={ style }>
 			{ icon && <IconPreview icon={ icon } /> }
-			{ toggleIcon && <IconPreview icon={ toggleIcon } variant="toggle" /> }
+			{ toggleIcon && (
+				<IconPreview icon={ toggleIcon } variant="toggle" />
+			) }
 		</div>
 	);
 }

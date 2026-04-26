@@ -1,4 +1,11 @@
-import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from '@wordpress/element';
+import {
+	memo,
+	useCallback,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from '@wordpress/element';
 import { Button, Tooltip } from '@wordpress/components';
 import { Icon } from '@iconify/react';
 import { useVirtualizer } from '@tanstack/react-virtual';
@@ -17,7 +24,10 @@ const MIN_ICON_SIZE = 64;
  */
 const BrowseGrid = memo( ( { icons, selectedIcon, onSelect } ) => {
 	const containerRef = useRef( null );
-	const [ metrics, setMetrics ] = useState( { colCount: 7, rowHeight: MIN_ICON_SIZE + GAP } );
+	const [ metrics, setMetrics ] = useState( {
+		colCount: 7,
+		rowHeight: MIN_ICON_SIZE + GAP,
+	} );
 	const { colCount, rowHeight } = metrics;
 
 	const totalPages = Math.ceil( icons.length / ICONS_PER_PAGE );
@@ -29,7 +39,10 @@ const BrowseGrid = memo( ( { icons, selectedIcon, onSelect } ) => {
 		if ( ! el ) return;
 
 		const update = ( width ) => {
-			const cols = Math.max( 1, Math.floor( ( width + GAP ) / ( MIN_ICON_SIZE + GAP ) ) );
+			const cols = Math.max(
+				1,
+				Math.floor( ( width + GAP ) / ( MIN_ICON_SIZE + GAP ) )
+			);
 			const iconWidth = ( width - ( cols - 1 ) * GAP ) / cols;
 			setMetrics( { colCount: cols, rowHeight: iconWidth + GAP } );
 		};
@@ -63,13 +76,17 @@ const BrowseGrid = memo( ( { icons, selectedIcon, onSelect } ) => {
 	// Derive active page from the first visible virtual row — reactive because
 	// the virtualizer re-renders on scroll, keeping getVirtualItems() current.
 	const firstVisibleRow = rowVirtualizer.getVirtualItems()[ 0 ]?.index ?? 0;
-	const activePage = Math.floor( ( firstVisibleRow * colCount ) / ICONS_PER_PAGE ) + 1;
+	const activePage =
+		Math.floor( ( firstVisibleRow * colCount ) / ICONS_PER_PAGE ) + 1;
 
-	const scrollToPage = useCallback( ( page ) => {
-		const firstIconIndex = ( page - 1 ) * ICONS_PER_PAGE;
-		const targetRow = Math.floor( firstIconIndex / colCount );
-		rowVirtualizer.scrollToIndex( targetRow, { align: 'start' } );
-	}, [ colCount, rowVirtualizer ] ); // eslint-disable-line react-hooks/exhaustive-deps
+	const scrollToPage = useCallback(
+		( page ) => {
+			const firstIconIndex = ( page - 1 ) * ICONS_PER_PAGE;
+			const targetRow = Math.floor( firstIconIndex / colCount );
+			rowVirtualizer.scrollToIndex( targetRow, { align: 'start' } );
+		},
+		[ colCount, rowVirtualizer ]
+	); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const renderPagination = () => {
 		if ( totalPages <= 1 ) return null;
@@ -79,37 +96,74 @@ const BrowseGrid = memo( ( { icons, selectedIcon, onSelect } ) => {
 		const end = Math.min( totalPages, activePage + 2 );
 
 		if ( start > 1 ) {
-			pages.push( <Button key="first" isSmall variant="tertiary" onClick={ () => scrollToPage( 1 ) }>1</Button> );
-			if ( start > 2 ) pages.push( <span key="dots1" style={ { padding: '0 4px' } }>...</span> );
+			pages.push(
+				<Button
+					key="first"
+					isSmall
+					variant="tertiary"
+					onClick={ () => scrollToPage( 1 ) }
+				>
+					1
+				</Button>
+			);
+			if ( start > 2 )
+				pages.push(
+					<span key="dots1" style={ { padding: '0 4px' } }>
+						...
+					</span>
+				);
 		}
 
 		for ( let i = start; i <= end; i++ ) {
 			pages.push(
-				<Button key={ i } isSmall variant={ i === activePage ? 'primary' : 'tertiary' } onClick={ () => scrollToPage( i ) }>
+				<Button
+					key={ i }
+					isSmall
+					variant={ i === activePage ? 'primary' : 'tertiary' }
+					onClick={ () => scrollToPage( i ) }
+				>
 					{ i }
 				</Button>
 			);
 		}
 
 		if ( end < totalPages ) {
-			if ( end < totalPages - 1 ) pages.push( <span key="dots2" style={ { padding: '0 4px' } }>...</span> );
-			pages.push( <Button key="last" isSmall variant="tertiary" onClick={ () => scrollToPage( totalPages ) }>{ totalPages }</Button> );
+			if ( end < totalPages - 1 )
+				pages.push(
+					<span key="dots2" style={ { padding: '0 4px' } }>
+						...
+					</span>
+				);
+			pages.push(
+				<Button
+					key="last"
+					isSmall
+					variant="tertiary"
+					onClick={ () => scrollToPage( totalPages ) }
+				>
+					{ totalPages }
+				</Button>
+			);
 		}
 
-		return (
-			<div className="sbtl-icon-picker-pagination">
-				{ pages }
-			</div>
-		);
+		return <div className="sbtl-icon-picker-pagination">{ pages }</div>;
 	};
 
 	return (
 		<>
 			<div ref={ containerRef } className="sbtl-icon-picker-grid-wrapper">
-				<div style={ { height: rowVirtualizer.getTotalSize(), position: 'relative' } }>
+				<div
+					style={ {
+						height: rowVirtualizer.getTotalSize(),
+						position: 'relative',
+					} }
+				>
 					{ rowVirtualizer.getVirtualItems().map( ( virtualRow ) => {
 						const rowStart = virtualRow.index * colCount;
-						const rowIcons = icons.slice( rowStart, rowStart + colCount );
+						const rowIcons = icons.slice(
+							rowStart,
+							rowStart + colCount
+						);
 
 						return (
 							<div
@@ -129,12 +183,22 @@ const BrowseGrid = memo( ( { icons, selectedIcon, onSelect } ) => {
 								} }
 							>
 								{ rowIcons.map( ( icon ) => (
-									<Tooltip key={ icon } text={ prettifyIconSlug( icon ) }>
+									<Tooltip
+										key={ icon }
+										text={ prettifyIconSlug( icon ) }
+									>
 										<button
-											className={ `sbtl-icon-picker-item ${ selectedIcon === icon ? 'is-selected' : '' }` }
+											className={ `sbtl-icon-picker-item ${
+												selectedIcon === icon
+													? 'is-selected'
+													: ''
+											}` }
 											onClick={ () => onSelect( icon ) }
 											type="button"
-											aria-label={ icon.replace( ':', ' ' ) }
+											aria-label={ icon.replace(
+												':',
+												' '
+											) }
 										>
 											<Icon icon={ icon } />
 										</button>

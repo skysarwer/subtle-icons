@@ -125,7 +125,11 @@ export default function Edit( { attributes, setAttributes, clientId, style } ) {
 	const handleIconChange = ( newIcon ) => {
 		if ( ! newIcon ) {
 			// Admin explicitly removed the icon — disable the default.
-			setAttributes( { icon: '', iconSlug: '', disabledDefaultIcon: true } );
+			setAttributes( {
+				icon: '',
+				iconSlug: '',
+				disabledDefaultIcon: true,
+			} );
 		} else {
 			setAttributes( { icon: newIcon, disabledDefaultIcon: false } );
 		}
@@ -155,7 +159,7 @@ export default function Edit( { attributes, setAttributes, clientId, style } ) {
 			marginHorizontal: NATIVE_MARGIN_SPACING,
 			renderAppender: false,
 		} ),
-		__experimentalCaptureToolbars: true
+		__experimentalCaptureToolbars: true,
 	} );
 
 	const controls = (
@@ -198,7 +202,9 @@ export default function Edit( { attributes, setAttributes, clientId, style } ) {
 						value={ icon }
 						initialSlug={ iconSlug }
 						onChange={ handleIconChange }
-						onSlugChange={ ( slug ) => setAttributes( { iconSlug: slug } ) }
+						onSlugChange={ ( slug ) =>
+							setAttributes( { iconSlug: slug } )
+						}
 						allowReset={ true }
 					/>
 				</PanelBody>
@@ -211,7 +217,7 @@ export default function Edit( { attributes, setAttributes, clientId, style } ) {
 			<InspectorControls group="color">
 				<PanelColorSettings
 					title={ __( 'Icon Color', 'subtle-icons' ) }
-					className='sbtl-minimal-color-panel'
+					className="sbtl-minimal-color-panel"
 					colorSettings={ [
 						{
 							value: iconColor,
@@ -223,7 +229,9 @@ export default function Edit( { attributes, setAttributes, clientId, style } ) {
 						{
 							value: iconLinkHoverColor,
 							onChange: ( value ) =>
-								setAttributes( { iconLinkHoverColor: value || '' } ),
+								setAttributes( {
+									iconLinkHoverColor: value || '',
+								} ),
 							label: __( 'Icon Link Hover', 'subtle-icons' ),
 							clearable: true,
 						},

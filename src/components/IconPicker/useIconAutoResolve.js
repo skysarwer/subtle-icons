@@ -24,7 +24,8 @@ const useIconAutoResolve = ( value, onChange, onSlugChange = null ) => {
 		const [ prefix, name ] = value.split( ':' );
 
 		// Basic slug validation before fetching
-		if ( ! /^[a-z0-9-]+$/.test( prefix ) || ! /^[a-z0-9-]+$/.test( name ) ) return;
+		if ( ! /^[a-z0-9-]+$/.test( prefix ) || ! /^[a-z0-9-]+$/.test( name ) )
+			return;
 
 		const resolveIcon = async () => {
 			setIsResolving( true );

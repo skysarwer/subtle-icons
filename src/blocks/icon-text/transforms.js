@@ -99,9 +99,10 @@ function getIconMarkupFromNode( node ) {
 
 	const svg = node.matches( '.sbtl-icon' )
 		? node.querySelector( 'svg' )
-		: node.childElementCount === 1 && node.firstElementChild?.tagName === 'SVG'
-			? node.firstElementChild
-			: undefined;
+		: node.childElementCount === 1 &&
+		  node.firstElementChild?.tagName === 'SVG'
+		? node.firstElementChild
+		: undefined;
 
 	if ( svg && ! node.textContent?.trim() ) {
 		return svg.outerHTML;
@@ -155,9 +156,10 @@ function extractBoundaryIcon( html = '' ) {
 	const firstNode = meaningfulNodes[ 0 ];
 	const lastNode = meaningfulNodes[ meaningfulNodes.length - 1 ];
 	const firstIcon = getIconMarkupFromNode( firstNode );
-	const lastIcon = meaningfulNodes.length > 1
-		? getIconMarkupFromNode( lastNode )
-		: undefined;
+	const lastIcon =
+		meaningfulNodes.length > 1
+			? getIconMarkupFromNode( lastNode )
+			: undefined;
 
 	if ( firstIcon && lastIcon ) {
 		return { invalid: true };
@@ -234,8 +236,14 @@ function richTextBlockToIconTextAttributes( attributes = {}, level = 0 ) {
 }
 
 function serializeIconTextContent( attributes = {} ) {
-	const { content = '', icon = '', iconPosition = 'left', url, linkTarget, rel } =
-		attributes;
+	const {
+		content = '',
+		icon = '',
+		iconPosition = 'left',
+		url,
+		linkTarget,
+		rel,
+	} = attributes;
 
 	let innerHTML = content || '';
 
@@ -277,9 +285,12 @@ function iconTextToParagraphAttributes( attributes = {} ) {
 }
 
 function iconTextToHeadingAttributes( attributes = {} ) {
-	const level = Number.isFinite( attributes.level ) && attributes.level >= 1 && attributes.level <= 6
-		? attributes.level
-		: 2;
+	const level =
+		Number.isFinite( attributes.level ) &&
+		attributes.level >= 1 &&
+		attributes.level <= 6
+			? attributes.level
+			: 2;
 
 	return cleanObject( {
 		...getSharedRichTextAttributes( attributes ),
@@ -309,14 +320,16 @@ function getIconTextIconOptionsFromButton( attributes = {} ) {
 		: attributes.iconOptions?.leading;
 
 	return {
-		icon: useTrailingIcon ? attributes.trailingIcon : attributes.leadingIcon,
+		icon: useTrailingIcon
+			? attributes.trailingIcon
+			: attributes.leadingIcon,
 		iconPosition: useTrailingIcon
 			? attributes.iconLayout === 'vertical'
 				? 'top'
 				: 'right'
 			: attributes.iconLayout === 'vertical'
-				? 'top'
-				: 'left',
+			? 'top'
+			: 'left',
 		iconOptions: cleanObject( {
 			size: slotOptions?.size,
 			gap: slotOptions?.gap,
@@ -340,7 +353,8 @@ function iconButtonToIconTextAttributes( attributes = {} ) {
 			iconOptions: iconData.iconOptions,
 			iconPosition: iconData.iconPosition,
 			level: 0,
-			linkTarget: attributes.tagName === 'a' ? attributes.linkTarget : undefined,
+			linkTarget:
+				attributes.tagName === 'a' ? attributes.linkTarget : undefined,
 			placeholder: attributes.placeholder,
 			rel: attributes.tagName === 'a' ? attributes.rel : undefined,
 			shadow: attributes.stateAppearance?.shadow,
@@ -350,7 +364,9 @@ function iconButtonToIconTextAttributes( attributes = {} ) {
 					? `${ attributes.width }%`
 					: undefined,
 		} ),
-		...( attributes.text !== undefined ? { content: attributes.text } : {} ),
+		...( attributes.text !== undefined
+			? { content: attributes.text }
+			: {} ),
 	};
 }
 
@@ -370,7 +386,8 @@ function getIconButtonWidth( width ) {
 
 function iconTextToIconButtonAttributes( attributes = {} ) {
 	const slot = getIconButtonSlot( attributes.iconPosition );
-	const iconLayout = attributes.iconPosition === 'top' ? 'vertical' : 'horizontal';
+	const iconLayout =
+		attributes.iconPosition === 'top' ? 'vertical' : 'horizontal';
 
 	return {
 		...cleanObject( {
@@ -378,13 +395,13 @@ function iconTextToIconButtonAttributes( attributes = {} ) {
 			iconLayout,
 			iconOptions: attributes.icon
 				? {
-					[ slot ]: cleanObject( {
-						size: attributes.iconOptions?.size,
-						gap: attributes.iconOptions?.gap,
-						stroke: attributes.iconOptions?.stroke,
-						align: attributes.iconOptions?.align,
-					} ),
-				}
+						[ slot ]: cleanObject( {
+							size: attributes.iconOptions?.size,
+							gap: attributes.iconOptions?.gap,
+							stroke: attributes.iconOptions?.stroke,
+							align: attributes.iconOptions?.align,
+						} ),
+				  }
 				: undefined,
 			leadingIcon: slot === 'leading' ? attributes.icon : undefined,
 			linkTarget: attributes.url ? attributes.linkTarget : undefined,
@@ -392,8 +409,8 @@ function iconTextToIconButtonAttributes( attributes = {} ) {
 			rel: attributes.url ? attributes.rel : undefined,
 			stateAppearance: attributes.shadow
 				? {
-					shadow: attributes.shadow,
-				}
+						shadow: attributes.shadow,
+				  }
 				: undefined,
 			disabledDefaultTrailingIcon: true,
 			tagName: 'a',
@@ -401,7 +418,9 @@ function iconTextToIconButtonAttributes( attributes = {} ) {
 			url: attributes.url,
 			width: getIconButtonWidth( attributes.width ),
 		} ),
-		...( attributes.content !== undefined ? { text: attributes.content } : {} ),
+		...( attributes.content !== undefined
+			? { text: attributes.content }
+			: {} ),
 	};
 }
 
@@ -414,30 +433,35 @@ const transforms = {
 			isMatch: ( attributes, innerBlocks ) => innerBlocks.length <= 1,
 			transform( attributes, innerBlocks ) {
 				const firstItem = innerBlocks[ 0 ]?.attributes ?? {};
-				return createBlock(
-					'sbtl/icon-text',
-					{
-						...cleanObject( {
-							anchor: attributes.anchor,
-							icon: attributes.icon,
-							iconColor: attributes.iconColor,
-							iconOptions: attributes.iconOptions && Object.keys( attributes.iconOptions ).length
-								? attributes.iconOptions : undefined,
-							iconSlug: attributes.iconSlug,
-							linkTarget: firstItem.url ? firstItem.linkTarget : undefined,
-							rel: firstItem.url ? firstItem.rel : undefined,
-							url: firstItem.url,
-						} ),
-						...( firstItem.content !== undefined ? { content: firstItem.content } : {} ),
-					}
-				);
+				return createBlock( 'sbtl/icon-text', {
+					...cleanObject( {
+						anchor: attributes.anchor,
+						icon: attributes.icon,
+						iconColor: attributes.iconColor,
+						iconOptions:
+							attributes.iconOptions &&
+							Object.keys( attributes.iconOptions ).length
+								? attributes.iconOptions
+								: undefined,
+						iconSlug: attributes.iconSlug,
+						linkTarget: firstItem.url
+							? firstItem.linkTarget
+							: undefined,
+						rel: firstItem.url ? firstItem.rel : undefined,
+						url: firstItem.url,
+					} ),
+					...( firstItem.content !== undefined
+						? { content: firstItem.content }
+						: {} ),
+				} );
 			},
 		},
 		{
 			type: 'block',
 			blocks: [ 'core/paragraph' ],
 			priority: 10,
-			isMatch: ( attributes ) => !! richTextBlockToIconTextAttributes( attributes, 0 ),
+			isMatch: ( attributes ) =>
+				!! richTextBlockToIconTextAttributes( attributes, 0 ),
 			transform: ( attributes ) =>
 				createBlock(
 					'sbtl/icon-text',
@@ -449,18 +473,25 @@ const transforms = {
 			blocks: [ 'core/heading' ],
 			priority: 10,
 			isMatch: ( attributes ) =>
-				!! richTextBlockToIconTextAttributes( attributes, attributes.level || 2 ),
+				!! richTextBlockToIconTextAttributes(
+					attributes,
+					attributes.level || 2
+				),
 			transform: ( attributes ) =>
 				createBlock(
 					'sbtl/icon-text',
-					richTextBlockToIconTextAttributes( attributes, attributes.level || 2 )
+					richTextBlockToIconTextAttributes(
+						attributes,
+						attributes.level || 2
+					)
 				),
 		},
 		{
 			type: 'block',
 			blocks: [ 'sbtl/icon-button' ],
 			priority: 5,
-			isMatch: ( attributes ) => !! iconButtonToIconTextAttributes( attributes ),
+			isMatch: ( attributes ) =>
+				!! iconButtonToIconTextAttributes( attributes ),
 			transform: ( attributes ) =>
 				createBlock(
 					'sbtl/icon-text',
@@ -474,14 +505,20 @@ const transforms = {
 			blocks: [ 'core/paragraph' ],
 			priority: 10,
 			transform: ( attributes ) =>
-				createBlock( 'core/paragraph', iconTextToParagraphAttributes( attributes ) ),
+				createBlock(
+					'core/paragraph',
+					iconTextToParagraphAttributes( attributes )
+				),
 		},
 		{
 			type: 'block',
 			blocks: [ 'core/heading' ],
 			priority: 10,
 			transform: ( attributes ) =>
-				createBlock( 'core/heading', iconTextToHeadingAttributes( attributes ) ),
+				createBlock(
+					'core/heading',
+					iconTextToHeadingAttributes( attributes )
+				),
 		},
 		{
 			type: 'block',
@@ -498,17 +535,16 @@ const transforms = {
 			blocks: [ 'sbtl/icon-list' ],
 			priority: 7,
 			transform: ( attributes ) => {
-				const listItem = createBlock(
-					'sbtl/icon-list-item',
-					{
-						...cleanObject( {
-							url: attributes.url,
-							linkTarget: attributes.linkTarget,
-							rel: attributes.rel,
-						} ),
-						...( attributes.content !== undefined ? { content: attributes.content } : {} ),
-					}
-				);
+				const listItem = createBlock( 'sbtl/icon-list-item', {
+					...cleanObject( {
+						url: attributes.url,
+						linkTarget: attributes.linkTarget,
+						rel: attributes.rel,
+					} ),
+					...( attributes.content !== undefined
+						? { content: attributes.content }
+						: {} ),
+				} );
 				return createBlock(
 					'sbtl/icon-list',
 					cleanObject( {

@@ -14,8 +14,8 @@ export type IconButtonAttributes = {
 	leadingIcon?: string; // Saved as raw SVG markup rendered inside [.sbtl-icon-button__icon]
 	trailingIcon?: string; // Saved as raw SVG markup rendered after [.wp-block-button__link-text]
 	disabledDefaultTrailingIcon?: boolean; // Saved in comment JSON to preserve an intentionally empty trailing icon instead of auto-restoring the default editor arrow
-	iconLayout?: 'horizontal' | 'vertical' // Stored as a semantic position value and rendered as class name [.has-icon-layout-*] on block root [.wp-block-sbtl-icon-button]
-	iconOptions?: IconButtonIconOptions; // 
+	iconLayout?: 'horizontal' | 'vertical'; // Stored as a semantic position value and rendered as class name [.has-icon-layout-*] on block root [.wp-block-sbtl-icon-button]
+	iconOptions?: IconButtonIconOptions; //
 	stateAppearance?: IconButtonAppearanceState; // Saved as stateful appearance settings
 	// Inherited from block supports
 	anchor?: string; // Inherited from supports.anchor; saved as the wrapper element id attribute for fragment links
@@ -57,17 +57,15 @@ export type IconButtonAppearanceValues = {
 
 // Button Stateful appearance: default values live at root
 // while interactive variants are nested as state overrides.
-export type IconButtonAppearanceState = 
-	IconButtonAppearanceValues & // Saved as inline styles on the child [.wp-block-button__link] for the default state
-	{
-		hover?: IconButtonAppearanceValues; // Saved as inline css state variables on the child [.wp-block-button__link] along with generated class `has-hover-<key>` for hover state
-		active?: IconButtonAppearanceValues; // Saved as inline css state variables on the child [.wp-block-button__link] along with generated class `has-active-<key>` for active state
-	};
+export type IconButtonAppearanceState = IconButtonAppearanceValues & { // Saved as inline styles on the child [.wp-block-button__link] for the default state
+	hover?: IconButtonAppearanceValues; // Saved as inline css state variables on the child [.wp-block-button__link] along with generated class `has-hover-<key>` for hover state
+	active?: IconButtonAppearanceValues; // Saved as inline css state variables on the child [.wp-block-button__link] along with generated class `has-active-<key>` for active state
+};
 
 export type IconButtonIconOptions = {
 	leading?: IconButtonIconAttributes;
 	trailing?: IconButtonIconAttributes;
-}
+};
 
 export type IconButtonIconAttributes = {
 	size?: string; // Saved as inline width on the respective icon region wrapper (.sbtl-leading-icon or .sbtl-trailing-icon)

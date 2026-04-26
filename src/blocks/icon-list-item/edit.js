@@ -11,7 +11,10 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { isRTL, __ } from '@wordpress/i18n';
-import { PanelBody, ToolbarButton, ToggleControl,
+import {
+	PanelBody,
+	ToolbarButton,
+	ToggleControl,
 	__experimentalToggleGroupControl as ToggleGroupControl,
 	__experimentalToggleGroupControlOptionIcon as ToggleGroupControlOptionIcon,
 } from '@wordpress/components';
@@ -39,17 +42,28 @@ import {
 	useOutdentListItem,
 	useMerge,
 } from './hooks';
-import { IconPickerTrigger, IconPickerPreview } from '../../components/IconPicker';
+import {
+	IconPickerTrigger,
+	IconPickerPreview,
+} from '../../components/IconPicker';
 import IconPickerModal from '../../components/IconPicker/IconPickerModal';
 import useIconAutoResolve from '../../components/IconPicker/useIconAutoResolve';
 import LinkControl from '../../components/LinkControl';
 import InlineLinksConflictNotice from '../../components/InlineLinksConflictNotice';
-import { hasInlineAnchors, removeInlineAnchors } from '../../utils/inline-links';
+import {
+	hasInlineAnchors,
+	removeInlineAnchors,
+} from '../../utils/inline-links';
 
 const NEW_TAB_REL = 'noreferrer noopener';
 const NOFOLLOW_REL = 'nofollow';
 
-function getUpdatedLinkAttributes( { rel = '', url = '', opensInNewTab, nofollow } ) {
+function getUpdatedLinkAttributes( {
+	rel = '',
+	url = '',
+	opensInNewTab,
+	nofollow,
+} ) {
 	let newLinkTarget;
 	let updatedRel = rel;
 
@@ -128,7 +142,19 @@ export default function ListItemEdit( {
 	mergeBlocks,
 	context,
 } ) {
-	const { placeholder, content, icon, iconSlug, hasCustomIcon, iconColor, iconLinkHoverColor, iconAlign, url, linkTarget, rel } = attributes;
+	const {
+		placeholder,
+		content,
+		icon,
+		iconSlug,
+		hasCustomIcon,
+		iconColor,
+		iconLinkHoverColor,
+		iconAlign,
+		url,
+		linkTarget,
+		rel,
+	} = attributes;
 	const opensInNewTab = linkTarget === '_blank';
 	const nofollow = !! rel?.includes( NOFOLLOW_REL );
 	const hasInlineContentLinks = ! url && hasInlineAnchors( content );
@@ -163,7 +189,8 @@ export default function ListItemEdit( {
 		}
 	};
 
-	const handleIconSlugChange = ( slug ) => setAttributes( { iconSlug: slug } );
+	const handleIconSlugChange = ( slug ) =>
+		setAttributes( { iconSlug: slug } );
 
 	const blockProps = useBlockProps( {
 		style: {
@@ -195,8 +222,13 @@ export default function ListItemEdit( {
 		// Let Gutenberg's default merge/split logic run, then fix focus.
 		requestAnimationFrame( () => {
 			const active = document.activeElement;
-			if ( active && active.classList.contains( 'sbtl-icon-picker-canvas__edit' ) ) {
-				const editable = active.closest( '[data-block]' )?.querySelector( '[contenteditable]' );
+			if (
+				active &&
+				active.classList.contains( 'sbtl-icon-picker-canvas__edit' )
+			) {
+				const editable = active
+					.closest( '[data-block]' )
+					?.querySelector( '[contenteditable]' );
 				if ( editable ) editable.focus();
 			}
 		} );
@@ -217,7 +249,9 @@ export default function ListItemEdit( {
 							value={ effectiveIcon }
 							onOpen={ () => setIsIconModalOpen( true ) }
 							showPlaceholder={ false }
-							style={ iconAlign ? { alignSelf: iconAlign } : undefined }
+							style={
+								iconAlign ? { alignSelf: iconAlign } : undefined
+							}
 						/>
 						<RichText
 							ref={ useMergeRefs( [ useEnterRef, useSpaceRef ] ) }
@@ -241,7 +275,9 @@ export default function ListItemEdit( {
 							onOpen={ () => setIsIconModalOpen( true ) }
 							className="sbtl-icon-list-item__icon"
 							showPlaceholder={ false }
-							style={ iconAlign ? { alignSelf: iconAlign } : undefined }
+							style={
+								iconAlign ? { alignSelf: iconAlign } : undefined
+							}
 						/>
 						<RichText
 							ref={ useMergeRefs( [ useEnterRef, useSpaceRef ] ) }
@@ -264,7 +300,10 @@ export default function ListItemEdit( {
 				<IndentUI clientId={ clientId } />
 			</BlockControls>
 			<InspectorControls>
-				<PanelBody title={ __( 'Icon', 'subtle-icons' ) } initialOpen={ true }>
+				<PanelBody
+					title={ __( 'Icon', 'subtle-icons' ) }
+					initialOpen={ true }
+				>
 					<IconPickerTrigger
 						label={ __( 'Custom Icon', 'subtle-icons' ) }
 						value={ icon }
@@ -274,7 +313,9 @@ export default function ListItemEdit( {
 					<ToggleGroupControl
 						label={ __( 'Vertical Align', 'subtle-icons' ) }
 						value={ iconAlign }
-						onChange={ ( value ) => setAttributes( { iconAlign: value || '' } ) }
+						onChange={ ( value ) =>
+							setAttributes( { iconAlign: value || '' } )
+						}
 						isDeselectable
 						className="sbtl-deselectable-toggle-group"
 						isBlock
@@ -297,56 +338,93 @@ export default function ListItemEdit( {
 							label={ __( 'End', 'subtle-icons' ) }
 						/>
 					</ToggleGroupControl>
-				</PanelBody>			<PanelBody title={ __( 'Link', 'subtle-icons' ) }>
-				<LinkControl
-					label={ __( 'Link', 'subtle-icons' ) }
-					value={ url }
-					help={ ! url ? __( 'Wrap the list item in a link.', 'subtle-icons' ) : undefined }
-					onChange={ ( value ) => {
-						const nextAttributes = { url: value };
-						if ( value && hasInlineAnchors( content ) ) {
-							nextAttributes.content = removeInlineAnchors( content );
+				</PanelBody>{ ' ' }
+				<PanelBody title={ __( 'Link', 'subtle-icons' ) }>
+					<LinkControl
+						label={ __( 'Link', 'subtle-icons' ) }
+						value={ url }
+						help={
+							! url
+								? __(
+										'Wrap the list item in a link.',
+										'subtle-icons'
+								  )
+								: undefined
 						}
-						setAttributes( nextAttributes );
-					} }
-					searchInputPlaceholder={ __( 'Search or type URL', 'subtle-icons' ) }
-					buttonLabel={ __( 'Edit Link', 'subtle-icons' ) }
-					popoverContent={ hasInlineContentLinks ? ( { showDefaultContent, closePopover } ) => (
-						<InlineLinksConflictNotice
-							content={ content }
-							showDefaultContent={ showDefaultContent }
-							closePopover={ closePopover }
-							onPromote={ ( attrs ) => setAttributes( attrs ) }
-						/>
-					) : undefined }
-				/>
-				{ url && (
-					<>
-						<ToggleControl
-							label={ __( 'Open in new tab', 'subtle-icons' ) }
-							checked={ opensInNewTab }
-							onChange={ ( value ) =>
-								setAttributes(
-									getUpdatedLinkAttributes( { rel, url, opensInNewTab: value, nofollow } )
-								)
+						onChange={ ( value ) => {
+							const nextAttributes = { url: value };
+							if ( value && hasInlineAnchors( content ) ) {
+								nextAttributes.content =
+									removeInlineAnchors( content );
 							}
-						/>
-						<ToggleControl
-							label={ __( 'Mark as nofollow', 'subtle-icons' ) }
-							checked={ nofollow }
-							onChange={ ( value ) =>
-								setAttributes(
-									getUpdatedLinkAttributes( { rel, url, opensInNewTab, nofollow: value } )
-								)
-							}
-						/>
-					</>
-				) }
-			</PanelBody>			</InspectorControls>
+							setAttributes( nextAttributes );
+						} }
+						searchInputPlaceholder={ __(
+							'Search or type URL',
+							'subtle-icons'
+						) }
+						buttonLabel={ __( 'Edit Link', 'subtle-icons' ) }
+						popoverContent={
+							hasInlineContentLinks
+								? ( { showDefaultContent, closePopover } ) => (
+										<InlineLinksConflictNotice
+											content={ content }
+											showDefaultContent={
+												showDefaultContent
+											}
+											closePopover={ closePopover }
+											onPromote={ ( attrs ) =>
+												setAttributes( attrs )
+											}
+										/>
+								  )
+								: undefined
+						}
+					/>
+					{ url && (
+						<>
+							<ToggleControl
+								label={ __(
+									'Open in new tab',
+									'subtle-icons'
+								) }
+								checked={ opensInNewTab }
+								onChange={ ( value ) =>
+									setAttributes(
+										getUpdatedLinkAttributes( {
+											rel,
+											url,
+											opensInNewTab: value,
+											nofollow,
+										} )
+									)
+								}
+							/>
+							<ToggleControl
+								label={ __(
+									'Mark as nofollow',
+									'subtle-icons'
+								) }
+								checked={ nofollow }
+								onChange={ ( value ) =>
+									setAttributes(
+										getUpdatedLinkAttributes( {
+											rel,
+											url,
+											opensInNewTab,
+											nofollow: value,
+										} )
+									)
+								}
+							/>
+						</>
+					) }
+				</PanelBody>{ ' ' }
+			</InspectorControls>
 			<InspectorControls group="color">
 				<PanelColorSettings
 					title={ __( 'Icon Color', 'subtle-icons' ) }
-					className='sbtl-minimal-color-panel'
+					className="sbtl-minimal-color-panel"
 					__experimentalIsRenderedInSidebar={ true }
 					colorSettings={ [
 						{
@@ -359,10 +437,11 @@ export default function ListItemEdit( {
 						{
 							value: iconLinkHoverColor,
 							onChange: ( value ) =>
-								setAttributes( { iconLinkHoverColor: value || '' } ),
+								setAttributes( {
+									iconLinkHoverColor: value || '',
+								} ),
 							label: __( 'Icon Link Hover', 'subtle-icons' ),
 							clearable: true,
-
 						},
 					] }
 				/>
@@ -372,7 +451,10 @@ export default function ListItemEdit( {
 				onClose={ () => setIsIconModalOpen( false ) }
 				initialValue={ effectiveIcon }
 				initialSlug={ iconSlug }
-				onSelect={ ( svg ) => { handleIconChange( svg ); setIsIconModalOpen( false ); } }
+				onSelect={ ( svg ) => {
+					handleIconChange( svg );
+					setIsIconModalOpen( false );
+				} }
 				onSelectSlug={ handleIconSlugChange }
 			/>
 		</>

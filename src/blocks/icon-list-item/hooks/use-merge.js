@@ -97,9 +97,7 @@ export default function useMerge( clientId, onMerge ) {
 					// If we are merging with the previous list item, and the
 					// previous list item does not have nested list, move the
 					// nested list to the previous list item.
-					if (
-						! getBlockOrder( clientIdA ).length
-					) {
+					if ( ! getBlockOrder( clientIdA ).length ) {
 						moveBlocksToPosition(
 							[ nestedListClientId ],
 							clientIdA
@@ -145,9 +143,7 @@ export default function useMerge( clientId, onMerge ) {
 		const previousBlockClientId = getPreviousBlockClientId( clientId );
 
 		// If the previous block is a list item, match the core merging behavior.
-		if (
-			getBlockName( previousBlockClientId ) === 'sbtl/icon-list-item'
-		) {
+		if ( getBlockName( previousBlockClientId ) === 'sbtl/icon-list-item' ) {
 			mergeWithNested( previousBlockClientId, clientId );
 		} else if (
 			// If we are merging with a paragraph for instance, let the default

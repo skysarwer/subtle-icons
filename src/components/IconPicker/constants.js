@@ -19,7 +19,8 @@ export const ICONS_PER_PAGE = 28;
  * @param {string} slug
  * @returns {boolean}
  */
-export const isPluginSlug = ( slug ) => slug === 'custom' || ( !! slug && slug.includes( '/' ) );
+export const isPluginSlug = ( slug ) =>
+	slug === 'custom' || ( !! slug && slug.includes( '/' ) );
 
 /**
  * Returns true for Iconify registry slugs ("prefix:name", no slash).
@@ -27,7 +28,8 @@ export const isPluginSlug = ( slug ) => slug === 'custom' || ( !! slug && slug.i
  * @param {string} slug
  * @returns {boolean}
  */
-export const isIconifySlug = ( slug ) => ! isPluginSlug( slug ) && /^[a-z0-9-]+:[a-z0-9-]+$/.test( slug );
+export const isIconifySlug = ( slug ) =>
+	! isPluginSlug( slug ) && /^[a-z0-9-]+:[a-z0-9-]+$/.test( slug );
 
 export const prettifyIconSlug = ( slug ) => {
 	const name = slug.split( ':' )[ 1 ] || slug.split( '/' )[ 1 ] || slug;
@@ -35,4 +37,3 @@ export const prettifyIconSlug = ( slug ) => {
 		.replace( /-/g, ' ' )
 		.replace( /\b\w/g, ( c ) => c.toUpperCase() );
 };
-

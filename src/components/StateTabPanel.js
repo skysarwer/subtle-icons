@@ -9,9 +9,21 @@ import { TabPanel, BaseControl } from '@wordpress/components';
  * (avoids TabPanel resetting its internal selected-tab state on every parent render).
  */
 const BASE_TABS = [
-	{ name: 'default', title: __( 'Default', 'subtle-icons' ), className: 'sbtl-tab-default' },
-	{ name: 'hover',   title: __( 'Hover',   'subtle-icons' ), className: 'sbtl-tab-hover'   },
-	{ name: 'open',    title: __( 'Open',    'subtle-icons' ), className: 'sbtl-tab-open'    },
+	{
+		name: 'default',
+		title: __( 'Default', 'subtle-icons' ),
+		className: 'sbtl-tab-default',
+	},
+	{
+		name: 'hover',
+		title: __( 'Hover', 'subtle-icons' ),
+		className: 'sbtl-tab-hover',
+	},
+	{
+		name: 'open',
+		title: __( 'Open', 'subtle-icons' ),
+		className: 'sbtl-tab-open',
+	},
 ];
 
 /**
@@ -26,7 +38,13 @@ const BASE_TABS = [
  *                                         not selected, a dot indicator is shown.
  * @param {Function}  props.children       Render-prop `( tab ) => <ReactNode>`.
  */
-export default function StateTabPanel( { label, ariaLabel, tabs = BASE_TABS, hasActive = {}, children } ) {
+export default function StateTabPanel( {
+	label,
+	ariaLabel,
+	tabs = BASE_TABS,
+	hasActive = {},
+	children,
+} ) {
 	const [ selected, setSelected ] = useState( tabs[ 0 ]?.name );
 
 	useEffect( () => {
@@ -43,7 +61,10 @@ export default function StateTabPanel( { label, ariaLabel, tabs = BASE_TABS, has
 			<span className="sbtl-state-tab-title">
 				{ tab.title }
 				{ hasActive[ tab.name ] && tab.name !== selected && (
-					<span className="sbtl-state-tab-title__dot" aria-hidden="true" />
+					<span
+						className="sbtl-state-tab-title__dot"
+						aria-hidden="true"
+					/>
 				) }
 			</span>
 		),

@@ -33,10 +33,7 @@ function resolveRenderOutput( {
 
 	if ( typeof renderField === 'function' ) {
 		return fields.map( ( field ) => (
-			<div
-				key={ field.id }
-				className="sbtl-linked-field__field"
-			>
+			<div key={ field.id } className="sbtl-linked-field__field">
 				{ renderField( field ) }
 			</div>
 		) );
@@ -66,7 +63,10 @@ export default function LinkedField( {
 	syncOnLink = true,
 	className,
 } ) {
-	const normalizedGroups = useMemo( () => normalizeGroups( groups ), [ groups ] );
+	const normalizedGroups = useMemo(
+		() => normalizeGroups( groups ),
+		[ groups ]
+	);
 	const isValueControlled = values !== undefined;
 	const isLinkControlled = isLinkedProp !== undefined;
 	const instanceId = useInstanceId( LinkedField, 'sbtl-linked-field' );
@@ -92,7 +92,11 @@ export default function LinkedField( {
 		setInternalValues( ( currentValues ) =>
 			mergeManagedValues(
 				currentValues,
-				getManagedValues( currentValues, normalizedGroups, defaultValues ),
+				getManagedValues(
+					currentValues,
+					normalizedGroups,
+					defaultValues
+				),
 				normalizedGroups
 			)
 		);
@@ -100,7 +104,8 @@ export default function LinkedField( {
 
 	const currentValues = isValueControlled ? values || {} : internalValues;
 	const managedValues = useMemo(
-		() => getManagedValues( currentValues, normalizedGroups, defaultValues ),
+		() =>
+			getManagedValues( currentValues, normalizedGroups, defaultValues ),
 		[ currentValues, defaultValues, normalizedGroups ]
 	);
 	const currentLinkedValue = useMemo(
@@ -109,7 +114,12 @@ export default function LinkedField( {
 	);
 	const isLinked = isLinkControlled ? isLinkedProp : internalLinked;
 	const resolvedResetValues = useMemo(
-		() => getManagedValues( resetValues || defaultValues, normalizedGroups, defaultValues ),
+		() =>
+			getManagedValues(
+				resetValues || defaultValues,
+				normalizedGroups,
+				defaultValues
+			),
 		[ defaultValues, normalizedGroups, resetValues ]
 	);
 	const isDirty = ! isEqualValue( managedValues, resolvedResetValues );
@@ -129,7 +139,11 @@ export default function LinkedField( {
 
 	const commitValues = ( nextManagedValues ) => {
 		const nextValues = cleanGroupedValues(
-			mergeManagedValues( currentValues, nextManagedValues, normalizedGroups )
+			mergeManagedValues(
+				currentValues,
+				nextManagedValues,
+				normalizedGroups
+			)
 		);
 		const resolvedValues = nextValues || {};
 
@@ -166,7 +180,11 @@ export default function LinkedField( {
 	const toggleLinked = () => {
 		const nextLinked = ! isLinked;
 
-		if ( nextLinked && syncOnLink && ! areGroupValuesEqual( managedValues, normalizedGroups ) ) {
+		if (
+			nextLinked &&
+			syncOnLink &&
+			! areGroupValuesEqual( managedValues, normalizedGroups )
+		) {
 			updateLinkedValue( currentLinkedValue );
 		}
 
@@ -236,7 +254,11 @@ export default function LinkedField( {
 		<BaseControl
 			id={ id }
 			help={ help }
-			className={ [ 'sbtl-linked-field', className ].filter( Boolean ).join( ' ' ) + (isLinked ? ' is-linked' : ' is-unlinked') }
+			className={
+				[ 'sbtl-linked-field', className ]
+					.filter( Boolean )
+					.join( ' ' ) + ( isLinked ? ' is-linked' : ' is-unlinked' )
+			}
 			__nextHasNoMarginBottom
 		>
 			<div

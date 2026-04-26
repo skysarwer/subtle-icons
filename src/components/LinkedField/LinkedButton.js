@@ -2,11 +2,7 @@ import { Button } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { link, linkOff } from '@wordpress/icons';
 
-export default function LinkedButton( {
-	isLinked,
-	label,
-	...props
-} ) {
+export default function LinkedButton( { isLinked, label, ...props } ) {
 	const buttonLabel =
 		label ||
 		( isLinked
@@ -16,10 +12,7 @@ export default function LinkedButton( {
 	return (
 		<Button
 			{ ...props }
-			className={ [
-				'sbtl-linked-field__linked-button',
-				props.className,
-			]
+			className={ [ 'sbtl-linked-field__linked-button', props.className ]
 				.filter( Boolean )
 				.join( ' ' ) }
 			size="small"

@@ -44,7 +44,9 @@ export default function save( { attributes } ) {
 	const normalizedIconOptions = getObjectValue( iconOptions );
 	const normalizedStateAppearanceInput = getObjectValue( stateAppearance );
 	const leadingIconOptions = getObjectValue( normalizedIconOptions.leading );
-	const trailingIconOptions = getObjectValue( normalizedIconOptions.trailing );
+	const trailingIconOptions = getObjectValue(
+		normalizedIconOptions.trailing
+	);
 
 	if (
 		! text &&
@@ -86,12 +88,24 @@ export default function save( { attributes } ) {
 		'trailingIcon'
 	);
 	const leadingIconStyle = cleanValue( {
-		...getIconSlotStyle( leadingIconOptions, defaultAppearance.leadingIcon ),
-		...getIconAppearanceStateStyle( normalizedStateAppearance, 'leadingIcon' ),
+		...getIconSlotStyle(
+			leadingIconOptions,
+			defaultAppearance.leadingIcon
+		),
+		...getIconAppearanceStateStyle(
+			normalizedStateAppearance,
+			'leadingIcon'
+		),
 	} );
 	const trailingIconStyle = cleanValue( {
-		...getIconSlotStyle( trailingIconOptions, defaultAppearance.trailingIcon ),
-		...getIconAppearanceStateStyle( normalizedStateAppearance, 'trailingIcon' ),
+		...getIconSlotStyle(
+			trailingIconOptions,
+			defaultAppearance.trailingIcon
+		),
+		...getIconAppearanceStateStyle(
+			normalizedStateAppearance,
+			'trailingIcon'
+		),
 	} );
 	const buttonClasses = clsx(
 		'wp-block-button__link',
