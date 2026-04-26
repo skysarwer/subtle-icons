@@ -56,8 +56,7 @@ subtle-blocks/
 │   └── utils/       # Utility helpers
 ├── build/           # Compiled output (do not edit)
 ├── inc/             # PHP includes (enqueue, ACF, REST)
-├── dependencies/    # Vendored front-end libraries
-└── subtle-blocks.php
+└── subtle-icons.php
 ```
 
 ## License
