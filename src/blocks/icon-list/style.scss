@@ -1,0 +1,122 @@
+@use "@wordpress/base-styles/variables" as *;
+
+ol,
+ul {
+	box-sizing: border-box;
+}
+
+:root :where(.wp-block-sbtl-icon-list.has-background) {
+	padding: $block-bg-padding--v $block-bg-padding--h;
+}
+
+:where(.wp-block-sbtl-icon-list):has(> li > .sbtl-icon-region > .sbtl-icon):where(:not(li > .sbtl-icon-region > .wp-block-sbtl-icon-list)) {
+	padding-left: calc(var(--sbtl-icon-size, 1.125em) / 2);
+}
+
+
+// Capture the current list's icon size and gap on each li before any nested list overrides it.
+// This lets nested lists read --sbtl-icon-size-from-parent (the parent's size)
+// independently of their own --sbtl-icon-size.
+.wp-block-sbtl-icon-list > li {
+	--sbtl-icon-list-offset: calc(var(--sbtl-icon-size, 1.125em) + (var(--sbtl-icon-gap, 0.5em) * 1.5));
+}
+
+.wp-block-sbtl-icon-list {
+	/*&.wp-block-sbtl-icon-list { 
+		list-style-position: inside;
+	}*/
+
+	.sbtl-icon-region {
+		> div {
+			display: inline;
+			max-width: calc(100% - var(--sbtl-icon-size, 1.125em) - var(--sbtl-icon-gap, 0.5em));
+			align-self: center;
+		}
+	}
+
+	.sbtl-icon-region:has( > .sbtl-icon) {
+		display: flex;
+		align-items: flex-start;
+		flex-wrap: wrap;
+		+ .wp-block-sbtl-icon-list {
+			width: 100%;
+			padding-left: var(--sbtl-icon-list-offset);
+		}
+	}
+
+	
+	> li:has( ~ li > .sbtl-icon-region > .sbtl-icon ),
+	> li:has(> .sbtl-icon) ~ li,
+	> li:has(> .sbtl-icon-region > .sbtl-icon) > .sbtl-icon-region + .wp-block-sbtl-icon-list > li {
+		list-style-position: inside;
+	}
+}
+
+// Cascade icon-color to all descendant markers
+.wp-block-sbtl-icon-list[style*="--sbtl-icon-color"] li {
+  &::marker {
+    color: var(--sbtl-icon-color);
+  }
+
+  &:has(> .sbtl-icon-region > div > a:hover, > .sbtl-icon-region > div > a:focus-visible)::marker {
+    color: var(
+      --sbtl-icon-link-hover-color,
+      var(--sbtl-icon-color, currentColor)
+    );
+  }
+}
+
+// Per-item override
+.wp-block-sbtl-icon-list li[style*="--sbtl-icon-color"] {
+  &::marker, li::marker {
+    color: var(--sbtl-icon-color);
+  }
+
+  &:has(> .sbtl-icon-region > div > a:hover, > .sbtl-icon-region > div > a:focus-visible)::marker, li:has(> .sbtl-icon-region > div > a:hover, > .sbtl-icon-region > div > a:focus-visible)::marker {
+    color: var(
+      --sbtl-icon-link-hover-color,
+      var(--sbtl-icon-color, currentColor)
+    );
+  }
+}
+
+.wp-block-sbtl-icon-list li:has(> .sbtl-icon-region > .sbtl-icon) {
+
+	//margin-left: calc(var(--sbtl-icon-size, 1.125em) * -1 - var(--sbtl-icon-gap, 0.5em));
+
+	&::marker {
+		content: none;
+		display: none;
+	}
+	
+	&:has( > .sbtl-icon-region > div > a:hover, > .sbtl-icon-region > div > a:focus-visible ) > .sbtl-icon-region > .sbtl-icon,
+	> a.sbtl-icon-region:is(:hover, :focus-visible) > .sbtl-icon {
+		color: var(--sbtl-icon-link-hover-color, var(--sbtl-icon-color, currentColor));
+	}
+
+	/*> ul:not(li ul li ul) {
+		list-style-type: unset;
+	}*/
+	> .sbtl-icon-region > .sbtl-icon {
+		margin-right: var(--sbtl-icon-gap, 0.5em);
+		vertical-align: middle;
+		display: inline-flex;
+		align-items: center;
+		flex-shrink: 0;
+		align-self: var(--sbtl-icon-align, auto);
+		width: var(--sbtl-icon-size, 1.125em);
+		height: auto;
+		color: var(--sbtl-icon-color, currentColor);
+		svg {
+			width: 100%;
+			height: 100%;
+			path {
+				stroke-width: var(--sbtl-icon-stroke, inherit);
+			}
+		}
+
+		+ div {
+			vertical-align: middle;
+		}
+	}
+}

@@ -1,0 +1,175 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "sbtl/icon-button",
+	"version": "0.1.0",
+	"title": "Icon Button",
+	"category": "sbtl",
+	"description": "Prompt visitors to take action with a button-style link that can include an SVG icon.",
+	"keywords": [ "link", "button", "icon" ],
+	"textdomain": "sbtl",
+	"attributes": {
+		"tagName": {
+			"type": "string",
+			"enum": [ "a", "button" ],
+			"default": "a"
+		},
+		"type": {
+			"type": "string",
+			"default": "button"
+		},
+		"url": {
+			"type": "string",
+			"source": "attribute",
+			"selector": "a",
+			"attribute": "href",
+			"role": "content"
+		},
+		"title": {
+			"type": "string",
+			"source": "attribute",
+			"selector": "a,button",
+			"attribute": "title",
+			"role": "content"
+		},
+		"text": {
+			"type": "rich-text",
+			"source": "rich-text",
+			"selector": ".wp-block-button__link-text",
+			"role": "content"
+		},
+		"linkTarget": {
+			"type": "string",
+			"source": "attribute",
+			"selector": "a",
+			"attribute": "target",
+			"role": "content"
+		},
+		"rel": {
+			"type": "string",
+			"source": "attribute",
+			"selector": "a",
+			"attribute": "rel",
+			"role": "content"
+		},
+		"placeholder": {
+			"type": "string"
+		},
+		"width": {
+			"type": "number"
+		},
+		"leadingIcon": {
+			"type": "string",
+			"default": ""
+		},
+		"leadingIconSlug": {
+			"type": "string",
+			"default": ""
+		},
+		"trailingIcon": {
+			"type": "string",
+			"default": ""
+		},
+		"trailingIconSlug": {
+			"type": "string",
+			"default": ""
+		},
+		"disabledDefaultTrailingIcon": {
+			"type": "boolean",
+			"default": false
+		},
+		"iconLayout": {
+			"type": "string",
+			"enum": [ "horizontal", "vertical" ],
+			"default": "horizontal"
+		},
+		"iconOptions": {
+			"type": "object",
+			"default": {}
+		},
+		"stateAppearance": {
+			"type": "object",
+			"default": {}
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"splitting": true,
+		"align": false,
+		"alignWide": false,
+		"typography": {
+			"__experimentalSkipSerialization": [
+				"fontSize",
+				"lineHeight",
+				"textAlign",
+				"fontFamily",
+				"fontWeight",
+				"fontStyle",
+				"textTransform",
+				"textDecoration",
+				"letterSpacing"
+			],
+			"fontSize": true,
+			"lineHeight": true,
+			"textAlign": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalWritingMode": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"reusable": false,
+		"spacing": {
+			"__experimentalSkipSerialization": true,
+			"padding": [ "horizontal", "vertical" ],
+			"__experimentalDefaultControls": {
+				"padding": true
+			}
+		},
+		"__experimentalBorder": {
+			"color": false,
+			"radius": true,
+			"style": true,
+			"width": true,
+			"__experimentalSkipSerialization": true,
+			"__experimentalDefaultControls": {
+				"color": false,
+				"radius": true,
+				"style": true,
+				"width": true
+			}
+		},
+		"interactivity": {
+			"clientNavigation": true
+		}
+	},
+	"styles": [
+		{
+			"name": "fill",
+			"label": "Fill",
+			"isDefault": true
+		},
+		{
+			"name": "outline",
+			"label": "Outline"
+		},
+		{
+			"name": "link",
+			"label": "Link"
+		}
+	],
+	"selectors": {
+		"root": ".wp-block-sbtl-icon-button .wp-block-button__link",
+		"typography": {
+			"writingMode": ".wp-block-sbtl-icon-button"
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": ["file:./index.css", "wp-block-button-editor"],
+	"style": ["file:./style-index.css", "wp-block-button"]
+}

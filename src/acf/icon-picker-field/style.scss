@@ -1,0 +1,12 @@
+// Import shared editor styles for the ACF icon picker
+@use '../../components/IconPicker/style';
+
+// ACF-specific overrides
+.sbtl-acf-icon-picker-container {
+    padding: 10px 0;
+    display: inline-block;
+
+    .sbtl-icon-picker-control {
+        margin: 0;
+    }
+}

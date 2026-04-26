@@ -1,0 +1,373 @@
+/* 
+ * Shared Editor UI Components 
+ */
+
+@use '../components/IconPicker/style';
+
+:root {
+    --sbtl-admin-active-indicator: #ffb900;
+}
+
+// DeviceToggleGroup
+.sbtl-device-toggle-group {
+    margin-bottom: 24px;
+    scroll-margin-top: 100px;
+}
+
+.sbtl-device-toggle-group__tabs {
+    display: flex;
+    background: #f0f0f0;
+    border-radius: 4px;
+    padding: 2px;
+    gap: 2px;
+    margin-bottom: 16px;
+    justify-content: space-between;
+}
+
+.sbtl-device-toggle-group__tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 2px;
+    color: #1e1e1e;
+    position: relative;
+    transition: 0.2s ease-in-out;
+    min-height: 36px;
+}
+
+.sbtl-device-toggle-group__tab:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.sbtl-device-toggle-group__tab.is-selected {
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    color: var(--wp-admin-theme-color, #007cba);
+}
+
+.sbtl-device-toggle-group__tab svg {
+    fill: currentColor;
+    width: 20px;
+    height: 20px;
+}
+
+.sbtl-device-toggle-group__dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 6px;
+    height: 6px;
+    background-color: var(--sbtl-admin-active-indicator);
+    border-radius: 50%;
+}
+
+// Shadow Control
+.sbtl-shadow-popover-toggle {
+    //padding-left: 16px;
+    //padding-right: 16px;
+    .components-button {
+        width: 100%;
+        height: 40px;
+        border: 1px solid #ddd;
+    }
+
+    + .sbtl-shadow-popover {
+        .components-button {
+            border-top: none;
+        }
+    }
+}
+
+.sbtl-shadow-popover {
+    .components-popover__content {
+        padding: 1em;
+        width: 19.5em;
+    }
+    .components-base-control__field {
+        display: flex;
+        -moz-box-align: stretch;
+        align-items: stretch;
+        flex-direction: column;
+        -moz-box-pack: center;
+        justify-content: center;
+
+        &:has(> .sbtl-shadow-builder) > .components-base-control__label {
+            margin-bottom: 0;
+        }
+    }
+
+    .components-base-control__label {
+        text-wrap: balance;
+        color: rgb(30, 30, 30);
+        font-weight: 600;
+        display: block;
+        margin-bottom: 1.5em;
+        text-transform: capitalize;
+    }
+
+    .components-button.block-editor-global-styles__shadow-indicator {
+        min-width: unset;
+        svg {
+            position: absolute;
+        }
+    }
+
+    .sbtl-shadow-builder__tabs {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .components-button.is-small:not(.is-destructive) {
+        margin-top: 1em;
+        font-weight: 550;
+        //color: var(--wp-admin-theme-color-darker-10);
+
+        &:hover, &:focus-visible {
+            text-decoration: underline;
+        }
+    }
+
+    .components-button.sbtl-shadow-builder__btn {
+        margin-left: 0;
+        svg {
+            width: 1.5em;
+            height: 1.5em;
+        }
+
+        &[disabled] {
+            opacity: 0.5;
+        }
+    }
+
+    .components-button.margin-left-auto {
+        display: flex;
+        margin-left: auto;
+        margin-top: 0.25em;
+    }
+
+    .sbtl-shadow-presets-btn-row {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1.25em;
+
+        > .components-button {
+            margin-top: 0 !important;
+        }
+    }
+
+    .shadow-presets {
+        > .components-button:first-child {
+            background: linear-gradient(-45deg,#0000 48%,#ddd 0,#ddd 52%,#0000 0);
+        }
+    }
+}
+// Cover Image Button Styles
+.sbtl-cover-image {
+    background: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .sbtl-cover-image__button--has-image {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: none;
+        justify-content: center;
+        padding: 0 !important;
+        z-index: 2;
+
+        .sbtl-cover-btn-wrap {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.5);
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.125s ease-in-out;
+            z-index: 1;
+        }   
+
+        &:focus-visible {
+            .sbtl-cover-btn-wrap {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.sbtl-cover-style-component {
+    margin-top: 2em;
+
+    button svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+// Custom tab panel
+.sbtl-blocks-inspector-tabs {
+    > .components-tab-panel__tabs:first-child {
+        position: sticky;
+        top: 47px;
+        background: #eee;
+        z-index: 9;
+        border-bottom: 1px solid #ddd;
+
+        button {
+            width: 50%;
+            justify-content: center;
+        }
+    }
+}
+
+// Nested color panel
+div.sbtl-nested-color-panel {
+    padding: 0;
+    border-top: none;
+
+    > .components-tools-panel-item.first {
+        margin-top: 0;
+    }
+}
+
+.sbtl-minimal-color-panel {
+    margin-top: -1px !important;
+    border-top: none !important;
+    padding: 0 !important;
+    grid-column: 1 / -1;
+    .components-tools-panel-header {
+        display: none;
+    }
+}
+
+.sbtl-simple-border-control {
+    .components-unit-control.components-input-control {
+        flex: 1 1 auto;
+    }
+
+    .components-base-control.components-range-control {
+        flex: 1 1 75%;
+    }
+}
+
+div.sbtl-deselectable-toggle-group {
+    border-color: var(--wp-components-color-gray-600, #949494);
+
+    &:not(:has(button[aria-pressed="true"]))::before {
+        background: unset;
+    }
+}
+
+div:is(.sbtl-nested-tools-panel) {
+    padding: 0;
+    border-top: 0;
+}
+
+.sbtl-minimal-tabs > .components-tab-panel__tabs > button {
+  font-size: 0.87em;
+  height: 3em !important;
+  padding-bottom: 1em;
+  font-weight: 500;
+  margin-top: 0.25em;
+}
+
+.sbtl-state-tab-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    &__dot {
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--sbtl-admin-active-indicator);
+        opacity: 0.5;
+        flex-shrink: 0;
+    }
+}
+
+div:has(> div > .sbtl-priority-styles-panel) {
+    display: flex;
+    flex-direction: column;
+
+    // Target the styles panel wrapper div and move it to the top of the column
+    > div:not([class]):first-child {
+        order: -1;
+    }
+}
+
+div:has(> .sbtl-priority-styles-panel) {
+    order: -1;
+}
+
+.sbtl-ranged-unit-control {
+    align-items: center;
+    > * {
+        //margin-bottom: 16px;
+    }
+}
+
+.sbtl-linked-field {
+    &.is-unlinked {
+        .sbtl-linked-field__header {
+            margin-bottom: 8px;
+        }
+    }
+
+    .sbtl-linked-field__fields {
+        .components-base-control__label {
+            text-transform: capitalize;
+            font-size: 0.9em;
+            font-weight: 550;
+            letter-spacing: 0.025em;
+        }
+    }
+}
+
+.sbtl-link-control {
+    button.components-button {
+        color: var(--wp-components-color-foreground, #1e1e1e);
+    }
+
+    .sbtl-url-input {
+        position: relative;
+        display: flex;
+        border: 1px solid var(--wp-components-color-gray-600, #949494);
+        border-radius: 2px;
+        align-items: center;
+        cursor: pointer;
+        .sbtl-reset-link-button {
+            display: none;
+            position: absolute;
+            right: 0;
+            background: var(--wp-components-color-background, #fff);
+            transform: scale(90%);
+        }
+
+        &:hover, &:focus-within {
+            .sbtl-reset-link-button {
+                display: inline-block;
+            }
+        }
+    }
+}
+
+.sbtl-link-control-popover {
+    .components-popover__content {
+        // Need to set !important to override inline styles
+        max-height: unset !important;
+        padding: 16px;
+    }
+}

@@ -1,0 +1,30 @@
+.sbtl-icon-block {
+    display: flex;
+
+    .sbtl-icon {
+        display: flex;
+
+        svg {
+            width: var(--sbtl-icon-size, 3rem);
+            height: var(--sbtl-icon-size, 3rem);
+            display: block;
+        }
+    }
+
+    &.has-icon-stroke .sbtl-icon {
+        > svg {
+            stroke-width: var(--sbtl-icon-stroke);
+        }
+        :where(svg, svg path[stroke], svg line[stroke], svg g[stroke]) {
+            stroke-width: var(--sbtl-icon-stroke);
+        }
+    }
+}
+
+.sbtl-icon-block.is-style-rounded {
+    border-radius: 50%;
+}
+
+:where(.sbtl-icon-block.has-background) {
+    padding: 1em;
+}

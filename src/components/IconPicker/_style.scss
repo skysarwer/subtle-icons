@@ -1,0 +1,424 @@
+// Icon Picker Styles
+.sbtl-icon-picker-modal {
+    max-width: 800px;
+    width: 100%;
+    height: 600px;
+    max-height: 90vh;
+}
+
+.sbtl-icon-picker-modal .components-modal__content {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    margin-top: 65px;
+}
+
+.sbtl-icon-picker-modal .components-modal__header {
+    border-bottom: 1px solid #ddd;
+    padding: 16px 24px;
+    flex-shrink: 0;
+    height: 65px;
+
+    +  div {
+        height: 100%;
+    }
+}
+
+
+
+.sbtl-icon-picker-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    height: 100%;
+    padding-bottom: 65px;
+}
+
+.sbtl-icon-picker-sidebar {
+    width: 150px;
+    background: #f8f9fa;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 0;
+    flex-shrink: 0;
+}
+
+.sbtl-icon-picker-category-btn {
+    appearance: none;
+    background: transparent;
+    border: none;
+    text-align: left;
+    padding: 10px 24px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #1e1e1e;
+    transition: background 0.2s;
+}
+
+.sbtl-icon-picker-category-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.sbtl-icon-picker-category-btn.is-active {
+    background: #1e1e1e;
+    color: #fff;
+    font-weight: 500;
+}
+
+.sbtl-icon-picker-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+}
+
+.sbtl-icon-picker-search-container {
+    padding: 12px 24px;
+    border-bottom: 1px solid #eee;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+
+    > div > .components-base-control__field {
+        margin-bottom: 0;
+    }
+}
+
+.sbtl-icon-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    gap: 12px;
+    overflow-y: auto;
+    padding-bottom: 140px;
+}
+
+.sbtl-icon-picker-item {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fff;
+    color: #333;
+}
+
+.sbtl-icon-picker-item:hover {
+    border-color: #999;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.sbtl-icon-picker-item svg.iconify {
+    font-size: 24px;
+    display: block;
+    color: inherit;
+}
+
+.sbtl-icon-picker-item.is-selected {
+    border-color: #1e1e1e;
+    background: #1e1e1e;
+    color: #fff;
+}
+
+.sbtl-icon-picker-custom-svg-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 16px;
+    padding: 24px; 
+
+    > p {
+        margin-top: 0;
+    }
+}
+
+.sbtl-icon-picker-custom-svg-textarea {
+    flex: 1;
+    font-family: monospace;
+    font-size: 13px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: none;
+}
+
+.sbtl-icon-picker-footer {
+    border-top: 1px solid #ddd;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    height: 65px;
+
+    .sbtl-icon-picker-footer__right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .sbtl-icon-picker-footer__icon-actions {
+        }
+
+        .sbtl-icon-preview {
+            width: 2.25em;
+            height: 2.25em;
+            > svg {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .components-button.is-primary {
+            margin-left: 4px;
+        }
+    }
+}
+
+/* Trigger Button */
+
+.sbtl-icon-picker-control {
+     button.components-button {
+        color: var(--wp-components-color-foreground, #1e1e1e);
+    }
+}
+
+.sbtl-icon-picker-trigger {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    border: 1px solid var(--wp-components-color-gray-600, #949494);
+    padding-right: 24px;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--wp-components-color-background, #fff);
+    transition: border-color 0.2s;
+
+    &:hover, &:focus-within {
+        .sbtl-reset-icon-button.components-button {
+            display: inline-flex;
+        }
+    }
+}
+
+.sbtl-icon-picker-trigger:hover {
+    border-color: #999;
+}
+
+.sbtl-icon-picker-preview {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #eee;
+    background: #f8f9fa;
+    color: #1e1e1e;
+}
+
+.sbtl-icon-picker-preview svg {
+    width: 20px;
+    height: 20px;
+}
+
+.sbtl-icon-picker-label {
+    padding: 0 16px;
+    font-size: 14px;
+    color: #1e1e1e;
+    flex: 1;
+}
+
+// Reset (remove) button inside the trigger — sits flush on the right
+.sbtl-icon-picker-trigger .sbtl-reset-icon-button.components-button {
+    color: var(--wp-components-color-gray-600, #949494);
+    padding: 0 8px;
+    min-width: unset;
+    height: 100%;
+    border-radius: 0;
+    position: absolute;
+    right: 0;
+    background: var(--wp-components-color-background, #fff);
+    display: none;
+}
+
+// Canvas — inline editor-area icon preview
+.sbtl-icon-picker-canvas {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--icon-canvas-size, 48px);
+	height: var(--icon-canvas-size, 48px);
+	border: 2px dashed currentColor;
+	border-radius: 4px;
+	opacity: 0.6;
+	transition: opacity 0.15s, border-style 0.15s;
+
+	svg {
+		width: 60%;
+		height: 60%;
+	}
+
+	&.has-icon {
+		border-style: solid;
+		opacity: 1;
+	}
+
+	&__edit.components-button {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		min-width: 0;
+		padding: 0;
+		border-radius: 4px;
+		opacity: 0;
+		transition: opacity 0.15s;
+
+		svg {
+			width: 40%;
+			height: 40%;
+		}
+	}
+
+	&:hover &__edit,
+	&__edit:focus {
+		opacity: 1;
+	}
+}
+
+// Anchor-positioned edit overlay for IconPickerPreview (fragment-based, no wrapper)
+.sbtl-icon--anchor {
+	anchor-name: --sbtl-icon-preview;
+}
+
+.sbtl-icon-picker-canvas__edit.components-button {
+	position: absolute;
+	position-anchor: --sbtl-icon-preview;
+	top: anchor(top);
+	left: anchor(left);
+	width: anchor-size(width);
+	height: anchor-size(height);
+	min-width: 0;
+	padding: 0;
+	border-radius: inherit;
+	opacity: 0;
+	transition: opacity 0.15s;
+
+	svg {
+		width: 40%;
+		height: 40%;
+	}
+}
+
+.sbtl-icon--anchor:hover + .sbtl-icon-picker-canvas__edit {
+	opacity: 1;
+}
+
+// New Wrapper for infinite scroll
+.sbtl-icon-picker-grid-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 24px 80px 24px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px; // Gap between pages
+    padding-top: 12px; 
+    --sbtl-scrollbar-thumb: rgba(0, 0, 0, 0.2);
+    --sbtl-scrollbar-thumb-hover: rgba(0, 0, 0, 0.3);
+    --sbtl-bg: #fff;
+
+    scrollbar-width: thin;
+	scrollbar-color: var(--sbtl-scrollbar-thumb) var(--sbtl-bg);
+
+	&:not(html) {
+		overflow-y: auto;
+	}
+	&::-webkit-scrollbar {
+		width: 0.5em;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: var(--sbtl-bg);
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: var(--sbtl-scrollbar-thumb);
+		border-radius: 0.25em;
+		border: 0.125em solid var(--sbtl-bg);
+	}
+
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: var(--sbtl-scrollbar-thumb-hover);
+	}
+
+	&::-webkit-scrollbar-thumb:active {
+		background-color: var(--sbtl-scrollbar-thumb-hover);
+	}
+
+	&::-webkit-scrollbar-thumb:window-inactive {
+		background-color: var(--sbtl-scrollbar-thumb-hover);
+	}
+
+	&::-webkit-scrollbar-button {
+		display: none;
+	}
+}
+
+.sbtl-icon-picker-page {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    gap: 12px;
+}
+
+.sbtl-icon-picker-page-skeleton {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+    color: #ccc;
+    border-radius: 4px;
+
+    > .sbtl-icon-picker-item {
+        background: linear-gradient(135deg, #fff 25%, #efefef 50%, #fff 75%);
+        background-size: 200% 100%;
+        animation: loadingShimmer 1.5s infinite;
+        animation-fill-mode: forwards;
+        animation-timing-function: linear; 
+    }
+}
+
+// Pagination Footer
+.sbtl-icon-picker-pagination {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 1px solid #eee;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    z-index: 10;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+}
+
+@keyframes loadingShimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
