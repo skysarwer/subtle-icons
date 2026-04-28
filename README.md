@@ -41,6 +41,7 @@ npm start
 | `npm run format` | Auto-format source files |
 | `npm run lint:js` | Lint JavaScript |
 | `npm run lint:css` | Lint CSS/SCSS |
+| `npm run lint:php` | Lint PHP (via Composer PHP CodeSniffer) |
 | `npm run plugin-zip` | Package the plugin as a ZIP |
 
 ## Project Structure
