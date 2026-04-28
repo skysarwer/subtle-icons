@@ -18,7 +18,9 @@ const IconPickerPage = memo(
 		const [ status, setStatus ] = useState( 'idle' ); // idle | loading | success | error
 
 		useEffect( () => {
-			if ( ! isVisible || status !== 'idle' ) return;
+			if ( ! isVisible || status !== 'idle' ) {
+				return;
+			}
 
 			const controller = new AbortController();
 			setStatus( 'loading' );
@@ -83,7 +85,9 @@ const IconPickerPage = memo(
 				);
 			}
 
-			if ( icons.length === 0 ) return null;
+			if ( icons.length === 0 ) {
+				return null;
+			}
 
 			return (
 				<div className="sbtl-icon-picker-page">

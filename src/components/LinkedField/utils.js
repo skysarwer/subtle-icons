@@ -1,7 +1,9 @@
 import { cleanValue, isPlainObject } from '../../utils/object';
 
 function humanizeKey( key ) {
-	if ( ! key ) return '';
+	if ( ! key ) {
+		return '';
+	}
 
 	return String( key )
 		.replace( /[_-]+/g, ' ' )
@@ -11,10 +13,14 @@ function humanizeKey( key ) {
 }
 
 export function isEqualValue( left, right ) {
-	if ( left === right ) return true;
+	if ( left === right ) {
+		return true;
+	}
 
 	if ( Array.isArray( left ) && Array.isArray( right ) ) {
-		if ( left.length !== right.length ) return false;
+		if ( left.length !== right.length ) {
+			return false;
+		}
 
 		return left.every( ( item, index ) =>
 			isEqualValue( item, right[ index ] )
@@ -25,7 +31,9 @@ export function isEqualValue( left, right ) {
 		const leftKeys = Object.keys( left );
 		const rightKeys = Object.keys( right );
 
-		if ( leftKeys.length !== rightKeys.length ) return false;
+		if ( leftKeys.length !== rightKeys.length ) {
+			return false;
+		}
 
 		return leftKeys.every( ( key ) =>
 			isEqualValue( left[ key ], right[ key ] )
@@ -86,7 +94,9 @@ export function cleanGroupedValues( value ) {
 }
 
 export function areGroupValuesEqual( values = {}, groups = [] ) {
-	if ( groups.length <= 1 ) return true;
+	if ( groups.length <= 1 ) {
+		return true;
+	}
 
 	const [ firstGroup, ...otherGroups ] = groups;
 	const firstValue = values?.[ firstGroup.key ];

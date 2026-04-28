@@ -1,3 +1,4 @@
+/* eslint-disable @wordpress/no-base-control-with-label-without-id */
 import { __ } from '@wordpress/i18n';
 import { useSettings } from '@wordpress/block-editor';
 import {
@@ -26,9 +27,10 @@ const DEFAULT_SHADOW_LAYER = {
 };
 
 const parseShadowLayer = ( layer ) => {
-	if ( ! layer ) return { ...DEFAULT_SHADOW_LAYER };
+	if ( ! layer ) {
+		return { ...DEFAULT_SHADOW_LAYER };
+	}
 
-	const inset = /^inset\s+/.test( layer );
 	const trimmed = layer.replace( /^inset\s+/, '' ).trim();
 
 	const match = trimmed.match(
@@ -39,6 +41,7 @@ const parseShadowLayer = ( layer ) => {
 		return { ...DEFAULT_SHADOW_LAYER };
 	}
 
+	const inset = /^inset\s+/.test( layer );
 	const [ , x, unitX, y, unitY, blur, unitBlur, spread, unitSpread, color ] =
 		match;
 	const unit =
@@ -96,7 +99,9 @@ const parseUnitValue = ( value, fallbackUnit = DEFAULT_SHADOW_LAYER.unit ) => {
 };
 
 const splitShadowLayers = ( value ) => {
-	if ( ! value || value === 'none' ) return EMPTY_ARRAY;
+	if ( ! value || value === 'none' ) {
+		return EMPTY_ARRAY;
+	}
 
 	const layers = [];
 	let current = '';
@@ -104,12 +109,18 @@ const splitShadowLayers = ( value ) => {
 
 	for ( let i = 0; i < value.length; i += 1 ) {
 		const char = value[ i ];
-		if ( char === '(' ) depth += 1;
-		if ( char === ')' ) depth = Math.max( depth - 1, 0 );
+		if ( char === '(' ) {
+			depth += 1;
+		}
+		if ( char === ')' ) {
+			depth = Math.max( depth - 1, 0 );
+		}
 
 		if ( char === ',' && depth === 0 ) {
 			const trimmed = current.trim();
-			if ( trimmed ) layers.push( trimmed );
+			if ( trimmed ) {
+				layers.push( trimmed );
+			}
 			current = '';
 			continue;
 		}
@@ -118,7 +129,9 @@ const splitShadowLayers = ( value ) => {
 	}
 
 	const trimmed = current.trim();
-	if ( trimmed ) layers.push( trimmed );
+	if ( trimmed ) {
+		layers.push( trimmed );
+	}
 
 	return layers;
 };
@@ -128,10 +141,15 @@ const splitShadowLayers = ( value ) => {
  * - var(--prop, fallback)  → extracts the fallback
  * - var(--prop)            → queries getComputedStyle
  * - anything else          → returned as-is
+ * @param val
  */
 const resolveToRawShadow = ( val ) => {
-	if ( ! val || val === 'none' ) return val;
-	if ( ! val.startsWith( 'var(' ) ) return val;
+	if ( ! val || val === 'none' ) {
+		return val;
+	}
+	if ( ! val.startsWith( 'var(' ) ) {
+		return val;
+	}
 
 	const firstComma = val.indexOf( ',' );
 	const lastParen = val.lastIndexOf( ')' );
@@ -148,7 +166,9 @@ const resolveToRawShadow = ( val ) => {
 			const computed = getComputedStyle( document.documentElement )
 				.getPropertyValue( propMatch[ 1 ].trim() )
 				.trim();
-			if ( computed ) return computed;
+			if ( computed ) {
+				return computed;
+			}
 		} catch ( e ) {
 			/* ignore */
 		}
@@ -175,14 +195,16 @@ const ShadowControl = ( {
 		setIsPopoverVisible( ! isPopoverVisible );
 	};
 
-	const applyShadow = ( shadow ) => {
-		onChange( shadow );
+	const applyShadow = ( shadowValue ) => {
+		onChange( shadowValue );
 		//setIsPopoverVisible(false);
 	};
 
 	// Memoize the processed shadow presets
 	const processedShadowPresets = useMemo( () => {
-		if ( ! shadowPresets || ! shadowPresets.length ) return EMPTY_ARRAY;
+		if ( ! shadowPresets || ! shadowPresets.length ) {
+			return EMPTY_ARRAY;
+		}
 		return shadowPresets.map( ( preset ) => {
 			if ( preset.slug === 'unset' ) {
 				return {
@@ -201,13 +223,15 @@ const ShadowControl = ( {
 	// Check if the value matches the pattern and update it to the proper preset value
 	const updatedValue = useMemo( () => {
 		const valToUse = value || defaultValue;
-		if ( ! valToUse ) return '';
+		if ( ! valToUse ) {
+			return '';
+		}
 		const pattern = /^var\(--wp--preset--shadow--(.+)\)$/;
 		const match = valToUse.match( pattern );
 		if ( match ) {
 			const presetSlug = match[ 1 ];
 			const preset = processedShadowPresets.find(
-				( preset ) => preset.slug === presetSlug
+				( presetEntry ) => presetEntry.slug === presetSlug
 			);
 			if ( preset ) {
 				return preset.shadow;
@@ -218,9 +242,12 @@ const ShadowControl = ( {
 
 	const isCustomShadowValue = useMemo( () => {
 		const valToUse = value || defaultValue || '';
-		if ( ! valToUse || valToUse === 'none' ) return false;
-		if ( /^var\(--wp--preset--shadow--(.+)\)$/.test( valToUse ) )
+		if ( ! valToUse || valToUse === 'none' ) {
 			return false;
+		}
+		if ( /^var\(--wp--preset--shadow--(.+)\)$/.test( valToUse ) ) {
+			return false;
+		}
 		return ! processedShadowPresets.some(
 			( preset ) => preset.shadow === valToUse
 		);
@@ -270,7 +297,9 @@ const ShadowControl = ( {
 
 	// Reset view mode and active layer only when the popover is opened.
 	useEffect( () => {
-		if ( ! isPopoverVisible ) return;
+		if ( ! isPopoverVisible ) {
+			return;
+		}
 
 		if ( isCustomShadowValue ) {
 			const rawShadow = resolveToRawShadow( value || defaultValue || '' );
@@ -291,7 +320,9 @@ const ShadowControl = ( {
 	// Re-sync layers when the value changes externally (e.g. preset applied),
 	// but do NOT reset the active layer index so switching layers is stable.
 	useEffect( () => {
-		if ( ! isPopoverVisible ) return;
+		if ( ! isPopoverVisible ) {
+			return;
+		}
 
 		const valToUse = value || defaultValue || '';
 		if ( isCustomShadowValue ) {
@@ -368,40 +399,43 @@ const ShadowControl = ( {
 						{ viewMode === 'presets' && (
 							<>
 								<div className="shadow-presets block-editor-global-styles__shadow__list">
-									{ orderedShadowPresets.map( ( preset ) => (
-										<Tooltip
-											text={ preset.name }
-											key={ preset.slug }
-										>
-											<Button
-												icon={
-													updatedValue &&
-													updatedValue ===
-														preset.shadow
-														? check
-														: undefined
-												}
-												onClick={ () =>
-													applyShadow(
-														updatedValue &&
-															updatedValue ===
-																preset.shadow
-															? ''
-															: preset.value !==
-															  undefined
-															? preset.value
-															: preset.shadow
-													)
-												}
-												style={ {
-													boxShadow:
-														preset.preview ||
-														preset.shadow,
-												} }
-												className="block-editor-global-styles__shadow-indicator"
-											></Button>
-										</Tooltip>
-									) ) }
+									{ orderedShadowPresets.map( ( preset ) => {
+										const isSelected =
+											updatedValue &&
+											updatedValue === preset.shadow;
+										const presetValue =
+											preset.value !== undefined
+												? preset.value
+												: preset.shadow;
+
+										return (
+											<Tooltip
+												text={ preset.name }
+												key={ preset.slug }
+											>
+												<Button
+													icon={
+														isSelected
+															? check
+															: undefined
+													}
+													onClick={ () =>
+														applyShadow(
+															isSelected
+																? ''
+																: presetValue
+														)
+													}
+													style={ {
+														boxShadow:
+															preset.preview ||
+															preset.shadow,
+													} }
+													className="block-editor-global-styles__shadow-indicator"
+												></Button>
+											</Tooltip>
+										);
+									} ) }
 								</div>
 								<div className="sbtl-shadow-presets-btn-row">
 									<Button
@@ -433,7 +467,7 @@ const ShadowControl = ( {
 											setViewMode( 'custom' );
 										} }
 									>
-										{ __( 'Add Custom', 'subtle-icons' ) }
+										{ __( 'Custom', 'subtle-icons' ) }
 									</Button>
 									<Button
 										size="small"

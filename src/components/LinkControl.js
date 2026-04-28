@@ -1,3 +1,4 @@
+﻿/* eslint-disable @wordpress/no-base-control-with-label-without-id */
 import { __ } from '@wordpress/i18n';
 import {
 	BaseControl,
@@ -11,20 +12,22 @@ import { link, reset, copy, check } from '@wordpress/icons';
 
 function normalizeUrl( inputUrl = '' ) {
 	const trimmedUrl = inputUrl.trim();
-	const hasScheme = /^[a-z][a-z\d+.-]*:/i.test( trimmedUrl );
-	const startsRelative = /^[/?#]/.test( trimmedUrl );
-	const looksLikeDomain =
-		/^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}(?::\d{2,5})?(?:[/?#].*)?$/i.test(
-			trimmedUrl
-		);
 
 	if ( ! trimmedUrl ) {
 		return '';
 	}
 
+	const hasScheme = /^[a-z][a-z\d+.-]*:/i.test( trimmedUrl );
+	const startsRelative = /^[/?#]/.test( trimmedUrl );
+
 	if ( hasScheme || startsRelative ) {
 		return trimmedUrl;
 	}
+
+	const looksLikeDomain =
+		/^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}(?::\d{2,5})?(?:[/?#].*)?$/i.test(
+			trimmedUrl
+		);
 
 	if ( ! looksLikeDomain ) {
 		return trimmedUrl;
@@ -73,6 +76,7 @@ const LinkControl = ( {
 						className="sbtl-url-input"
 						onClick={ openPopover }
 						role="button"
+						tabIndex={ 0 }
 						onKeyDown={ ( event ) => {
 							if ( event.key === 'Enter' || event.key === ' ' ) {
 								openPopover();

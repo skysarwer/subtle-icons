@@ -1,3 +1,4 @@
+﻿/* eslint-disable @wordpress/no-base-control-with-label-without-id */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { useBlockEditingMode } from '@wordpress/block-editor';
@@ -7,7 +8,7 @@ import {
 	Tooltip,
 	__experimentalHStack as HStack,
 } from '@wordpress/components';
-import { reset, copy, check, pencil } from '@wordpress/icons';
+import { reset, copy, check } from '@wordpress/icons';
 import IconPickerModal from './IconPickerModal';
 import PlaceHolderSVG from '../PlaceHolderSVG';
 import useIconAutoResolve from './useIconAutoResolve';
@@ -15,6 +16,12 @@ import useIconAutoResolve from './useIconAutoResolve';
 /**
  * IconPickerTrigger — purely visual trigger button, no modal or internal state.
  * Use this when the parent block owns the modal (multi-slot or multi-trigger cases).
+ * @param root0
+ * @param root0.value
+ * @param root0.label
+ * @param root0.onOpen
+ * @param root0.onClear
+ * @param root0.isLoading
  */
 export const IconPickerTrigger = ( {
 	value,
@@ -25,6 +32,20 @@ export const IconPickerTrigger = ( {
 } ) => {
 	const hasIcon = value && value.trim().startsWith( '<' );
 	const [ isCopied, setIsCopied ] = useState( false );
+	let previewContent;
+
+	if ( isLoading ) {
+		previewContent = <span className="components-spinner"></span>;
+	} else if ( hasIcon ) {
+		previewContent = (
+			<div
+				dangerouslySetInnerHTML={ { __html: value } }
+				style={ { display: 'flex' } }
+			/>
+		);
+	} else {
+		previewContent = <PlaceHolderSVG style={ { display: 'contents' } } />;
+	}
 
 	return (
 		<BaseControl label={ label } className="sbtl-icon-picker-base-control">
@@ -35,20 +56,13 @@ export const IconPickerTrigger = ( {
 					role="button"
 					tabIndex={ 0 }
 					onKeyDown={ ( e ) => {
-						if ( e.key === 'Enter' || e.key === ' ' ) onOpen();
+						if ( e.key === 'Enter' || e.key === ' ' ) {
+							onOpen();
+						}
 					} }
 				>
 					<div className="sbtl-icon-picker-preview">
-						{ isLoading ? (
-							<span className="components-spinner"></span>
-						) : hasIcon ? (
-							<div
-								dangerouslySetInnerHTML={ { __html: value } }
-								style={ { display: 'flex' } }
-							/>
-						) : (
-							<PlaceHolderSVG style={ { display: 'contents' } } />
-						) }
+						{ previewContent }
 					</div>
 					<div className="sbtl-icon-picker-label">
 						{ hasIcon
@@ -94,6 +108,15 @@ export const IconPickerTrigger = ( {
  * IconPickerPreview — an inline canvas-area icon preview intended for use directly
  * in the block's editor output. Always clickable; shows the icon SVG when set,
  * or a dashed placeholder when empty. Use alongside IconPickerModal.
+ * @param root0
+ * @param root0.value
+ * @param root0.onOpen
+ * @param root0.label
+ * @param root0.className
+ * @param root0.style
+ * @param root0.showPlaceholder
+ * @param root0.hideTabindex
+ * @param root0.showEditButton
  */
 export const IconPickerPreview = ( {
 	value,
@@ -116,24 +139,32 @@ export const IconPickerPreview = ( {
 			: __( 'Select icon', 'subtle-icons' ) );
 	const canEdit =
 		! isBlockPreview && showEditButton && typeof onOpen === 'function';
+	let previewContent = null;
+
+	if ( hasIcon ) {
+		previewContent = (
+			<span
+				dangerouslySetInnerHTML={ { __html: value } }
+				className={ `sbtl-icon sbtl-icon--anchor${
+					className ? ` ${ className }` : ''
+				}` }
+				style={ style }
+			/>
+		);
+	} else if ( showPlaceholder ) {
+		previewContent = (
+			<PlaceHolderSVG
+				className={ `sbtl-icon sbtl-icon--anchor${
+					className ? ` ${ className }` : ''
+				}` }
+				style={ style }
+			/>
+		);
+	}
+
 	return (
 		<>
-			{ hasIcon ? (
-				<span
-					dangerouslySetInnerHTML={ { __html: value } }
-					className={ `sbtl-icon sbtl-icon--anchor${
-						className ? ` ${ className }` : ''
-					}` }
-					style={ style }
-				/>
-			) : showPlaceholder ? (
-				<PlaceHolderSVG
-					className={ `sbtl-icon sbtl-icon--anchor${
-						className ? ` ${ className }` : ''
-					}` }
-					style={ style }
-				/>
-			) : null }
+			{ previewContent }
 			{ canEdit && ( hasIcon || showPlaceholder ) && (
 				<Tooltip text={ editLabel }>
 					<Button
@@ -152,6 +183,12 @@ export const IconPickerPreview = ( {
  * IconPicker — convenience wrapper for single-slot usage.
  * Manages its own modal state internally. For multi-slot or multi-trigger
  * scenarios, use IconPickerTrigger + IconPickerModal directly.
+ * @param root0
+ * @param root0.value
+ * @param root0.label
+ * @param root0.onChange
+ * @param root0.onSlugChange
+ * @param root0.initialSlug
  */
 const IconPicker = ( {
 	value,
@@ -175,7 +212,9 @@ const IconPicker = ( {
 				onOpen={ () => setIsModalOpen( true ) }
 				onClear={ () => {
 					onChange( '' );
-					if ( onSlugChange ) onSlugChange( '' );
+					if ( onSlugChange ) {
+						onSlugChange( '' );
+					}
 				} }
 			/>
 			<IconPickerModal

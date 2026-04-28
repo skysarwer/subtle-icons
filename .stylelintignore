@@ -1,0 +1,11 @@
+# Vendor dependencies (third-party CSS, should not be linted)
+dependencies/
+
+# Reference files
+ref/
+
+# Composer PHP vendor packages (contain CSS test fixtures)
+vendor/
+
+# Build output
+build/

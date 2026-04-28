@@ -7,7 +7,7 @@ import { Icon, getIcon, loadIcons } from '@iconify/react';
 import sanitizeSvg from './sanitizeSvg';
 import IconPickerPage from './IconPickerPage';
 import BrowseGrid from './BrowseGrid';
-import { ICONS_PER_PAGE, isIconifySlug, isPluginSlug } from './constants';
+import { ICONS_PER_PAGE, isIconifySlug } from './constants';
 import PlaceHolderSVG from '../PlaceHolderSVG';
 
 import {
@@ -60,7 +60,9 @@ const IconPickerModal = ( {
 	// so the cache is populated before the user opens the modal.
 	useEffect( () => {
 		const CACHE_KEY = 'browse_all';
-		if ( getCachedIcons( CACHE_KEY ) || isInflight( CACHE_KEY ) ) return;
+		if ( getCachedIcons( CACHE_KEY ) || isInflight( CACHE_KEY ) ) {
+			return;
+		}
 		markInflight( CACHE_KEY );
 		apiFetch( { path: '/subtle-icons/v1/icons?page=1&per_page=99999' } )
 			.then( ( response ) => {
@@ -77,7 +79,9 @@ const IconPickerModal = ( {
 
 	// Seed normalized selection from props on each modal open.
 	useEffect( () => {
-		if ( ! isOpen ) return;
+		if ( ! isOpen ) {
+			return;
+		}
 
 		setActiveCategory( 'general' );
 
@@ -171,6 +175,7 @@ const IconPickerModal = ( {
 				}
 			}
 		} catch ( error ) {
+			// eslint-disable-next-line no-console
 			console.error( 'Error fetching metadata:', error );
 			setTotalPages( 0 );
 		} finally {
@@ -231,16 +236,20 @@ const IconPickerModal = ( {
 					const response = await fetch(
 						`https://api.iconify.design/${ prefix }/${ name }.svg`
 					);
-					if ( ! response.ok )
+					if ( ! response.ok ) {
 						throw new Error( 'Failed to fetch SVG' );
+					}
 					const svgContent = await response.text();
 					cleanSvg = sanitizeSvg( svgContent );
 				}
 
 				onSelect( cleanSvg );
-				if ( onSelectSlug ) onSelectSlug( slug );
+				if ( onSelectSlug ) {
+					onSelectSlug( slug );
+				}
 				onClose();
 			} catch ( error ) {
+				// eslint-disable-next-line no-console
 				console.error( 'Error fetching SVG content:', error );
 			} finally {
 				setIsInserting( false );
@@ -253,25 +262,31 @@ const IconPickerModal = ( {
 		if ( svg ) {
 			const cleanSvg = sanitizeSvg( svg );
 			onSelect( cleanSvg );
-			if ( onSelectSlug ) onSelectSlug( slug || 'custom' );
+			if ( onSelectSlug ) {
+				onSelectSlug( slug || 'custom' );
+			}
 			onClose();
 			return;
 		}
 
 		// Nothing active — clear.
 		onSelect( '' );
-		if ( onSelectSlug ) onSelectSlug( '' );
+		if ( onSelectSlug ) {
+			onSelectSlug( '' );
+		}
 		onClose();
 	};
 
 	// Pagination render logic
 	const renderPagination = () => {
-		if ( totalPages <= 1 ) return null;
+		if ( totalPages <= 1 ) {
+			return null;
+		}
 
 		// Simple window logic: show current +/- 2
 		const pages = [];
-		let start = Math.max( 1, activePage - 2 );
-		let end = Math.min( totalPages, activePage + 2 );
+		const start = Math.max( 1, activePage - 2 );
+		const end = Math.min( totalPages, activePage + 2 );
 
 		if ( start > 1 ) {
 			pages.push(
@@ -284,12 +299,13 @@ const IconPickerModal = ( {
 					1
 				</Button>
 			);
-			if ( start > 2 )
+			if ( start > 2 ) {
 				pages.push(
 					<span key="dots1" style={ { padding: '0 4px' } }>
 						...
 					</span>
 				);
+			}
 		}
 
 		for ( let i = start; i <= end; i++ ) {
@@ -306,12 +322,13 @@ const IconPickerModal = ( {
 		}
 
 		if ( end < totalPages ) {
-			if ( end < totalPages - 1 )
+			if ( end < totalPages - 1 ) {
 				pages.push(
 					<span key="dots2" style={ { padding: '0 4px' } }>
 						...
 					</span>
 				);
+			}
 			pages.push(
 				<Button
 					key="last"
@@ -334,7 +351,9 @@ const IconPickerModal = ( {
 	// Browse mode uses direct click-based pagination — no observers needed.
 	useEffect( () => {
 		const container = scrollContainerRef.current;
-		if ( ! container || totalPages === 0 || isBrowse ) return;
+		if ( ! container || totalPages === 0 || isBrowse ) {
+			return;
+		}
 
 		// Large buffer so pages begin fetching before they scroll into view.
 		const loadingObserver = new IntersectionObserver(
@@ -364,11 +383,15 @@ const IconPickerModal = ( {
 		const paginationObserver = new IntersectionObserver(
 			( entries ) => {
 				const visible = entries.filter( ( e ) => e.isIntersecting );
-				if ( visible.length === 0 ) return;
+				if ( visible.length === 0 ) {
+					return;
+				}
 				visible.sort( ( a, b ) => {
 					const centre = ( e ) => {
 						const rb = e.rootBounds;
-						if ( ! rb ) return Infinity;
+						if ( ! rb ) {
+							return Infinity;
+						}
 						return Math.abs(
 							rb.top +
 								rb.height / 2 -
@@ -382,7 +405,9 @@ const IconPickerModal = ( {
 					visible[ 0 ].target.getAttribute( 'data-page' ),
 					10
 				);
-				if ( ! isNaN( page ) ) setActivePage( page );
+				if ( ! isNaN( page ) ) {
+					setActivePage( page );
+				}
 			},
 			{ root: container, rootMargin: '-45% 0px -45% 0px', threshold: 0 }
 		);
@@ -424,7 +449,110 @@ const IconPickerModal = ( {
 		[ debouncedQuery ]
 	);
 
-	if ( ! isOpen ) return null;
+	if ( ! isOpen ) {
+		return null;
+	}
+
+	let generalCategoryContent;
+
+	if ( isBrowse ) {
+		generalCategoryContent = isInitialLoading ? (
+			<div
+				className="sbtl-icon-picker-grid-wrapper"
+				style={ {
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+				} }
+			>
+				<Spinner />
+			</div>
+		) : (
+			<BrowseGrid
+				icons={ allIcons }
+				selectedIcon={ selection.slug }
+				onSelect={ handleIconSelect }
+			/>
+		);
+	} else {
+		let searchResultsContent;
+
+		if ( isInitialLoading && totalPages === 0 ) {
+			searchResultsContent = (
+				<div
+					style={ {
+						display: 'flex',
+						justifyContent: 'center',
+						padding: '40px',
+					} }
+				>
+					<Spinner />
+				</div>
+			);
+		} else if ( totalPages === 0 ) {
+			searchResultsContent = (
+				<div
+					style={ {
+						padding: '40px',
+						textAlign: 'center',
+						color: '#666',
+					} }
+				>
+					{ __( 'No icons found.', 'subtle-icons' ) }
+				</div>
+			);
+		} else {
+			searchResultsContent = Array.from( {
+				length: totalPages,
+			} ).map( ( _, i ) => {
+				const pageIndex = i + 1;
+
+				return (
+					<IconPickerPage
+						key={ `${ debouncedQuery }-${ pageIndex }` }
+						pageIndex={ pageIndex }
+						searchQuery={ debouncedQuery }
+						selectedIcon={ selection.slug }
+						onSelect={ handleIconSelect }
+						isVisible={ visiblePages.has( pageIndex ) }
+					/>
+				);
+			} );
+		}
+
+		generalCategoryContent = (
+			<>
+				<div
+					className="sbtl-icon-picker-grid-wrapper"
+					ref={ scrollContainerRef }
+				>
+					{ searchResultsContent }
+				</div>
+				{ renderPagination() }
+			</>
+		);
+	}
+
+	let selectedPreview;
+
+	if ( isIconifySlug( selection.slug ) ) {
+		selectedPreview = (
+			<span className="sbtl-icon-preview">
+				<Icon icon={ selection.slug } />
+			</span>
+		);
+	} else if ( selection.svg ) {
+		selectedPreview = (
+			<span
+				className="sbtl-icon-preview"
+				dangerouslySetInnerHTML={ {
+					__html: sanitizeSvg( selection.svg ),
+				} }
+			/>
+		);
+	} else {
+		selectedPreview = <PlaceHolderSVG className="sbtl-icon-preview" />;
+	}
 
 	return (
 		<Modal
@@ -462,7 +590,7 @@ const IconPickerModal = ( {
 									value={ searchQuery }
 									onChange={ setSearchQuery }
 									placeholder={ __(
-										'Search icons... (comma separated for multiple)',
+										'Search icons… (comma separated for multiple)',
 										'subtle-icons'
 									) }
 								/>
@@ -472,86 +600,7 @@ const IconPickerModal = ( {
 								{ /* Optional header info like "Total icons: ..." */ }
 							</div>
 
-							{ isBrowse ? (
-								// Browse mode: fully virtualized infinite scroll — no pagination needed.
-								isInitialLoading ? (
-									<div
-										className="sbtl-icon-picker-grid-wrapper"
-										style={ {
-											display: 'flex',
-											justifyContent: 'center',
-											alignItems: 'center',
-										} }
-									>
-										<Spinner />
-									</div>
-								) : (
-									<BrowseGrid
-										icons={ allIcons }
-										selectedIcon={ selection.slug }
-										onSelect={ handleIconSelect }
-									/>
-								)
-							) : (
-								// Search mode: per-page lazy fetch with pagination.
-								<>
-									<div
-										className="sbtl-icon-picker-grid-wrapper"
-										ref={ scrollContainerRef }
-									>
-										{ isInitialLoading &&
-										totalPages === 0 ? (
-											<div
-												style={ {
-													display: 'flex',
-													justifyContent: 'center',
-													padding: '40px',
-												} }
-											>
-												<Spinner />
-											</div>
-										) : totalPages === 0 ? (
-											<div
-												style={ {
-													padding: '40px',
-													textAlign: 'center',
-													color: '#666',
-												} }
-											>
-												{ __(
-													'No icons found.',
-													'subtle-icons'
-												) }
-											</div>
-										) : (
-											Array.from( {
-												length: totalPages,
-											} ).map( ( _, i ) => {
-												const pageIndex = i + 1;
-												return (
-													<IconPickerPage
-														key={ `${ debouncedQuery }-${ pageIndex }` }
-														pageIndex={ pageIndex }
-														searchQuery={
-															debouncedQuery
-														}
-														selectedIcon={
-															selection.slug
-														}
-														onSelect={
-															handleIconSelect
-														}
-														isVisible={ visiblePages.has(
-															pageIndex
-														) }
-													/>
-												);
-											} )
-										) }
-									</div>
-									{ renderPagination() }
-								</>
-							) }
+							{ generalCategoryContent }
 						</>
 					) : (
 						<div className="sbtl-icon-picker-custom-svg-container">
@@ -580,87 +629,81 @@ const IconPickerModal = ( {
 							/>
 						</div>
 					) }
-				</div>
-			</div>
-
-			<div className="sbtl-icon-picker-footer">
-				<Button
-					variant="link"
-					isDestructive
-					onClick={ () => {
-						setSelection( { slug: '', svg: '' } );
-						setSvgDraft( '' );
-					} }
-				>
-					{ __( 'Clear', 'subtle-icons' ) }
-				</Button>
-				<div className="sbtl-icon-picker-footer__right">
-					<div className="sbtl-icon-picker-footer__icon-actions">
-						{ ( selection.slug || selection.svg ) && (
-							<Button
-								icon={ isCopied ? check : copy }
-								label={
-									isCopied
-										? __( 'SVG Copied!', 'subtle-icons' )
-										: __( 'Copy SVG', 'subtle-icons' )
-								}
-								variant="tertiary"
-								onClick={ () => {
-									let svgToCopy;
-									if ( isIconifySlug( selection.slug ) ) {
-										const iconData = getIcon(
-											selection.slug
-										);
-										if ( iconData ) {
-											const {
-												body,
-												width = 24,
-												height = 24,
-												left = 0,
-												top = 0,
-											} = iconData;
-											svgToCopy = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${ left } ${ top } ${ width } ${ height }">${ body }</svg>`;
-										}
-									} else {
-										svgToCopy = selection.svg;
-									}
-									if ( svgToCopy ) {
-										navigator.clipboard.writeText(
-											svgToCopy
-										);
-										setIsCopied( true );
-										setTimeout(
-											() => setIsCopied( false ),
-											2000
-										);
-									}
-								} }
-							/>
-						) }
-					</div>
-					{ isIconifySlug( selection.slug ) ? (
-						<span className="sbtl-icon-preview">
-							<Icon icon={ selection.slug } />
-						</span>
-					) : selection.svg ? (
-						<span
-							className="sbtl-icon-preview"
-							dangerouslySetInnerHTML={ {
-								__html: sanitizeSvg( selection.svg ),
+					<div className="sbtl-icon-picker-footer">
+						<Button
+							variant="link"
+							isDestructive
+							onClick={ () => {
+								setSelection( { slug: '', svg: '' } );
+								setSvgDraft( '' );
 							} }
-						/>
-					) : (
-						<PlaceHolderSVG className="sbtl-icon-preview" />
-					) }
-					<Button
-						variant="primary"
-						disabled={ isInserting }
-						onClick={ handleInsert }
-					>
-						{ isInserting
-							? __( 'Inserting...', 'subtle-icons' )
-							: __( 'Insert', 'subtle-icons' ) }
-					</Button>
+						>
+							{ __( 'Clear', 'subtle-icons' ) }
+						</Button>
+						<div className="sbtl-icon-picker-footer__right">
+							<div className="sbtl-icon-picker-footer__icon-actions">
+								{ ( selection.slug || selection.svg ) && (
+									<Button
+										icon={ isCopied ? check : copy }
+										label={
+											isCopied
+												? __(
+														'SVG Copied!',
+														'subtle-icons'
+												  )
+												: __(
+														'Copy SVG',
+														'subtle-icons'
+												  )
+										}
+										variant="tertiary"
+										onClick={ () => {
+											let svgToCopy;
+											if (
+												isIconifySlug( selection.slug )
+											) {
+												const iconData = getIcon(
+													selection.slug
+												);
+												if ( iconData ) {
+													const {
+														body,
+														width = 24,
+														height = 24,
+														left = 0,
+														top = 0,
+													} = iconData;
+													svgToCopy = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${ left } ${ top } ${ width } ${ height }">${ body }</svg>`;
+												}
+											} else {
+												svgToCopy = selection.svg;
+											}
+											if ( svgToCopy ) {
+												navigator.clipboard.writeText(
+													svgToCopy
+												);
+												setIsCopied( true );
+												setTimeout(
+													() => setIsCopied( false ),
+													2000
+												);
+											}
+										} }
+									/>
+								) }
+							</div>
+							{ selectedPreview }
+							<Button
+								variant="primary"
+								disabled={ isInserting }
+								onClick={ handleInsert }
+							>
+								{ isInserting
+									? __( 'Inserting…', 'subtle-icons' )
+									: __( 'Insert', 'subtle-icons' ) }
+							</Button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</Modal>

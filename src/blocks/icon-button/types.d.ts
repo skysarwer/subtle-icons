@@ -57,7 +57,8 @@ export type IconButtonAppearanceValues = {
 
 // Button Stateful appearance: default values live at root
 // while interactive variants are nested as state overrides.
-export type IconButtonAppearanceState = IconButtonAppearanceValues & { // Saved as inline styles on the child [.wp-block-button__link] for the default state
+export type IconButtonAppearanceState = IconButtonAppearanceValues & {
+	// Saved as inline styles on the child [.wp-block-button__link] for the default state
 	hover?: IconButtonAppearanceValues; // Saved as inline css state variables on the child [.wp-block-button__link] along with generated class `has-hover-<key>` for hover state
 	active?: IconButtonAppearanceValues; // Saved as inline css state variables on the child [.wp-block-button__link] along with generated class `has-active-<key>` for active state
 };

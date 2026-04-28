@@ -36,7 +36,9 @@ const BrowseGrid = memo( ( { icons, selectedIcon, onSelect } ) => {
 	// useLayoutEffect for synchronous first measurement (no paint flash).
 	useLayoutEffect( () => {
 		const el = containerRef.current;
-		if ( ! el ) return;
+		if ( ! el ) {
+			return;
+		}
 
 		const update = ( width ) => {
 			const cols = Math.max(
@@ -89,7 +91,9 @@ const BrowseGrid = memo( ( { icons, selectedIcon, onSelect } ) => {
 	); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const renderPagination = () => {
-		if ( totalPages <= 1 ) return null;
+		if ( totalPages <= 1 ) {
+			return null;
+		}
 
 		const pages = [];
 		const start = Math.max( 1, activePage - 2 );
@@ -106,12 +110,13 @@ const BrowseGrid = memo( ( { icons, selectedIcon, onSelect } ) => {
 					1
 				</Button>
 			);
-			if ( start > 2 )
+			if ( start > 2 ) {
 				pages.push(
 					<span key="dots1" style={ { padding: '0 4px' } }>
 						...
 					</span>
 				);
+			}
 		}
 
 		for ( let i = start; i <= end; i++ ) {
@@ -128,12 +133,13 @@ const BrowseGrid = memo( ( { icons, selectedIcon, onSelect } ) => {
 		}
 
 		if ( end < totalPages ) {
-			if ( end < totalPages - 1 )
+			if ( end < totalPages - 1 ) {
 				pages.push(
 					<span key="dots2" style={ { padding: '0 4px' } }>
 						...
 					</span>
 				);
+			}
 			pages.push(
 				<Button
 					key="last"

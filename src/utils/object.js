@@ -18,7 +18,9 @@ export function cleanValue( value ) {
 	if ( Array.isArray( value ) ) {
 		const nextArray = value
 			.map( cleanValue )
-			.filter( ( item ) => item != null && item !== '' );
+			.filter(
+				( item ) => item !== null && item !== undefined && item !== ''
+			);
 
 		return nextArray.length ? nextArray : undefined;
 	}
@@ -32,7 +34,9 @@ export function cleanValue( value ) {
 				] )
 				.filter(
 					( [ , nestedValue ] ) =>
-						nestedValue != null && nestedValue !== ''
+						nestedValue !== null &&
+						nestedValue !== undefined &&
+						nestedValue !== ''
 				)
 		);
 

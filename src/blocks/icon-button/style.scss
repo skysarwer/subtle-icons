@@ -1,20 +1,19 @@
+/* stylelint-disable no-descending-specificity, no-duplicate-selectors, @stylistic/max-line-length */
 // Outline styles are owned in css rather than deferring to core styles, due to issues with inheriting the `per-instance` global styles engine.
 .sbtl-icon-button {
+
 	&.is-style-outline .wp-block-button__link {
 		background: transparent none;
 		background-color: transparent;
-		border: 2px solid currentColor;
+		border: 2px solid currentcolor;
 		color: inherit;
 
 		&:hover {
-			background-color: color-mix(
-				in srgb,
-				currentColor 5%,
-				transparent
-			);
+			background-color: color-mix(in srgb, currentcolor 5%, transparent);
 		}
 	}
 }
+
 .sbtl-icon-button.wp-block-button {
 
 	&.is-style-link .wp-block-button__link {
@@ -40,6 +39,7 @@
 .sbtl-icon-button {
 
 	&:where(.has-custom-width) {
+
 		.wp-block-button__link {
 			justify-content: center;
 		}
@@ -50,12 +50,14 @@
 
 		&.has-custom-width {
 			max-width: none;
+
 			.wp-block-button__link {
 				width: 100%;
 			}
 		}
 
 		&.has-custom-font-size {
+
 			.wp-block-button__link {
 				font-size: inherit;
 			}
@@ -81,21 +83,27 @@
 
 	// Higher specificity
 	&.wp-block-button {
+
 		.wp-block-button__link {
 			display: inline-flex;
 			align-items: center;
 			gap: 0;
 
-			&:hover, &:focus-visible {
+			&:hover,
+			&:focus-visible {
+
 				&.has-hover-bg {
 					background: var(--sbtl-button-hover-bg) !important;
 				}
+
 				&.has-hover-text {
 					color: var(--sbtl-button-hover-text) !important;
 				}
+
 				&.has-hover-border {
 					border-color: var(--sbtl-button-hover-border) !important;
 				}
+
 				&.has-hover-shadow {
 					box-shadow: var(--sbtl-button-hover-shadow) !important;
 				}
@@ -106,24 +114,28 @@
 			}
 
 			:is(
-				:active,
-				.is-active,
-				[aria-pressed='true'],
-				[aria-expanded='true'],
-				[aria-checked='true'],
-				[aria-selected='true'],
-				[data-state='open'],
-				[data-state='on']
-			) {
+			:active,
+			.is-active,
+			[aria-pressed="true"],
+			[aria-expanded="true"],
+			[aria-checked="true"],
+			[aria-selected="true"],
+			[data-state="open"],
+			[data-state="on"]
+		) {
+
 				&.has-active-bg {
 					background: var(--sbtl-button-active-bg) !important;
 				}
+
 				&.has-active-text {
 					color: var(--sbtl-button-active-text) !important;
 				}
+
 				&.has-active-border {
 					border-color: var(--sbtl-button-active-border) !important;
 				}
+
 				&.has-active-shadow {
 					box-shadow: var(--sbtl-button-active-shadow) !important;
 				}
@@ -137,26 +149,32 @@
 		.sbtl-icon-region {
 			display: flex;
 			flex: 0 0 auto;
+
 			&[style*="--sbtl-button-icon-stroke"] {
-				& > .sbtl-icon > svg {
+
+				> .sbtl-icon > svg {
 					stroke-width: var(--sbtl-button-icon-stroke);
 				}
-				& > .sbtl-icon :where(svg, svg path[stroke], svg line[stroke], svg g[stroke]) {
+
+				> .sbtl-icon :where(svg, svg path[stroke], svg line[stroke], svg g[stroke]) {
 					stroke-width: var(--sbtl-button-icon-stroke);
 				}
 			}
 		}
 
 		&.has-icon-layout-horizontal {
+
 			.wp-block-button__link {
 				flex-direction: row;
 
 				&.has-text-align-left {
 					justify-content: flex-start;
 				}
+
 				&.has-text-align-center {
 					justify-content: center;
 				}
+
 				&.has-text-align-right {
 					justify-content: flex-end;
 				}
@@ -172,15 +190,18 @@
 		}
 
 		&.has-icon-layout-vertical {
+
 			.wp-block-button__link {
 				flex-direction: column;
 
 				&.has-text-align-left {
 					align-items: flex-start;
 				}
+
 				&.has-text-align-center {
 					align-items: center;
 				}
+
 				&.has-text-align-right {
 					align-items: flex-end;
 				}
@@ -201,6 +222,7 @@
 
 		.sbtl-icon {
 			display: contents;
+
 			> svg {
 				// Set min and max width; allows theme svg width styles to propagate while being overrideable by user settings
 				min-width: 100%;
@@ -214,16 +236,18 @@
 		}
 
 		.wp-block-button__link:is(
-			[aria-pressed='true'],
-			[aria-expanded='true'],
-			[aria-checked='true'],
-			[aria-selected='true'],
-			[data-state='open'],
-			[data-state='on']
-		) {
+		[aria-pressed="true"],
+		[aria-expanded="true"],
+		[aria-checked="true"],
+		[aria-selected="true"],
+		[data-state="open"],
+		[data-state="on"]
+	) {
+
 			.sbtl-icon[data-variant="default"] {
 				display: none;
 			}
+
 			.sbtl-icon[data-variant="toggle"] {
 				display: inline-flex;
 			}

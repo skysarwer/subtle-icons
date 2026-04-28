@@ -9,7 +9,9 @@ const useIntersectionObserver = ( {
 	const [ isIntersecting, setIsIntersecting ] = useState( false );
 
 	useEffect( () => {
-		if ( ! node ) return;
+		if ( ! node ) {
+			return;
+		}
 
 		// Fallback for environments lacking IO (though unlikely in modern WP)
 		if ( ! ( 'IntersectionObserver' in window ) ) {

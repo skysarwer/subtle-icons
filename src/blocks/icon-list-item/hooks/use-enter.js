@@ -20,9 +20,13 @@ import useOutdentListItem from './use-outdent-list-item';
 /**
  * Polls until [data-block] with the given clientId has a [contenteditable]
  * child, then focuses it. Gives up after ~300 ms.
+ * @param clientId
+ * @param attempt
  */
 function focusBlockEditable( clientId, attempt = 0 ) {
-	if ( attempt > 10 ) return;
+	if ( attempt > 10 ) {
+		return;
+	}
 	const blockEl = document.querySelector( `[data-block="${ clientId }"]` );
 	const editable = blockEl?.querySelector( '[contenteditable]' );
 	if ( editable ) {

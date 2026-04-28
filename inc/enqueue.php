@@ -1,4 +1,9 @@
 <?php
+/**
+ * Enqueue scripts and styles for Subtle Icons.
+ *
+ * @package sbtl
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -16,8 +21,7 @@ function sbtl_enqueue_editor_assets() {
 		file_exists( $css_file ) ? filemtime( $css_file ) : false
 	);
 
-    add_editor_style( plugins_url( '../build/sass/blocks-editor.css', __FILE__ ) );
-
+	add_editor_style( plugins_url( '../build/sass/blocks-editor.css', __FILE__ ) );
 
 	$editor_asset_file = plugin_dir_path( __FILE__ ) . '../build/editor/index.asset.php';
 	if ( file_exists( $editor_asset_file ) ) {
@@ -30,27 +34,43 @@ function sbtl_enqueue_editor_assets() {
 			true
 		);
 	}
-    
-    // Localize icon SVGs, targeting sbtl/accordions editor script
-    wp_localize_script( 'sbtl-accordions-editor-script', 'sbtl_icons', array(
-        'chevronDown' => sbtl_default_svg__chevron_down(),
-        'chevronUp'   => sbtl_default_svg__chevron_up(),
-        'chevronRight'=> sbtl_default_svg__chevron_right(),
-    ) );
 
-	// Localize icon check for sbtl/icon-list block editor script
-	wp_localize_script( 'sbtl-icon-list-editor-script', 'sbtl_list_icons', array(
-		'check' => sbtl_default_svg__check(),
-	) );
+	// Localize icon SVGs, targeting sbtl/accordions editor script.
+	wp_localize_script(
+		'sbtl-accordions-editor-script',
+		'sbtl_icons',
+		array(
+			'chevronDown'  => sbtl_default_svg__chevron_down(),
+			'chevronUp'    => sbtl_default_svg__chevron_up(),
+			'chevronRight' => sbtl_default_svg__chevron_right(),
+		)
+	);
 
-    // Localize arrow-right icon for sbtl/icon-button block editor script
-    wp_localize_script( 'sbtl-icon-button-editor-script', 'sbtl_button_icons', array(
-        'arrowRight' => sbtl_default_svg__arrow_right(),
-    ) );
+	// Localize icon check for sbtl/icon-list block editor script.
+	wp_localize_script(
+		'sbtl-icon-list-editor-script',
+		'sbtl_list_icons',
+		array(
+			'check' => sbtl_default_svg__check(),
+		)
+	);
 
-	// Localize info icon for sbtl-icon-text block editor script
-	wp_localize_script( 'sbtl-icon-text-editor-script', 'sbtl_icon_text_icons', array(
-		'info' => sbtl_default_svg__info(),
-	) );
+	// Localize arrow-right icon for sbtl/icon-button block editor script.
+	wp_localize_script(
+		'sbtl-icon-button-editor-script',
+		'sbtl_button_icons',
+		array(
+			'arrowRight' => sbtl_default_svg__arrow_right(),
+		)
+	);
+
+	// Localize info icon for sbtl-icon-text block editor script.
+	wp_localize_script(
+		'sbtl-icon-text-editor-script',
+		'sbtl_icon_text_icons',
+		array(
+			'info' => sbtl_default_svg__info(),
+		)
+	);
 }
 add_action( 'enqueue_block_editor_assets', 'sbtl_enqueue_editor_assets' );

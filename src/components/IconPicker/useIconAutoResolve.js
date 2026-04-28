@@ -17,15 +17,25 @@ const useIconAutoResolve = ( value, onChange, onSlugChange = null ) => {
 	const [ isResolving, setIsResolving ] = useState( false );
 
 	useEffect( () => {
-		if ( ! value || typeof value !== 'string' ) return;
-		if ( value.trim().startsWith( '<' ) ) return; // Already SVG markup
-		if ( ! value.includes( ':' ) ) return; // Not a slug
+		if ( ! value || typeof value !== 'string' ) {
+			return;
+		}
+		if ( value.trim().startsWith( '<' ) ) {
+			return;
+		} // Already SVG markup
+		if ( ! value.includes( ':' ) ) {
+			return;
+		} // Not a slug
 
 		const [ prefix, name ] = value.split( ':' );
 
 		// Basic slug validation before fetching
-		if ( ! /^[a-z0-9-]+$/.test( prefix ) || ! /^[a-z0-9-]+$/.test( name ) )
+		if (
+			! /^[a-z0-9-]+$/.test( prefix ) ||
+			! /^[a-z0-9-]+$/.test( name )
+		) {
 			return;
+		}
 
 		const resolveIcon = async () => {
 			setIsResolving( true );
@@ -37,9 +47,12 @@ const useIconAutoResolve = ( value, onChange, onSlugChange = null ) => {
 					const svgContent = await response.text();
 					const cleanSvg = sanitizeSvg( svgContent );
 					onChange( cleanSvg );
-					if ( onSlugChange ) onSlugChange( value );
+					if ( onSlugChange ) {
+						onSlugChange( value );
+					}
 				}
 			} catch ( error ) {
+				// eslint-disable-next-line no-console
 				console.error( 'Failed to resolve icon slug:', error );
 			} finally {
 				setIsResolving( false );

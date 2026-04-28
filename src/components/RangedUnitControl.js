@@ -1,3 +1,4 @@
+﻿/* eslint-disable @wordpress/no-base-control-with-label-without-id */
 // @ts-nocheck
 
 /**
@@ -85,21 +86,21 @@ function getUnitSettings( unit, units, rangeByUnit, fallback ) {
  * Use `rangeByUnit` to customize slider
  * min/max/step per unit.
  *
- * @param {Object} props Component props.
- * @param {string} [props.label] Accessible label shared by the two inputs.
- * @param {string|number} [props.value] Current value (`"12px"`, `"2em"`, etc).
- * @param {(nextValue?: string) => void} [props.onChange] Called with the next combined value.
- * @param {Array<{value: string, label: string, step?: number, default?: number}>} [props.units] Available units.
- * @param {Record<string, {min?: number, max?: number, step?: number, default?: number}>} [props.rangeByUnit] Slider settings per unit.
- * @param {number} [props.min=0] Fallback slider minimum.
- * @param {number} [props.max=100] Fallback slider maximum.
- * @param {number} [props.step=1] Fallback slider step.
- * @param {boolean} [props.disabled=false] Disables both controls.
- * @param {string} [props.help] Optional help text shown under the unit input.
- * @param {boolean} [props.isResetValueOnUnitChange=false] Resets quantity to unit default on unit switch.
- * @param {boolean} [props.withSliderInputField=false] Shows/hides `RangeControl` numeric input.
- * @param {boolean} [props.showResetButton=true] Shows/hides a reset button.
- * @param {string} [props.resetLabel] Custom reset button label.
+ * @param {Object}                                                                        props                                  Component props.
+ * @param {string}                                                                        [props.label]                          Accessible label shared by the two inputs.
+ * @param {string|number}                                                                 [props.value]                          Current value (`"12px"`, `"2em"`, etc).
+ * @param {(nextValue?: string) => void}                                                  [props.onChange]                       Called with the next combined value.
+ * @param {Array<{value: string, label: string, step?: number, default?: number}>}        [props.units]                          Available units.
+ * @param {Record<string, {min?: number, max?: number, step?: number, default?: number}>} [props.rangeByUnit]                    Slider settings per unit.
+ * @param {number}                                                                        [props.min=0]                          Fallback slider minimum.
+ * @param {number}                                                                        [props.max=100]                        Fallback slider maximum.
+ * @param {number}                                                                        [props.step=1]                         Fallback slider step.
+ * @param {boolean}                                                                       [props.disabled=false]                 Disables both controls.
+ * @param {string}                                                                        [props.help]                           Optional help text shown under the unit input.
+ * @param {boolean}                                                                       [props.isResetValueOnUnitChange=false] Resets quantity to unit default on unit switch.
+ * @param {boolean}                                                                       [props.withSliderInputField=false]     Shows/hides `RangeControl` numeric input.
+ * @param {boolean}                                                                       [props.showResetButton=true]           Shows/hides a reset button.
+ * @param {string}                                                                        [props.resetLabel]                     Custom reset button label.
  *
  * @example
  * ```jsx
@@ -177,13 +178,6 @@ export default function RangedUnitControl( {
 	);
 
 	const emitValue = ( nextQuantity, nextUnit = activeUnit ) => {
-		const unit = nextUnit || units[ 0 ]?.value || 'px';
-		const targetUnitSettings = getUnitSettings( unit, units, rangeByUnit, {
-			min,
-			max,
-			step,
-		} );
-
 		if (
 			nextQuantity === undefined ||
 			nextQuantity === null ||
@@ -198,6 +192,13 @@ export default function RangedUnitControl( {
 			onChange?.( undefined );
 			return;
 		}
+
+		const unit = nextUnit || units[ 0 ]?.value || 'px';
+		const targetUnitSettings = getUnitSettings( unit, units, rangeByUnit, {
+			min,
+			max,
+			step,
+		} );
 
 		const clamped = clamp(
 			quantity,

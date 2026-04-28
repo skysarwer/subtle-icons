@@ -97,6 +97,7 @@ function getIconMarkupFromNode( node ) {
 		return node.outerHTML;
 	}
 
+	// eslint-disable-next-line no-nested-ternary
 	const svg = node.matches( '.sbtl-icon' )
 		? node.querySelector( 'svg' )
 		: node.childElementCount === 1 &&
@@ -323,6 +324,7 @@ function getIconTextIconOptionsFromButton( attributes = {} ) {
 		icon: useTrailingIcon
 			? attributes.trailingIcon
 			: attributes.leadingIcon,
+		// eslint-disable-next-line no-nested-ternary
 		iconPosition: useTrailingIcon
 			? attributes.iconLayout === 'vertical'
 				? 'top'

@@ -14,7 +14,7 @@ import {
  *   and strips all inline anchors from the content.
  *
  * @param {Object}   props
- * @param {string}   props.content           Serialized richtext HTML.
+ * @param {string}   props.content            Serialized richtext HTML.
  * @param {Function} props.showDefaultContent Render-prop helper from LinkControl that swaps to the default WpLinkControl.
  * @param {Function} props.closePopover       Render-prop helper from LinkControl that closes the popover.
  * @param {Function} props.onPromote          Called with `{ url, linkTarget, rel, content }` when the user chooses to move an inline link to root.

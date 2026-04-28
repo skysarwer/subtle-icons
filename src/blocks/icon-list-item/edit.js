@@ -204,6 +204,7 @@ export default function ListItemEdit( {
 	} );
 	const useEnterRef = useEnter( { content, clientId } );
 	const useSpaceRef = useSpace( clientId );
+	const richTextRef = useMergeRefs( [ useEnterRef, useSpaceRef ] );
 	const onMerge = useMerge( clientId, mergeBlocks );
 
 	// When Gutenberg splits the list item on Enter (non-empty content), it focuses
@@ -221,7 +222,9 @@ export default function ListItemEdit( {
 		}
 		// Let Gutenberg's default merge/split logic run, then fix focus.
 		requestAnimationFrame( () => {
-			const active = document.activeElement;
+			const active =
+				useEnterRef.current?.ownerDocument?.activeElement ||
+				useSpaceRef.current?.ownerDocument?.activeElement;
 			if (
 				active &&
 				active.classList.contains( 'sbtl-icon-picker-canvas__edit' )
@@ -229,7 +232,9 @@ export default function ListItemEdit( {
 				const editable = active
 					.closest( '[data-block]' )
 					?.querySelector( '[contenteditable]' );
-				if ( editable ) editable.focus();
+				if ( editable ) {
+					editable.focus();
+				}
 			}
 		} );
 	};
@@ -238,13 +243,7 @@ export default function ListItemEdit( {
 		<>
 			<li { ...innerBlocksProps }>
 				{ url ? (
-					<a
-						href="#"
-						className="sbtl-icon-region"
-						target={ linkTarget || undefined }
-						rel={ rel || undefined }
-						onClick={ ( e ) => e.preventDefault() }
-					>
+					<span className="sbtl-icon-region">
 						<IconPickerPreview
 							value={ effectiveIcon }
 							onOpen={ () => setIsIconModalOpen( true ) }
@@ -254,7 +253,7 @@ export default function ListItemEdit( {
 							}
 						/>
 						<RichText
-							ref={ useMergeRefs( [ useEnterRef, useSpaceRef ] ) }
+							ref={ richTextRef }
 							identifier="content"
 							tagName="div"
 							onChange={ ( nextContent ) =>
@@ -267,7 +266,7 @@ export default function ListItemEdit( {
 							onKeyDown={ handleRichTextKeyDown }
 							allowedFormats={ [ 'core/bold', 'core/italic' ] }
 						/>
-					</a>
+					</span>
 				) : (
 					<span className="sbtl-icon-region">
 						<IconPickerPreview
@@ -280,7 +279,7 @@ export default function ListItemEdit( {
 							}
 						/>
 						<RichText
-							ref={ useMergeRefs( [ useEnterRef, useSpaceRef ] ) }
+							ref={ richTextRef }
 							identifier="content"
 							tagName="div"
 							onChange={ ( nextContent ) =>

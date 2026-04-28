@@ -42,7 +42,6 @@ export default function save( { attributes } ) {
 		stateAppearance,
 	} = attributes;
 	const normalizedIconOptions = getObjectValue( iconOptions );
-	const normalizedStateAppearanceInput = getObjectValue( stateAppearance );
 	const leadingIconOptions = getObjectValue( normalizedIconOptions.leading );
 	const trailingIconOptions = getObjectValue(
 		normalizedIconOptions.trailing
@@ -57,6 +56,8 @@ export default function save( { attributes } ) {
 	) {
 		return null;
 	}
+
+	const normalizedStateAppearanceInput = getObjectValue( stateAppearance );
 
 	const TagName = getTagNameValue( tagName );
 	const isButtonTag = TagName === 'button';

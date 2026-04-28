@@ -12,6 +12,12 @@ coverage
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build
 
+# Composer Lock file
+composer.lock
+
+# Vendor directory
+vendor/
+
 # Dependency directories
 node_modules/
 

@@ -8,12 +8,8 @@ import { cloneBlock } from '@wordpress/blocks';
 
 export default function useOutdentListItem() {
 	const registry = useRegistry();
-	const {
-		moveBlocksToPosition,
-		removeBlock,
-		insertBlock,
-		updateBlockListSettings,
-	} = useDispatch( blockEditorStore );
+	const { moveBlocksToPosition, insertBlock, updateBlockListSettings } =
+		useDispatch( blockEditorStore );
 	const {
 		getBlockRootClientId,
 		getBlockName,

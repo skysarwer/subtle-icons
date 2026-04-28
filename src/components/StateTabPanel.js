@@ -1,3 +1,4 @@
+﻿/* eslint-disable @wordpress/no-base-control-with-label-without-id */
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 import { TabPanel, BaseControl } from '@wordpress/components';
@@ -30,13 +31,13 @@ const BASE_TABS = [
  * Renders a labelled BaseControl that wraps a stateful tab strip.
  * Children must be a render-prop: `( tab ) => <ReactNode>`.
  *
- * @param {Object}    props
- * @param {string}    props.label          BaseControl label text.
- * @param {string}    [props.ariaLabel]    Optional aria-label forwarded to BaseControl.
- * @param {Array}     [props.tabs]         Tab definitions. Defaults to Default / Hover / Open.
- * @param {Object}    [props.hasActive]    Map of tab name → boolean. When true and the tab is
- *                                         not selected, a dot indicator is shown.
- * @param {Function}  props.children       Render-prop `( tab ) => <ReactNode>`.
+ * @param {Object}   props
+ * @param {string}   props.label       BaseControl label text.
+ * @param {string}   [props.ariaLabel] Optional aria-label forwarded to BaseControl.
+ * @param {Array}    [props.tabs]      Tab definitions. Defaults to Default / Hover / Open.
+ * @param {Object}   [props.hasActive] Map of tab name → boolean. When true and the tab is
+ *                                     not selected, a dot indicator is shown.
+ * @param {Function} props.children    Render-prop `( tab ) => <ReactNode>`.
  */
 export default function StateTabPanel( {
 	label,

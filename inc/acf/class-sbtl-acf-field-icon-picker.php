@@ -1,25 +1,25 @@
 <?php
 /**
- * ACF Icon Picker Field Class
+ * ACF Icon Picker Field Class.
+ *
+ * @package sbtl
  */
 
+// phpcs:ignore WordPress.Files.FileName.InvalidClassFileName -- class name uses plugin prefix abbreviation, not full class name.
+/**
+ * ACF Icon Picker field type.
+ */
 class SubtleBlocks_ACF_Field_Icon_Picker extends acf_field {
 
 	/**
-	 *  __construct
+	 * Constructor. Sets up the field type data.
 	 *
-	 *  This function will setup the field type data
-	 *
-	 *  @type	function
-	 *  @date	26/01/2026
-	 *  @since	1.0.0
-	 *
-	 *  @param	void
-	 *  @return	void
+	 * @since  1.0.0
+	 * @return void
 	 */
-	function __construct() {
-		$this->name = 'sbtl_icon_picker';
-		$this->label = __( 'Subtle Icon Picker', 'subtle-icons' );
+	public function __construct() {
+		$this->name     = 'sbtl_icon_picker';
+		$this->label    = __( 'Subtle Icon Picker', 'subtle-icons' );
 		$this->category = 'advanced';
 		$this->defaults = array();
 
@@ -27,20 +27,13 @@ class SubtleBlocks_ACF_Field_Icon_Picker extends acf_field {
 	}
 
 	/**
-	 *  render_field()
+	 * Create the HTML interface for your field.
 	 *
-	 *  Create the HTML interface for your field
-	 *
-	 *  @param	$field (array) the $field being rendered
-	 *
-	 *  @type	action
-	 *  @since	3.6
-	 *  @date	23/01/13
-	 *
-	 *  @param	$field (array) the $field being edited
-	 *  @return	void
+	 * @since  3.6
+	 * @param  array $field The field being rendered.
+	 * @return void
 	 */
-	function render_field( $field ) {
+	public function render_field( $field ) {
 		?>
 		<div class="sbtl-acf-icon-picker-field" data-value="<?php echo esc_attr( $field['value'] ); ?>">
 			<input type="hidden" name="<?php echo esc_attr( $field['name'] ); ?>" value="<?php echo esc_attr( $field['value'] ); ?>" class="sbtl-acf-icon-picker-input" />
@@ -50,30 +43,14 @@ class SubtleBlocks_ACF_Field_Icon_Picker extends acf_field {
 	}
 
 	/**
-	 *  input_admin_enqueue_scripts()
+	 * Update the field value. Returns raw SVG to prevent ACF sanitization from stripping HTML.
 	 *
-	 *  This action is called in the admin_enqueue_scripts action on the edit screen where your field is created.
-	 *  Use this function to add CSS + JavaScript to edit screens
-	 *
-	 *  @type	action
-	 *  @since	3.6
-	 *  @date	23/01/13
-	 *
-	 *  @param	void
-	 *  @return	void
+	 * @param  mixed $value   The value to save.
+	 * @param  int   $post_id The post ID.
+	 * @param  array $field   The field array.
+	 * @return string|mixed
 	 */
-	/**
-	 *  update_value()
-	 *
-	 *  Explicitly return the raw SVG value to prevent any ACF default
-	 *  sanitization from stripping HTML tags.
-	 *
-	 *  @param	$value   mixed  the value to save
-	 *  @param	$post_id int
-	 *  @param	$field   array
-	 *  @return	string
-	 */
-	function update_value( $value, $post_id, $field ) {
+	public function update_value( $value, $post_id, $field ) {
 		// Nav menu items submit field data under menu-item-acf[$id][$key] rather
 		// than the standard $_POST['acf'] container. ACF either cannot find the
 		// value (empty string) or partially sanitizes it through wp_kses before
@@ -85,8 +62,10 @@ class SubtleBlocks_ACF_Field_Icon_Picker extends acf_field {
 		// handlers, no non-SVG elements — providing server-side sanitization
 		// equivalent to the DOMPurify pass that runs in the browser.
 		if ( is_numeric( $post_id )
-			&& isset( $_POST['menu-item-acf'][ $post_id ][ $field['key'] ] ) ) {
-			$raw  = wp_unslash( $_POST['menu-item-acf'][ $post_id ][ $field['key'] ] );
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- ACF nav menu save callback, nonce verified by WordPress core nav menu save routine.
+			&& isset( $_POST['menu-item-acf'][ $post_id ][ $field['key'] ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized via wp_kses() below.
+			$raw  = wp_unslash( $_POST['menu-item-acf'][ $post_id ][ $field['key'] ] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			$safe = wp_kses( $raw, self::svg_kses_allowed() );
 			// wp_kses normalizes attribute names to lowercase and values to double-quoted,
 			// so we can reliably strip href/xlink:href on <use> elements whose value is
@@ -120,7 +99,7 @@ class SubtleBlocks_ACF_Field_Icon_Picker extends acf_field {
 	 * @return array
 	 */
 	private static function svg_kses_allowed() {
-		$pres = [
+		$pres = array(
 			'fill'              => true,
 			'fill-opacity'      => true,
 			'fill-rule'         => true,
@@ -140,87 +119,221 @@ class SubtleBlocks_ACF_Field_Icon_Picker extends acf_field {
 			'class'             => true,
 			'id'                => true,
 			'style'             => true,
-		];
+		);
 
-		return [
-			'svg'            => array_merge( $pres, [
-				'xmlns'               => true,
-				'xmlns:xlink'         => true,
-				'viewbox'             => true,
-				'width'               => true,
-				'height'              => true,
-				'preserveaspectratio' => true,
-				'role'                => true,
-				'aria-hidden'         => true,
-				'aria-label'          => true,
-				'focusable'           => true,
-			] ),
+		return array(
+			'svg'            => array_merge(
+				$pres,
+				array(
+					'xmlns'               => true,
+					'xmlns:xlink'         => true,
+					'viewbox'             => true,
+					'width'               => true,
+					'height'              => true,
+					'preserveaspectratio' => true,
+					'role'                => true,
+					'aria-hidden'         => true,
+					'aria-label'          => true,
+					'focusable'           => true,
+				)
+			),
 			'g'              => $pres,
-			'defs'           => [ 'id' => true ],
-			'title'          => [ 'id' => true ],
-			'desc'           => [ 'id' => true ],
-			'use'            => array_merge( $pres, [
-				'href'       => true,
-				'xlink:href' => true,
-				'x'          => true,
-				'y'          => true,
-				'width'      => true,
-				'height'     => true,
-			] ),
-			'symbol'         => array_merge( $pres, [
-				'viewbox'             => true,
-				'width'               => true,
-				'height'              => true,
-				'preserveaspectratio' => true,
-			] ),
-			'path'           => array_merge( $pres, [ 'd' => true ] ),
-			'circle'         => array_merge( $pres, [ 'cx' => true, 'cy' => true, 'r' => true ] ),
-			'ellipse'        => array_merge( $pres, [ 'cx' => true, 'cy' => true, 'rx' => true, 'ry' => true ] ),
-			'rect'           => array_merge( $pres, [ 'x' => true, 'y' => true, 'width' => true, 'height' => true, 'rx' => true, 'ry' => true ] ),
-			'line'           => array_merge( $pres, [ 'x1' => true, 'y1' => true, 'x2' => true, 'y2' => true ] ),
-			'polyline'       => array_merge( $pres, [ 'points' => true ] ),
-			'polygon'        => array_merge( $pres, [ 'points' => true ] ),
-			'clippath'       => array_merge( $pres, [ 'clippathhunits' => true ] ),
-			'mask'           => array_merge( $pres, [ 'x' => true, 'y' => true, 'width' => true, 'height' => true, 'maskunits' => true, 'maskcontentunits' => true ] ),
-			'marker'         => array_merge( $pres, [ 'markerwidth' => true, 'markerheight' => true, 'markerunits' => true, 'orient' => true, 'refx' => true, 'refy' => true, 'viewbox' => true ] ),
-			'pattern'        => array_merge( $pres, [ 'x' => true, 'y' => true, 'width' => true, 'height' => true, 'patternunits' => true, 'patterncontentunits' => true, 'patterntransform' => true, 'viewbox' => true ] ),
-			'lineargradient' => array_merge( $pres, [ 'x1' => true, 'y1' => true, 'x2' => true, 'y2' => true, 'gradientunits' => true, 'gradienttransform' => true, 'spreadmethod' => true, 'href' => true, 'xlink:href' => true ] ),
-			'radialgradient' => array_merge( $pres, [ 'cx' => true, 'cy' => true, 'r' => true, 'fx' => true, 'fy' => true, 'gradientunits' => true, 'gradienttransform' => true, 'spreadmethod' => true, 'href' => true, 'xlink:href' => true ] ),
-			'stop'           => array_merge( $pres, [ 'offset' => true, 'stop-color' => true, 'stop-opacity' => true ] ),
-			'text'           => array_merge( $pres, [ 'x' => true, 'y' => true, 'dx' => true, 'dy' => true, 'text-anchor' => true, 'font-size' => true, 'font-family' => true, 'font-weight' => true, 'rotate' => true ] ),
-			'tspan'          => array_merge( $pres, [ 'x' => true, 'y' => true, 'dx' => true, 'dy' => true, 'text-anchor' => true, 'rotate' => true ] ),
-		];
+			'defs'           => array( 'id' => true ),
+			'title'          => array( 'id' => true ),
+			'desc'           => array( 'id' => true ),
+			'use'            => array_merge(
+				$pres,
+				array(
+					'href'       => true,
+					'xlink:href' => true,
+					'x'          => true,
+					'y'          => true,
+					'width'      => true,
+					'height'     => true,
+				)
+			),
+			'symbol'         => array_merge(
+				$pres,
+				array(
+					'viewbox'             => true,
+					'width'               => true,
+					'height'              => true,
+					'preserveaspectratio' => true,
+				)
+			),
+			'path'           => array_merge( $pres, array( 'd' => true ) ),
+			'circle'         => array_merge(
+				$pres,
+				array(
+					'cx' => true,
+					'cy' => true,
+					'r'  => true,
+				)
+			),
+			'ellipse'        => array_merge(
+				$pres,
+				array(
+					'cx' => true,
+					'cy' => true,
+					'rx' => true,
+					'ry' => true,
+				)
+			),
+			'rect'           => array_merge(
+				$pres,
+				array(
+					'x'      => true,
+					'y'      => true,
+					'width'  => true,
+					'height' => true,
+					'rx'     => true,
+					'ry'     => true,
+				)
+			),
+			'line'           => array_merge(
+				$pres,
+				array(
+					'x1' => true,
+					'y1' => true,
+					'x2' => true,
+					'y2' => true,
+				)
+			),
+			'polyline'       => array_merge( $pres, array( 'points' => true ) ),
+			'polygon'        => array_merge( $pres, array( 'points' => true ) ),
+			'clippath'       => array_merge( $pres, array( 'clippathhunits' => true ) ),
+			'mask'           => array_merge(
+				$pres,
+				array(
+					'x'                => true,
+					'y'                => true,
+					'width'            => true,
+					'height'           => true,
+					'maskunits'        => true,
+					'maskcontentunits' => true,
+				)
+			),
+			'marker'         => array_merge(
+				$pres,
+				array(
+					'markerwidth'  => true,
+					'markerheight' => true,
+					'markerunits'  => true,
+					'orient'       => true,
+					'refx'         => true,
+					'refy'         => true,
+					'viewbox'      => true,
+				)
+			),
+			'pattern'        => array_merge(
+				$pres,
+				array(
+					'x'                   => true,
+					'y'                   => true,
+					'width'               => true,
+					'height'              => true,
+					'patternunits'        => true,
+					'patterncontentunits' => true,
+					'patterntransform'    => true,
+					'viewbox'             => true,
+				)
+			),
+			'lineargradient' => array_merge(
+				$pres,
+				array(
+					'x1'                => true,
+					'y1'                => true,
+					'x2'                => true,
+					'y2'                => true,
+					'gradientunits'     => true,
+					'gradienttransform' => true,
+					'spreadmethod'      => true,
+					'href'              => true,
+					'xlink:href'        => true,
+				)
+			),
+			'radialgradient' => array_merge(
+				$pres,
+				array(
+					'cx'                => true,
+					'cy'                => true,
+					'r'                 => true,
+					'fx'                => true,
+					'fy'                => true,
+					'gradientunits'     => true,
+					'gradienttransform' => true,
+					'spreadmethod'      => true,
+					'href'              => true,
+					'xlink:href'        => true,
+				)
+			),
+			'stop'           => array_merge(
+				$pres,
+				array(
+					'offset'       => true,
+					'stop-color'   => true,
+					'stop-opacity' => true,
+				)
+			),
+			'text'           => array_merge(
+				$pres,
+				array(
+					'x'           => true,
+					'y'           => true,
+					'dx'          => true,
+					'dy'          => true,
+					'text-anchor' => true,
+					'font-size'   => true,
+					'font-family' => true,
+					'font-weight' => true,
+					'rotate'      => true,
+				)
+			),
+			'tspan'          => array_merge(
+				$pres,
+				array(
+					'x'           => true,
+					'y'           => true,
+					'dx'          => true,
+					'dy'          => true,
+					'text-anchor' => true,
+					'rotate'      => true,
+				)
+			),
+		);
 	}
 
 	/**
-	 *  load_value()
+	 * Returns the raw stored value without modification.
 	 *
-	 *  Return the raw stored value without modification.
-	 *
-	 *  @param	$value   mixed  the value to load
-	 *  @param	$post_id int
-	 *  @param	$field   array
-	 *  @return	mixed
+	 * @param  mixed $value   The value to load.
+	 * @param  int   $post_id The post ID.
+	 * @param  array $field   The field array.
+	 * @return mixed
 	 */
-	function load_value( $value, $post_id, $field ) {
+	public function load_value( $value, $post_id, $field ) {
 		return $value;
 	}
 
-	function input_admin_enqueue_scripts() {
-		$url = plugin_dir_url( __FILE__ ) . '../../build/';
+	/**
+	 * Enqueue admin scripts and styles for the icon picker field.
+	 *
+	 * @return void
+	 */
+	public function input_admin_enqueue_scripts() {
+		$url  = plugin_dir_url( __FILE__ ) . '../../build/';
 		$path = plugin_dir_path( __FILE__ ) . '../../build/';
 
-		$handle = 'sbtl-acf-icon-picker';
+		$handle     = 'sbtl-acf-icon-picker';
 		$asset_file = $path . 'acf/icon-picker-field/index.asset.php';
 
-
 		if ( file_exists( $asset_file ) ) {
-			$assets = require( $asset_file );
+			$assets = require $asset_file;
 			wp_enqueue_script( $handle, $url . 'acf/icon-picker-field/index.js', $assets['dependencies'], $assets['version'], true );
 			wp_enqueue_style( $handle, $url . 'acf/icon-picker-field/style-index.css', array(), $assets['version'] );
 		}
 	}
 }
 
-// Initialize
+// Initialize.
 new SubtleBlocks_ACF_Field_Icon_Picker();

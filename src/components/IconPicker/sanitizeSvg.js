@@ -9,15 +9,18 @@ import DOMPurify from 'dompurify';
  * stripped, blocking remote sprite injection attacks.
  *
  * @param {string} raw Raw SVG markup to sanitize.
- * @returns {string} Sanitized SVG markup.
+ * @return {string} Sanitized SVG markup.
  */
 /**
  * Hook callback — enforces fragment-only href/xlink:href on <use> elements.
  * Registered and immediately unregistered around each sanitize() call so it
  * does not bleed into other DOMPurify consumers on the same page.
+ * @param node
  */
 const restrictUseHref = ( node ) => {
-	if ( node.tagName?.toLowerCase() !== 'use' ) return;
+	if ( node.tagName?.toLowerCase() !== 'use' ) {
+		return;
+	}
 	for ( const attrName of [ 'href', 'xlink:href' ] ) {
 		const val = node.getAttribute( attrName );
 		if ( val !== null && ! /^#[\w-]+$/.test( val ) ) {

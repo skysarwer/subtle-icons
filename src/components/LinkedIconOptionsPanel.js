@@ -26,7 +26,9 @@ import RangedUnitControl from './RangedUnitControl';
  * @return {string|undefined}
  */
 function normalizeSize( value ) {
-	if ( typeof value === 'number' ) return `${ value }px`;
+	if ( typeof value === 'number' ) {
+		return `${ value }px`;
+	}
 	return value ?? undefined;
 }
 
@@ -34,16 +36,16 @@ function normalizeSize( value ) {
  * Shared ToolsPanel for multi-slot icon sizing/alignment options.
  * Uses LinkedField so the user can set each slot independently or keep them in sync.
  *
- * @param {Object}    props
- * @param {Array}     props.groups                  [{ key, label }] — defines the linked field slots.
- * @param {Object}    props.slots                   { [key]: { size?, gap?, stroke?, align? } } — values per slot.
- * @param {string}    [props.panelId]               Optional panelId forwarded to ToolsPanel/ToolsPanelItem.
- * @param {Function}  props.resetAll                Resets all items.
- * @param {Function}  props.resetOption             Called with a field key to reset that field across all slots.
- * @param {Function}  props.setSlotOptions          Called with { [key]: partial } to update one or more slots.
- * @param {boolean}   [props.showAlign=true]        Whether to render the alignment ToolsPanelItem.
- * @param {string}    [props.alignConfig='horizontal'] 'horizontal' or 'vertical' — changes align icon set.
- * @param {boolean}   [props.sizeShownByDefault=true] Whether the Size item is shown by default.
+ * @param {Object}   props
+ * @param {Array}    props.groups                     [{ key, label }] — defines the linked field slots.
+ * @param {Object}   props.slots                      { [key]: { size?, gap?, stroke?, align? } } — values per slot.
+ * @param {string}   [props.panelId]                  Optional panelId forwarded to ToolsPanel/ToolsPanelItem.
+ * @param {Function} props.resetAll                   Resets all items.
+ * @param {Function} props.resetOption                Called with a field key to reset that field across all slots.
+ * @param {Function} props.setSlotOptions             Called with { [key]: partial } to update one or more slots.
+ * @param {boolean}  [props.showAlign=true]           Whether to render the alignment ToolsPanelItem.
+ * @param {string}   [props.alignConfig='horizontal'] 'horizontal' or 'vertical' — changes align icon set.
+ * @param {boolean}  [props.sizeShownByDefault=true]  Whether the Size item is shown by default.
  */
 export default function LinkedIconOptionsPanel( {
 	groups,
@@ -56,8 +58,11 @@ export default function LinkedIconOptionsPanel( {
 	alignConfig = 'horizontal',
 	sizeShownByDefault = true,
 } ) {
-	if ( ! groups?.length ) return null;
+	if ( ! groups?.length ) {
+		return null;
+	}
 
+	// eslint-disable-next-line no-unused-vars
 	const slotOptions = ( key ) =>
 		groups.reduce( ( acc, group ) => {
 			acc[ group.key ] = slots?.[ group.key ]?.[ key ] ?? undefined;

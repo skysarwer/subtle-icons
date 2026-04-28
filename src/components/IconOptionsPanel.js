@@ -21,12 +21,12 @@ import RangedUnitControl from './RangedUnitControl';
  * Shared ToolsPanel for iconOptions (size, gap, thickness, align).
  *
  * @param {Object}   props
- * @param {Object}   props.iconOptions   Current iconOptions object.
- * @param {Function} props.onChange      Called with a partial object to merge into iconOptions.
- * @param {Function} props.onResetAll    Called when "Reset all" is triggered.
- * @param {boolean}  [props.isHorizontal=true]  When true the align control is labelled
- *                                              "Vertical Align" and uses up/center/down icons.
- *                                              When false it becomes "Justify" with left/center/right.
+ * @param {Object}   props.iconOptions         Current iconOptions object.
+ * @param {Function} props.onChange            Called with a partial object to merge into iconOptions.
+ * @param {Function} props.onResetAll          Called when "Reset all" is triggered.
+ * @param {boolean}  [props.isHorizontal=true] When true the align control is labelled
+ *                                             "Vertical Align" and uses up/center/down icons.
+ *                                             When false it becomes "Justify" with left/center/right.
  */
 export default function IconOptionsPanel( {
 	iconOptions = {},

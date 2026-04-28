@@ -27,7 +27,7 @@ define( 'SBTL_BLOCKS_VERSION', '0.1.0' );
  */
 function create_block_sbtl_icons_block_init() {
 
-	$blocks = array (
+	$blocks = array(
 		'icon-button',
 		'icon-list',
 		'icon-list-item',
@@ -52,6 +52,12 @@ function create_block_sbtl_icons_block_init() {
 add_action( 'init', 'create_block_sbtl_icons_block_init' );
 
 
+/**
+ * Prepend the sbtl category to the block categories list.
+ *
+ * @param array $categories Existing block categories.
+ * @return array Modified categories.
+ */
 function sbtl_block_categories( $categories ) {
 
 	$sbtl_category = array(

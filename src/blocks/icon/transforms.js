@@ -10,8 +10,12 @@ import { createBlock } from '@wordpress/blocks';
  */
 function iconOptionsFromIconBlock( size, stroke ) {
 	const options = {};
-	if ( size ) options.size = size;
-	if ( stroke !== undefined ) options.stroke = stroke;
+	if ( size ) {
+		options.size = size;
+	}
+	if ( stroke !== undefined ) {
+		options.stroke = stroke;
+	}
 	return Object.keys( options ).length ? options : null;
 }
 

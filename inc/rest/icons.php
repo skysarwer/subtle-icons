@@ -1,6 +1,8 @@
 <?php
 /**
  * REST API Endpoints for Subtle Blocks
+ *
+ * @package sbtl
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -284,7 +286,7 @@ function sbtl_handle_search( $terms, $collections_str, $page, $per_page ) {
  */
 function sbtl_handle_browse( $active_collections, $page, $per_page ) {
 	// Build a deterministic cache key for the assembled result.
-	$assembled_cache_key = 'sbtl_browse_' . md5(
+	$assembled_cache_key   = 'sbtl_browse_' . md5(
 		implode( ',', $active_collections )
 	);
 	$full_collection_icons = get_transient( $assembled_cache_key );
@@ -354,15 +356,15 @@ function sbtl_handle_browse( $active_collections, $page, $per_page ) {
 	}
 
 	$total = count( $full_collection_icons );
-    
-    // NOTE: For browse mode, we now return the FULL list to allow client-side pagination.
-    // The page/per_page params are ignored for the 'icons' array but kept for compatibility/metadata if needed.
-    
+
+	// NOTE: For browse mode, we now return the FULL list to allow client-side pagination.
+	// The page/per_page params are ignored for the 'icons' array but kept for compatibility/metadata if needed.
+
 	return sbtl_icon_response(
-		$full_collection_icons, // Return EVERYTHING
+		$full_collection_icons, // Return EVERYTHING.
 		$total,
-		1, // Treat as single page of results
-		$total, // Per page = total
+		1, // Treat as single page of results.
+		$total, // Per page = total.
 		$had_errors
 	);
 }
@@ -403,5 +405,3 @@ function sbtl_get_icons( $request ) {
 	// --- BRANCH B: Browse mode ---
 	return sbtl_handle_browse( $active_collections, $page, $per_page );
 }
-
-

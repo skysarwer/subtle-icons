@@ -17,7 +17,7 @@ export const ICONS_PER_PAGE = 28;
  * Returns true for plugin-owned slugs (slash-separated or the bare "custom").
  *
  * @param {string} slug
- * @returns {boolean}
+ * @return {boolean}
  */
 export const isPluginSlug = ( slug ) =>
 	slug === 'custom' || ( !! slug && slug.includes( '/' ) );
@@ -26,7 +26,7 @@ export const isPluginSlug = ( slug ) =>
  * Returns true for Iconify registry slugs ("prefix:name", no slash).
  *
  * @param {string} slug
- * @returns {boolean}
+ * @return {boolean}
  */
 export const isIconifySlug = ( slug ) =>
 	! isPluginSlug( slug ) && /^[a-z0-9-]+:[a-z0-9-]+$/.test( slug );

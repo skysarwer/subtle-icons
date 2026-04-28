@@ -95,8 +95,12 @@ const v1 = {
 
 	migrate( { iconSize, iconGap, iconThickness, iconOptions = {}, ...rest } ) {
 		const migratedOptions = { ...iconOptions };
-		if ( iconSize ) migratedOptions.size = `${ iconSize }px`;
-		if ( iconThickness != null ) migratedOptions.stroke = iconThickness;
+		if ( iconSize ) {
+			migratedOptions.size = `${ iconSize }px`;
+		}
+		if ( iconThickness !== null && iconThickness !== undefined ) {
+			migratedOptions.stroke = iconThickness;
+		}
 		return { ...rest, iconOptions: migratedOptions };
 	},
 };

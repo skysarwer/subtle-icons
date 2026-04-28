@@ -13,8 +13,8 @@ export function useBlockAttributes( attributes, setAttributes ) {
 	 * Merge `partial` into the top-level attribute object at `attrKey`,
 	 * stripping any empty / null / undefined values that result.
 	 *
-	 * @param {string} attrKey       Attribute key (e.g. 'summaryOptions').
-	 * @param {Object} partial       Partial values to merge.
+	 * @param {string} attrKey Attribute key (e.g. 'summaryOptions').
+	 * @param {Object} partial Partial values to merge.
 	 */
 	const setClean = useCallback(
 		( attrKey, partial ) => {
@@ -28,9 +28,9 @@ export function useBlockAttributes( attributes, setAttributes ) {
 	 * Merge `partial` into a nested state sub-object
 	 * (e.g. `itemAppearance.hover.*`).
 	 *
-	 * @param {string} attrKey   Top-level attribute key (e.g. 'itemAppearance').
-	 * @param {string} stateKey  Nested key (e.g. 'hover').
-	 * @param {Object} partial   Partial values to merge into the nested object.
+	 * @param {string} attrKey  Top-level attribute key (e.g. 'itemAppearance').
+	 * @param {string} stateKey Nested key (e.g. 'hover').
+	 * @param {Object} partial  Partial values to merge into the nested object.
 	 */
 	const setNested = useCallback(
 		( attrKey, stateKey, partial ) => {

@@ -35,6 +35,7 @@ import {
 	reusableBlock,
 } from '@wordpress/icons';
 
+// eslint-disable-next-line no-unused-vars
 import IconPicker, {
 	IconPickerTrigger,
 	IconPickerPreview,
@@ -59,7 +60,9 @@ function IconSlot( {
 	onOpen,
 	editLabel,
 } ) {
-	if ( ! icon && ! toggleIcon ) return null;
+	if ( ! icon && ! toggleIcon ) {
+		return null;
+	}
 	if ( onOpen ) {
 		return (
 			<div className={ className } style={ style }>
@@ -361,6 +364,7 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 		setClean( 'iconOptions', partial );
 	};
 
+	// eslint-disable-next-line no-unused-vars
 	const setIconSlotOptions = ( slot, partial ) => {
 		setIconOptions( {
 			[ slot ]: cleanMerge(
@@ -480,8 +484,19 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 					target={ isButtonTag ? undefined : linkTarget }
 					rel={ isButtonTag ? undefined : rel }
 					type={ isButtonTag ? type || 'button' : undefined }
+					role={ isButtonTag ? 'button' : 'link' }
+					tabIndex={ 0 }
 					style={ buttonStyle }
 					onClick={ ( event ) => {
+						if ( ! isButtonTag ) {
+							event.preventDefault();
+						}
+					} }
+					onKeyDown={ ( event ) => {
+						if ( event.key !== 'Enter' && event.key !== ' ' ) {
+							return;
+						}
+
 						if ( ! isButtonTag ) {
 							event.preventDefault();
 						}

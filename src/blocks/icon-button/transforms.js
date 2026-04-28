@@ -85,8 +85,8 @@ function stripTextAlignClasses( className ) {
  * class name. Promoting that class back into `style.typography.textAlign` keeps
  * the semantic attribute and rendered classes in sync.
  *
- * @param {Object|undefined} style Existing block style object.
- * @param {string|undefined} className Block className attribute.
+ * @param {Object|undefined} style               Existing block style object.
+ * @param {string|undefined} className           Block className attribute.
  * @param {string|undefined} deprecatedTextAlign Legacy top-level textAlign attribute.
  * @return {Object|undefined} Style object with normalized text alignment.
  */
@@ -193,7 +193,11 @@ function isGradientBackgroundValue( value ) {
  * object. This helper resolves those sources into the icon-button block's
  * `stateAppearance.default` shape so the visual result survives the transform.
  *
- * @param {Object} attributes Core button style-related attributes.
+ * @param {Object} attributes                 Core button style-related attributes.
+ * @param          attributes.backgroundColor
+ * @param          attributes.textColor
+ * @param          attributes.gradient
+ * @param          attributes.style
  * @return {Object|undefined} Normalized default appearance payload.
  */
 function getCoreButtonDefaultAppearance( {
@@ -504,6 +508,7 @@ function paragraphToIconButtonAttributes( attributes ) {
  * @param {Object} attributes Attributes from an sbtl/icon-button block instance.
  * @return {{ content: string }} Paragraph attributes containing serialized HTML.
  */
+// eslint-disable-next-line no-unused-vars
 function iconButtonToParagraphAttributes( attributes ) {
 	const { tagName, text, url, title, linkTarget, rel } = attributes;
 

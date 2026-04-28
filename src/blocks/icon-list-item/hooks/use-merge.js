@@ -24,6 +24,7 @@ export default function useMerge( clientId, onMerge ) {
 		useDispatch( blockEditorStore );
 	const outdentListItem = useOutdentListItem();
 
+	// eslint-disable-next-line no-unused-vars
 	function getTrailingId( id ) {
 		const order = getBlockOrder( id );
 
