@@ -1,0 +1,14 @@
+# Reference files
+ref/
+
+# Build scripts (Node.js CLI tools, not block editor code)
+scripts/
+
+# Build output
+build/
+
+# Third-party vendor dependencies (minified)
+dependencies/
+
+# PHP vendor dependencies
+vendor/
