@@ -22,6 +22,8 @@ define( 'SBTL_MAX_SEARCH_RESULTS', 999 );
 define( 'SBTL_SEARCH_CACHE_TTL', 5 * MINUTE_IN_SECONDS );
 define( 'SBTL_BROWSE_CACHE_TTL', HOUR_IN_SECONDS );
 define( 'SBTL_HTTP_TIMEOUT', 3 );
+define( 'SBTL_ICONIFY_SVG_BASE_URL', 'https://api.iconify.design' );
+define( 'SBTL_SVG_CACHE_TTL', HOUR_IN_SECONDS );
 
 /**
  * Register REST API routes.
@@ -77,6 +79,36 @@ function sbtl_register_rest_routes() {
 						return is_numeric( $val );
 					},
 					'default'           => SBTL_DEFAULT_PER_PAGE,
+				),
+			),
+		)
+	);
+
+	register_rest_route(
+		'subtle-icons/v1',
+		'/svg',
+		array(
+			'methods'             => WP_REST_Server::READABLE,
+			'callback'            => 'sbtl_get_svg',
+			'permission_callback' => function () {
+				return current_user_can( 'edit_posts' );
+			},
+			'args'                => array(
+				'prefix' => array(
+					'type'              => 'string',
+					'required'          => true,
+					'sanitize_callback' => 'sanitize_text_field',
+					'validate_callback' => function ( $val ) {
+						return (bool) preg_match( '/^[a-z0-9-]+$/', $val );
+					},
+				),
+				'name'   => array(
+					'type'              => 'string',
+					'required'          => true,
+					'sanitize_callback' => 'sanitize_text_field',
+					'validate_callback' => function ( $val ) {
+						return (bool) preg_match( '/^[a-z0-9-]+$/', $val );
+					},
 				),
 			),
 		)
@@ -404,4 +436,47 @@ function sbtl_get_icons( $request ) {
 
 	// --- BRANCH B: Browse mode ---
 	return sbtl_handle_browse( $active_collections, $page, $per_page );
+}
+
+/**
+ * Proxy a single SVG from Iconify, returning the raw markup as JSON.
+ *
+ * @param WP_REST_Request $request The incoming request.
+ * @return WP_REST_Response|WP_Error
+ */
+function sbtl_get_svg( $request ) {
+	$prefix = $request->get_param( 'prefix' );
+	$name   = $request->get_param( 'name' );
+
+	$cache_key = 'sbtl_svg_' . md5( $prefix . ':' . $name );
+	$cached    = get_transient( $cache_key );
+
+	if ( false !== $cached ) {
+		return new WP_REST_Response( array( 'svg' => $cached ), 200 );
+	}
+
+	$url      = SBTL_ICONIFY_SVG_BASE_URL . "/{$prefix}/{$name}.svg";
+	$response = sbtl_remote_get( $url );
+
+	if ( is_wp_error( $response ) ) {
+		return new WP_Error(
+			'svg_fetch_failed',
+			__( 'Failed to fetch SVG from Iconify.', 'subtle-icons' ),
+			array( 'status' => 502 )
+		);
+	}
+
+	$code = wp_remote_retrieve_response_code( $response );
+	if ( $code < 200 || $code >= 300 ) {
+		return new WP_Error(
+			'svg_fetch_failed',
+			__( 'Iconify API returned an error.', 'subtle-icons' ),
+			array( 'status' => 502 )
+		);
+	}
+
+	$svg = wp_remote_retrieve_body( $response );
+	set_transient( $cache_key, $svg, SBTL_SVG_CACHE_TTL );
+
+	return new WP_REST_Response( array( 'svg' => $svg ), 200 );
 }

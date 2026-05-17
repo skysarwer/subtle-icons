@@ -4,7 +4,7 @@ Tags:              icons, block-editor, gutenberg, acf, svg
 Requires at least: 6.5
 Tested up to:      6.9
 Requires PHP:      7.4
-Stable tag:        1.0.0
+Stable tag:        1.0.1
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,10 +47,34 @@ The icon search itself only works for logged-in users who can already edit posts
 1. The Icon Picker interface natively integrated into the Icon Button block. 
 
 == Changelog ==
-= 1.0.0 =
+= 1.0.1 =
 * Initial release of Subtle Icons.
 
 == Development ==
 
 Source code and build tools are available at https://github.com/skysarwer/subtle-icons.
 Review the repository's `README.md` for more information.
+
+== External Services ==
+
+This plugin connects to the Iconify API to power the icon search and picker interface. The API is only contacted from within the WordPress admin area when a logged-in user with post-editing capabilities is using the Icon Picker — it is never called on the public-facing frontend.
+
+**Iconify API**
+
+Used to search the Iconify icon registry and to retrieve individual SVG files. The following data is sent:
+* Icon search queries (the keyword string typed by the editor).
+* Icon set prefix and icon name when fetching a specific SVG.
+
+No personally identifiable information is transmitted. Requests are made only when the Icon Picker is actively used by an authenticated user.
+
+All icon search, browse, and individual SVG selection requests are made server-to-server: the editor's browser calls a WordPress REST endpoint on your own server, which then forwards the query to Iconify. Only your server's IP address is visible to Iconify for these requests.
+
+Icon preview thumbnails displayed in the browsable grid are loaded directly from the editor's browser by the bundled `@iconify/react` library. The editor's IP address and standard browser headers are sent with these thumbnail requests.
+
+Primary endpoint: `https://api.iconify.design`
+Fallback endpoints (provided by the bundled `@iconify/react` library): `https://api.simplesvg.com`, `https://api.unisvg.com`
+
+All three endpoints are operated by the Iconify project.
+
+* Privacy policy: https://iconify.design/privacy/
+* Service website: https://iconify.design/

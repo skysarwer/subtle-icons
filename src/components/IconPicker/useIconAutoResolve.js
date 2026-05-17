@@ -1,4 +1,5 @@
 import { useState, useEffect } from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 import sanitizeSvg from './sanitizeSvg';
 
 /**
@@ -40,16 +41,13 @@ const useIconAutoResolve = ( value, onChange, onSlugChange = null ) => {
 		const resolveIcon = async () => {
 			setIsResolving( true );
 			try {
-				const response = await fetch(
-					`https://api.iconify.design/${ prefix }/${ name }.svg`
-				);
-				if ( response.ok ) {
-					const svgContent = await response.text();
-					const cleanSvg = sanitizeSvg( svgContent );
-					onChange( cleanSvg );
-					if ( onSlugChange ) {
-						onSlugChange( value );
-					}
+				const { svg } = await apiFetch( {
+					path: `/subtle-icons/v1/svg?prefix=${ encodeURIComponent( prefix ) }&name=${ encodeURIComponent( name ) }`,
+				} );
+				const cleanSvg = sanitizeSvg( svg );
+				onChange( cleanSvg );
+				if ( onSlugChange ) {
+					onSlugChange( value );
 				}
 			} catch ( error ) {
 				// eslint-disable-next-line no-console

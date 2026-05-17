@@ -5,6 +5,8 @@
  * @package sbtl
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
+
 // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName -- class name uses plugin prefix abbreviation, not full class name.
 /**
  * ACF Icon Picker field type.

@@ -233,14 +233,12 @@ const IconPickerModal = ( {
 					cleanSvg = sanitizeSvg( rawSvg );
 				} else {
 					// Fallback: icon data not in cache (e.g. pre-selected slug not yet scrolled into view).
-					const response = await fetch(
-						`https://api.iconify.design/${ prefix }/${ name }.svg`
-					);
-					if ( ! response.ok ) {
-						throw new Error( 'Failed to fetch SVG' );
-					}
-					const svgContent = await response.text();
-					cleanSvg = sanitizeSvg( svgContent );
+					const { svg: fetchedSvg } = await apiFetch( {
+						path: `/subtle-icons/v1/svg?prefix=${ encodeURIComponent(
+							prefix
+						) }&name=${ encodeURIComponent( name ) }`,
+					} );
+					cleanSvg = sanitizeSvg( fetchedSvg );
 				}
 
 				onSelect( cleanSvg );
