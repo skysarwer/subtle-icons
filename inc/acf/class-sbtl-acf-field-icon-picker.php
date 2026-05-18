@@ -36,6 +36,18 @@ class SBTL_ACF_Field_Icon_Picker extends acf_field {
 	 * @return void
 	 */
 	public function render_field( $field ) {
+		// Output a plugin-owned nonce once per nav-menus.php page load so
+		// update_value() can perform an explicit, first-party nonce check.
+		// Only needed on nav menu screens — all other contexts use ACF's own
+		// verified pipeline and never read $_POST directly.
+		static $nonce_printed = false;
+		if ( ! $nonce_printed && function_exists( 'get_current_screen' ) ) {
+			$screen = get_current_screen();
+			if ( $screen && 'nav-menus' === $screen->id ) {
+				wp_nonce_field( 'sbtl_icon_picker_save', '_sbtl_nonce', false );
+				$nonce_printed = true;
+			}
+		}
 		?>
 		<div class="sbtl-acf-icon-picker-field" data-value="<?php echo esc_attr( $field['value'] ); ?>">
 			<input type="hidden" name="<?php echo esc_attr( $field['name'] ); ?>" value="<?php echo esc_attr( $field['value'] ); ?>" class="sbtl-acf-icon-picker-input" />
@@ -59,10 +71,24 @@ class SBTL_ACF_Field_Icon_Picker extends acf_field {
 		// or partially sanitizes it through wp_kses before reaching this method,
 		// the latter stripping SVG tags like <use>. Prefer the raw POST value for
 		// nav menu items so complex SVG markup is preserved for our own sanitizer.
+		//
+		// SECURITY — Nonce + capability verification for this $_POST read:
+		// render_field() outputs a hidden _sbtl_nonce field (action 'sbtl_icon_picker_save')
+		// that is specific to this field type. We verify that nonce here before reading
+		// any raw POST data. current_user_can('edit_theme_options') is checked independently 
+		// as the authorisation gate — nav-menus.php enforces the same capability before the
+		// save routine runs, so this is defence-in-depth.
 		if ( is_numeric( $post_id )
-			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- ACF nav menu save callback, nonce verified by WordPress core nav menu save routine.
+			&& current_user_can( 'edit_theme_options' )
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- existence check only; nonce is verified immediately inside the block before data is read.
 			&& isset( $_POST['menu-item-acf'][ $post_id ][ $field['key'] ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			// phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized via wp_kses() below.
+			// Verify the plugin-owned nonce rendered by render_field().
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized by sanitize_text_field.
+			$nonce = sanitize_text_field( wp_unslash( $_POST['_sbtl_nonce'] ?? '' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			if ( ! wp_verify_nonce( $nonce, 'sbtl_icon_picker_save' ) ) {
+				return $value;
+			}
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified above; sanitized via wp_kses() below.
 			$raw = wp_unslash( $_POST['menu-item-acf'][ $post_id ][ $field['key'] ] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		} else {
 			// Standard ACF save path (post/page/term edit screens).

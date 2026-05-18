@@ -4,7 +4,7 @@ Tags:              icons, block-editor, gutenberg, acf, svg
 Requires at least: 6.5
 Tested up to:      6.9
 Requires PHP:      7.4
-Stable tag:        1.0.1
+Stable tag:        1.0.2
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,13 +47,23 @@ The icon search itself only works for logged-in users who can already edit posts
 1. The Icon Picker interface natively integrated into the Icon Button block. 
 
 == Changelog ==
-= 1.0.1 =
+= 1.0.2 =
 * Initial release of Subtle Icons.
 
 == Development ==
 
-Source code and build tools are available at https://github.com/skysarwer/subtle-icons.
-Review the repository's `README.md` for more information.
+The complete source code for this plugin, including all uncompiled JavaScript and CSS, is publicly available at:
+
+https://github.com/skysarwer/subtle-icons
+
+Build requirements: Node.js and npm.
+
+To build from source:
+
+1. Clone the repository: `git clone https://github.com/skysarwer/subtle-icons`
+2. Install dependencies: `npm install`
+3. Compile assets for production: `npm run build`
+4. Or start a development watcher: `npm start`
 
 == External Services ==
 
@@ -76,5 +86,6 @@ Fallback endpoints (provided by the bundled `@iconify/react` library): `https://
 
 All three endpoints are operated by the Iconify project.
 
+* Terms of use / API documentation: https://iconify.design/docs/api/
 * Privacy policy: https://iconify.design/privacy/
 * Service website: https://iconify.design/
