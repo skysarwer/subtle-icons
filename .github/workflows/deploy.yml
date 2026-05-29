@@ -1,8 +1,9 @@
 name: Deploy Subtle Icons to WordPress.org
 
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -12,22 +13,87 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Read local plugin version
+        id: version
+        shell: bash
+        run: |
+          PLUGIN_VERSION="$(sed -n "s/^ \* Version:[[:space:]]*//p" subtle-icons.php | head -n1)"
+          STABLE_TAG="$(sed -n "s/^Stable tag:[[:space:]]*//p" readme.txt | head -n1)"
+
+          if [ -z "$PLUGIN_VERSION" ]; then
+            echo "Could not read Version from subtle-icons.php" >&2
+            exit 1
+          fi
+
+          if [ -z "$STABLE_TAG" ]; then
+            echo "Could not read Stable tag from readme.txt" >&2
+            exit 1
+          fi
+
+          if [ "$PLUGIN_VERSION" != "$STABLE_TAG" ]; then
+            echo "Version mismatch: subtle-icons.php=$PLUGIN_VERSION readme.txt=$STABLE_TAG" >&2
+            exit 1
+          fi
+
+          echo "value=$PLUGIN_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Check latest published SVN version
+        id: svn
+        shell: bash
+        run: |
+          VERSION="${{ steps.version.outputs.value }}"
+          TAGS="$(svn ls "https://plugins.svn.wordpress.org/subtle-icons/tags/" 2>/dev/null | tr -d '/' | sed '/^[[:space:]]*$/d' || true)"
+
+          if [ -z "$TAGS" ]; then
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+            echo "reason=no-existing-svn-tags" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          LATEST_VERSION="$(printf '%s\n' "$TAGS" | sort -V | tail -n1)"
+          echo "latest_version=$LATEST_VERSION" >> "$GITHUB_OUTPUT"
+
+          if [ "$VERSION" = "$LATEST_VERSION" ]; then
+            echo "should_deploy=false" >> "$GITHUB_OUTPUT"
+            echo "reason=version-already-published" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          HIGHEST_VERSION="$(printf '%s\n%s\n' "$LATEST_VERSION" "$VERSION" | sort -V | tail -n1)"
+          if [ "$HIGHEST_VERSION" != "$VERSION" ]; then
+            echo "Local version $VERSION is older than latest published SVN version $LATEST_VERSION" >&2
+            exit 1
+          fi
+
+          echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+          echo "reason=new-version" >> "$GITHUB_OUTPUT"
+
+      - name: Skip deploy (version unchanged)
+        if: steps.svn.outputs.should_deploy != 'true'
+        run: |
+          echo "Skipping deploy: ${{ steps.svn.outputs.reason }}"
+
       - name: Setup Node
+        if: steps.svn.outputs.should_deploy == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
           cache: npm
 
       - name: Install dependencies
+        if: steps.svn.outputs.should_deploy == 'true'
         run: npm ci
 
       - name: Build
+        if: steps.svn.outputs.should_deploy == 'true'
         run: npm run build
 
       - name: Deploy to WordPress.org
+        if: steps.svn.outputs.should_deploy == 'true'
         uses: 10up/action-wordpress-plugin-deploy@2.3.0
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SLUG: subtle-icons
           ASSETS_DIR: .wordpress-org
+          VERSION: ${{ steps.version.outputs.value }}
