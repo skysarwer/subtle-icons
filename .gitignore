@@ -21,9 +21,6 @@ vendor/
 # Dependency directories
 node_modules/
 
-# Package lock file
-package-lock.json
-
 # Optional npm cache directory
 .npm
 
