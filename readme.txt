@@ -4,7 +4,7 @@ Tags:              icons, block-editor, gutenberg, acf, svg
 Requires at least: 6.5
 Tested up to:      7.0
 Requires PHP:      7.4
-Stable tag:        1.0.5
+Stable tag:        1.0.6
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,17 +81,17 @@ To build from source:
 
 This plugin uses the Iconify API to power the Icon Picker. The API is never called on the public frontend; it only runs in the WordPress admin when actively used by a logged-in user with post-editing capabilities. No personally identifiable information (PII) is transmitted.
 
-### How Data is Sent 
+= How Data is Sent =
 
 * **Server-to-Server (Proxy):** Search queries (keywords) and icon retrievals (set prefix and icon name) are routed through a REST endpoint on your WordPress server. Iconify only sees your server's IP address for these requests.
 * **Direct from Browser:** Icon preview thumbnails in the search grid are loaded directly from the editor's browser (via the @iconify/react library). The editor's IP address and standard browser headers are visible to Iconify for these image requests.
 
-### API Endpoints (all operated by the Iconify project):
+= API Endpoints (all operated by the Iconify project): =
 
-* **Primary:** `[api.iconify.design](https://api.iconify.design)`
-* **Fallbacks:** `[api.simplesvg.com](https://api.simplesvg.com), [api.unisvg.com](https://api.unisvg.com)`
+* **Primary:** [api.iconify.design](https://api.iconify.design)
+* **Fallbacks:** [api.simplesvg.com](https://api.simplesvg.com), [api.unisvg.com](https://api.unisvg.com)
 
-**Iconify Policies & Links:**
+= Iconify Policies & Links: =
 
 * [Service website](https://iconify.design/)
 * [API documentation](https://iconify.design/docs/api/)
