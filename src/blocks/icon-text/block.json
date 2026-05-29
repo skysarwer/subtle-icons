@@ -7,7 +7,7 @@
 	"description": "Pair an icon with a text label. Useful for notices, callouts and rich headings.",
 	"keywords": [ "icon", "text", "notice", "callout", "heading", "rich" ],
 	"textdomain": "subtle-icons",
-	"icon": "info",
+	"icon": "info-outline",
 	"attributes": {
 		"content": {
 			"type": "rich-text",

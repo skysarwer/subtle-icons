@@ -3,6 +3,7 @@
 	"apiVersion": 3,
 	"name": "sbtl/icon-list",
 	"title": "Icon List",
+	"icon": "editor-ul",
 	"category": "sbtl",
 	"allowedBlocks": [ "sbtl/icon-list-item" ],
 	"description": "An organized collection of items displayed in a specific order.",

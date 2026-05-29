@@ -2,26 +2,35 @@
 Contributors:      evanworks
 Tags:              icons, block-editor, gutenberg, acf, svg
 Requires at least: 6.5
-Tested up to:      6.9
+Tested up to:      7.0
 Requires PHP:      7.4
-Stable tag:        1.0.3
+Stable tag:        1.0.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-A breathtakingly simple icon ecosystem for WordPress. 100,000+ icons. Zero bloat. Native UI.
+A breathtakingly simple icon ecosystem for WordPress. Access thousands of icons to use across custom blocks and an integrated ACF field.
 
 == Description ==
 
 Subtle Icons is a bloat-free, lightweight plugin that brings thousands of icons directly into the WordPress block editor and Advanced Custom Fields (ACF).
-Search and insert icons from Lucide, Material, Heroicons, and dozens of other icon libraries without leaving the editor — or upload your own SVGs.
 
-### Features
-*   **Icon Block:** A standalone icon block with sizing, thickness, and color controls.
-*   **Icon + Text Block:** Pair an icon with text for notices, callouts, and feature highlights.
-*   **Icon List Block:** Build beautiful, responsive lists with custom leading icons.
+### Find the right icon, every time. 
+Powered by the massive open-source Iconify ecosystem, search and insert icons from Lucide, Material, Heroicons, and dozens of other icon libraries without leaving the editor — or upload your own SVGs.
+
+### Four lightweight blocks that cover the essentials.
 *   **Icon Button Block:** Prompt visitors to take action with a native-feeling button block supporting leading and trailing icons.
-*   **ACF Field Integration:** A custom Icon Picker field type for Advanced Custom Fields.
-*   **Iconify Integration:** Powered by the massive open-source Iconify ecosystem.
+*   **Icon + Text Block:** Pair an icon with text for notices, callouts, and feature highlights.
+*   **Icon Block:** A standalone icon block with sizing, thickness, and color controls.
+*   **Icon List Block:** Build beautiful, responsive lists with custom leading icons.
+
+### ACF Integration: Bring icons to your structured content
+Add a full-featured icon field to taxonomies, repeaters, options pages, and custom blocks — anywhere ACF lives
+
+### Built for custom integrations
+Take full control of the icon workflow. Use our lightweight filters and actions to tailor the experience for your clients and custom builds.
+*   Filter or restrict available icon collections
+*   Configure default block icons globally
+*   Robust developer documentation and more extensibility coming soon!
 
 == Installation ==
 
@@ -47,6 +56,8 @@ The icon search itself only works for logged-in users who can already edit posts
 1. The Icon Picker interface natively integrated into the Icon Button block. 
 
 == Changelog ==
+= 1.0.4 = 
+* Test up to WP 7.0, update readme and plugin assets
 = 1.0.2 =
 * Initial release of Subtle Icons.
 
@@ -67,25 +78,17 @@ To build from source:
 
 == External Services ==
 
-This plugin connects to the Iconify API to power the icon search and picker interface. The API is only contacted from within the WordPress admin area when a logged-in user with post-editing capabilities is using the Icon Picker — it is never called on the public-facing frontend.
+This plugin uses the Iconify API to power the Icon Picker. The API is never called on the public frontend; it only runs in the WordPress admin when actively used by a logged-in user with post-editing capabilities. No personally identifiable information (PII) is transmitted.
 
-**Iconify API**
+**How Data is Sent:**
+* **Server-to-Server (Proxy):** Search queries (keywords) and icon retrievals (set prefix and icon name) are routed through a REST endpoint on your WordPress server. Iconify only sees your server's IP address for these requests.
+* **Direct from Browser:** Icon preview thumbnails in the search grid are loaded directly from the editor's browser (via the @iconify/react library). The editor's IP address and standard browser headers are visible to Iconify for these image requests.
 
-Used to search the Iconify icon registry and to retrieve individual SVG files. The following data is sent:
-* Icon search queries (the keyword string typed by the editor).
-* Icon set prefix and icon name when fetching a specific SVG.
+**API Endpoints (all operated by the Iconify project):**
+*   **Primary:** https://api.iconify.design
+*   **Fallbacks:** https://api.simplesvg.com, https://api.unisvg.com
 
-No personally identifiable information is transmitted. Requests are made only when the Icon Picker is actively used by an authenticated user.
-
-All icon search, browse, and individual SVG selection requests are made server-to-server: the editor's browser calls a WordPress REST endpoint on your own server, which then forwards the query to Iconify. Only your server's IP address is visible to Iconify for these requests.
-
-Icon preview thumbnails displayed in the browsable grid are loaded directly from the editor's browser by the bundled `@iconify/react` library. The editor's IP address and standard browser headers are sent with these thumbnail requests.
-
-Primary endpoint: `https://api.iconify.design`
-Fallback endpoints (provided by the bundled `@iconify/react` library): `https://api.simplesvg.com`, `https://api.unisvg.com`
-
-All three endpoints are operated by the Iconify project.
-
+**Iconify Policies & Links:**
+* Service website: https://iconify.design/
 * Terms of use / API documentation: https://iconify.design/docs/api/
 * Privacy policy: https://iconify.design/privacy/
-* Service website: https://iconify.design/

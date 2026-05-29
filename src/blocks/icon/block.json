@@ -5,7 +5,7 @@
 	"version": "0.1.0",
 	"title": "Icon",
 	"category": "sbtl",
-	"icon": "art",
+	"icon": "grid-view",
 	"description": "Choose and display an icon.",
 	"supports": {
 		"html": false,

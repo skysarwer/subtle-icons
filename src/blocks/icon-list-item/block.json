@@ -54,6 +54,7 @@
 	},
 	"usesContext": [ "sbtl/icon-list/icon" ],
 	"supports": {
+		"inserter": false,
 		"anchor": true,
 		"className": false,
 		"splitting": true,
