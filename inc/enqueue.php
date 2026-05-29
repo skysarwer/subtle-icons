@@ -10,9 +10,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Enqueue shared editor styles for custom UI components.
+ * Enqueue shared editor styles inside the block editor canvas.
  */
-function sbtl_enqueue_editor_assets() {
+function sbtl_enqueue_editor_canvas_assets() {
+	if ( ! is_admin() ) {
+		return;
+	}
+
 	$css_file = plugin_dir_path( __FILE__ ) . '../build/sass/blocks-editor.css';
 	wp_enqueue_style(
 		'sbtl-blocks-editor-ui',
@@ -20,9 +24,13 @@ function sbtl_enqueue_editor_assets() {
 		array( 'wp-edit-blocks' ),
 		file_exists( $css_file ) ? filemtime( $css_file ) : false
 	);
+}
+add_action( 'enqueue_block_assets', 'sbtl_enqueue_editor_canvas_assets' );
 
-	add_editor_style( plugins_url( '../build/sass/blocks-editor.css', __FILE__ ) );
-
+/**
+ * Enqueue shared editor styles for custom UI components.
+ */
+function sbtl_enqueue_editor_assets() {
 	$editor_asset_file = plugin_dir_path( __FILE__ ) . '../build/editor/index.asset.php';
 	if ( file_exists( $editor_asset_file ) ) {
 		$editor_asset = include $editor_asset_file;

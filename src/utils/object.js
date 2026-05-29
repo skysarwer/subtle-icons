@@ -69,3 +69,39 @@ export function cleanMerge( current = {}, partial = {} ) {
 		...partial,
 	} );
 }
+
+const DEFAULT_BLOCK_CLASS_NAME_PATTERN = /^wp-block-[^\s]+$/;
+
+/**
+ * Remove the leading default Gutenberg block class from block props.
+ * Intentionally-added wp-block-* classes later in the list are preserved.
+ *
+ * @param {Object} blockProps Block props returned by useBlockProps.
+ * @return {Object} Block props without the leading default class token.
+ */
+export function filterDefaultBlockClassName( blockProps = {} ) {
+	const className = blockProps.className;
+
+	if ( typeof className !== 'string' ) {
+		return blockProps;
+	}
+
+	const classNames = className.trim().split( /\s+/ ).filter( Boolean );
+
+	if ( ! DEFAULT_BLOCK_CLASS_NAME_PATTERN.test( classNames[ 0 ] ) ) {
+		return blockProps;
+	}
+
+	classNames.shift();
+
+	if ( classNames.length ) {
+		return {
+			...blockProps,
+			className: classNames.join( ' ' ),
+		};
+	}
+
+	const { className: omittedClassName, ...restBlockProps } = blockProps;
+
+	return restBlockProps;
+}
