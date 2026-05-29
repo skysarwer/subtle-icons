@@ -11,14 +11,14 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Read local plugin version
         id: version
         shell: bash
         run: |
-          PLUGIN_VERSION="$(sed -n "s/^ \* Version:[[:space:]]*//p" subtle-icons.php | head -n1)"
-          STABLE_TAG="$(sed -n "s/^Stable tag:[[:space:]]*//p" readme.txt | head -n1)"
+          PLUGIN_VERSION="$(sed -n "s/^ \* Version:[[:space:]]*//p" subtle-icons.php | head -n1 | tr -d '\r')"
+          STABLE_TAG="$(sed -n "s/^Stable tag:[[:space:]]*//p" readme.txt | head -n1 | tr -d '\r')"
 
           if [ -z "$PLUGIN_VERSION" ]; then
             echo "Could not read Version from subtle-icons.php" >&2
@@ -75,7 +75,7 @@ jobs:
 
       - name: Setup Node
         if: steps.svn.outputs.should_deploy == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: lts/*
           cache: npm
