@@ -1,32 +1,41 @@
-=== Subtle Icons ===
+=== Subtle Icons - SVG Icon Block Suite, Icon Picker & ACF Field ===
 Contributors:      evanworks
-Tags:              icons, block-editor, gutenberg, acf, svg
+Tags:              icon, svg, icon block, icon picker, acf
 Requires at least: 6.5
 Tested up to:      7.0
 Requires PHP:      7.4
-Stable tag:        1.0.6
+Stable tag:        1.0.7
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-A breathtakingly simple icon ecosystem for WordPress. Access thousands of icons to use across custom blocks and an integrated ACF field.
+Add 100k+ SVG icons (Lucide, Material, FontAwesome) directly to Gutenberg blocks and Advanced Custom Fields. A native, zero-bloat icon picker.
 
 == Description ==
 
-Subtle Icons is a bloat-free, lightweight plugin that brings thousands of icons directly into the WordPress block editor and Advanced Custom Fields (ACF).
+Subtle Icons is a lightweight plugin that brings thousands of icons directly into the WordPress block editor and Advanced Custom Fields (ACF).
 
-### Find the right icon, every time.
-Powered by the massive open-source Iconify ecosystem, search and insert icons from Lucide, Material, Heroicons, and dozens of other icon libraries without leaving the editor — or upload your own SVGs.
+Stop enqueuing heavy FontAwesome stylesheets. Subtle Icons generates clean, inline SVG code natively in the editor, keeping your frontend free of external scripts and font files.
 
-### Four lightweight blocks that cover the essentials.
+### The Ultimate WordPress Icon Picker
+Powered by the massive Iconify ecosystem, easily search and insert icons from dozens of popular open-source libraries without leaving the WordPress editor. Supported libraries include:
+* Lucide Icons
+* Material Design Icons
+* Heroicons
+* FontAwesome
+* Bootstrap Icons
+* Phosphor Icons
+* ...and dozens more, or upload your own custom SVGs!
+
+### Four Native Gutenberg Icon Blocks
 * **Icon Button Block:** Prompt visitors to take action with a native-feeling button block supporting leading and trailing icons.
 * **Icon + Text Block:** Pair an icon with text for notices, callouts, and feature highlights.
-* **Icon Block:** A standalone icon block with sizing, thickness, and color controls.
+* **Icon Block:** A standalone SVG icon block with sizing, thickness, and color controls.
 * **Icon List Block:** Build beautiful, responsive lists with custom leading icons.
 
-### ACF Integration: Bring icons to your structured content
-Add a full-featured icon field to taxonomies, repeaters, options pages, and custom blocks — anywhere ACF lives.
+### Advanced Custom Fields (ACF) Integration
+Bring icons to your structured content. Subtle Icons adds a fully integrated Icon Picker field to ACF. Add icons to taxonomies, repeaters, options pages, and custom blocks seamlessly.
 
-### Built for custom integrations
+### Built for Developers & Custom Integrations
 Take full control of the icon workflow. Use our lightweight filters and actions to tailor the experience for your clients and custom builds.
 
 * Filter or restrict available icon collections
@@ -57,7 +66,7 @@ The icon search itself only works for logged-in users who can already edit posts
 1. The Icon Picker interface natively integrated into the Icon Button block. 
 
 == Changelog ==
-= 1.0.5 = 
+= 1.0.7 = 
 * Test up to WP 7.0, update readme and plugin assets
 = 1.0.2 =
 * Initial release of Subtle Icons.
