@@ -4,7 +4,7 @@ Tags:              icon, svg, icon block, icon picker, acf
 Requires at least: 6.5
 Tested up to:      7.0
 Requires PHP:      7.4
-Stable tag:        1.0.7
+Stable tag:        1.0.8
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,12 +12,13 @@ Add 100k+ SVG icons (Lucide, Material, FontAwesome) directly to Gutenberg blocks
 
 == Description ==
 
-Subtle Icons is a lightweight plugin that brings thousands of icons directly into the WordPress block editor and Advanced Custom Fields (ACF).
+[Subtle Icons](https://subtleblocks.com/icons) is a lightweight plugin that brings thousands of icons directly into the WordPress block editor and Advanced Custom Fields (ACF).
 
 Stop enqueuing heavy FontAwesome stylesheets. Subtle Icons generates clean, inline SVG code natively in the editor, keeping your frontend free of external scripts and font files.
 
 ### The Ultimate WordPress Icon Picker
-Powered by the massive Iconify ecosystem, easily search and insert icons from dozens of popular open-source libraries without leaving the WordPress editor. Supported libraries include:
+Powered by the massive [Iconify](https://icon-sets.iconify.design/) ecosystem, easily search and insert icons from dozens of popular open-source libraries without leaving the WordPress editor. Supported libraries include:
+
 * Lucide Icons
 * Material Design Icons
 * Heroicons
@@ -73,9 +74,7 @@ The icon search itself only works for logged-in users who can already edit posts
 
 == Development ==
 
-The complete source code for this plugin, including all uncompiled JavaScript and CSS, is publicly available at:
-
-[https://github.com/skysarwer/subtle-icons](https://github.com/skysarwer/subtle-icons)
+The complete source code for this plugin, including all uncompiled JavaScript and CSS, is publicly available at this [public GitHub repo](https://github.com/skysarwer/subtle-icons).
 
 Build requirements: Node.js and npm.
 
@@ -88,7 +87,7 @@ To build from source:
 
 == External Services ==
 
-This plugin uses the Iconify API to power the Icon Picker. The API is never called on the public frontend; it only runs in the WordPress admin when actively used by a logged-in user with post-editing capabilities. No personally identifiable information (PII) is transmitted.
+This plugin uses the [Iconify](https://iconify.design/) API to power the Icon Picker. The API is never called on the public frontend; it only runs in the WordPress admin when actively used by a logged-in user with post-editing capabilities. No personally identifiable information (PII) is transmitted.
 
 = How Data is Sent =
 
@@ -102,6 +101,5 @@ This plugin uses the Iconify API to power the Icon Picker. The API is never call
 
 = Iconify Policies & Links: =
 
-* [Service website](https://iconify.design/)
 * [API documentation](https://iconify.design/docs/api/)
 * [Privacy policy](https://iconify.design/privacy/)
