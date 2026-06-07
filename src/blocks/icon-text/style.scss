@@ -16,7 +16,7 @@
 			color: var(--sbtl-icon-color, currentColor);
 			align-self: var(--sbtl-icon-align, var(--sbtl-icon-default-align, initial));
 
-			> svg {
+			svg {
 				width: 100%;
 				height: 100%;
 			}
@@ -27,7 +27,7 @@
 
 	&.has-icon-stroke > .sbtl-icon-region {
 
-		> .sbtl-icon > svg {
+		.sbtl-icon svg {
 			stroke-width: var(--sbtl-icon-stroke);
 		}
 

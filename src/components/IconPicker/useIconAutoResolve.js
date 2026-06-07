@@ -42,7 +42,9 @@ const useIconAutoResolve = ( value, onChange, onSlugChange = null ) => {
 			setIsResolving( true );
 			try {
 				const { svg } = await apiFetch( {
-					path: `/subtle-icons/v1/svg?prefix=${ encodeURIComponent( prefix ) }&name=${ encodeURIComponent( name ) }`,
+					path: `/subtle-icons/v1/svg?prefix=${ encodeURIComponent(
+						prefix
+					) }&name=${ encodeURIComponent( name ) }`,
 				} );
 				const cleanSvg = sanitizeSvg( svg );
 				onChange( cleanSvg );

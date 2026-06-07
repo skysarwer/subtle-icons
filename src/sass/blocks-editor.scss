@@ -225,20 +225,25 @@
 	}
 }
 
-// Custom tab panel
-.sbtl-blocks-inspector-tabs {
+.sbtl-tab-accordion-ui-edit {
+	flex-direction: row-reverse;
+}
 
-	> .components-tab-panel__tabs:first-child {
-		position: sticky;
-		top: 47px;
-		background: #eee;
-		z-index: 9;
-		border-bottom: 1px solid #ddd;
+.sbtl-tab-accordion-ui-toggle {
+	font-weight: 550;
+}
 
-		button {
-			width: 50%;
-			justify-content: center;
-		}
+// Custom sticky Tab Panel design
+.block-editor-block-inspector__tabs:has(.sbtl-tabpanel-has-sticky-tabs) > div[role="tablist"] {
+	position: sticky;
+	top: 47px;
+	background: #eee;
+	z-index: 9;
+	border-bottom: 1px solid #ddd;
+
+	button {
+		width: 50%;
+		justify-content: center;
 	}
 }
 
@@ -316,7 +321,7 @@ div:has(> div > .sbtl-priority-styles-panel) {
 	flex-direction: column;
 
 	// Target the styles panel wrapper div and move it to the top of the column
-	> div:not([class]):first-child {
+	> div:has(.block-editor-block-styles):first-child {
 		order: -1;
 	}
 }

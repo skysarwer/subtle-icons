@@ -91,7 +91,8 @@ const IconPickerModal = ( {
 			setSvgDraft( '' );
 		} else if (
 			( ! initialSlug || initialSlug === 'custom' ) &&
-			initialValue?.startsWith( '<svg' )
+			( initialValue?.trim().startsWith( '<svg' ) ||
+				initialValue?.trim().startsWith( '<span' ) )
 		) {
 			// Custom or legacy SVG block — pre-populate the textarea.
 			const clean = sanitizeSvg( initialValue );

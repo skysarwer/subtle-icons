@@ -1,6 +1,6 @@
 # Subtle Icons
 
-A lightweight icon ecosystem for WordPress. 100,000+ icons. Zero bloat. Native UI.
+A lightweight icon ecosystem for WordPress, powered by Iconify.
 
 ## Description
 

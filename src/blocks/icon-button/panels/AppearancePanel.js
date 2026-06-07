@@ -74,7 +74,7 @@ export default function AppearancePanel( {
 					const lastBackgroundChange =
 						lastBackgroundChangeRef.current;
 					const shouldIgnoreMirroredReset =
-					value == null &&
+						value == null &&
 						lastBackgroundChange?.state === stateTab.name &&
 						lastBackgroundChange?.source !== source &&
 						lastBackgroundChange?.value !== null &&

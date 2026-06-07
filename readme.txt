@@ -1,10 +1,10 @@
 === Subtle Icons - SVG Icon Block Suite, Icon Picker & ACF Field ===
 Contributors:      evanworks
-Tags:              icon, svg, icon block, icon picker, acf
+Tags:              icon, gutenberg, icon block, icon picker, acf
 Requires at least: 6.5
 Tested up to:      7.0
 Requires PHP:      7.4
-Stable tag:        1.0.8
+Stable tag:        1.1.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,9 +64,13 @@ The icon search itself only works for logged-in users who can already edit posts
 
 == Screenshots ==
 
-1. The Icon Picker interface natively integrated into the Icon Button block. 
+1. The Icon Picker interface natively integrated into the Icon Button block.
+2. The ACF Icon Picker being used for a custom Subjects taxonomy.
 
 == Changelog ==
+= 1.1.0 = 
+* Improve Icon List `enter` key UX and other minor editor improvements
+* Support for wrapping `<span>` tags on icons 
 = 1.0.7 = 
 * Test up to WP 7.0, update readme and plugin assets
 = 1.0.2 =
@@ -74,7 +78,7 @@ The icon search itself only works for logged-in users who can already edit posts
 
 == Development ==
 
-The complete source code for this plugin, including all uncompiled JavaScript and CSS, is publicly available at this [public GitHub repo](https://github.com/skysarwer/subtle-icons).
+The complete source code for this plugin, including all uncompiled JavaScript and CSS, is available at this [public GitHub repo](https://github.com/skysarwer/subtle-icons).
 
 Build requirements: Node.js and npm.
 

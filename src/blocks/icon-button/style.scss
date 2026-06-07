@@ -152,7 +152,7 @@
 
 			&[style*="--sbtl-button-icon-stroke"] {
 
-				> .sbtl-icon > svg {
+				> .sbtl-icon svg {
 					stroke-width: var(--sbtl-button-icon-stroke);
 				}
 
@@ -223,7 +223,7 @@
 		.sbtl-icon {
 			display: contents;
 
-			> svg {
+			svg {
 				// Set min and max width; allows theme svg width styles to propagate while being overrideable by user settings
 				min-width: 100%;
 				max-width: 100%;

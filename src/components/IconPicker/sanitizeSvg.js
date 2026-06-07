@@ -33,7 +33,8 @@ const sanitizeSvg = ( raw ) => {
 	DOMPurify.addHook( 'beforeSanitizeAttributes', restrictUseHref );
 	const result = DOMPurify.sanitize( raw, {
 		USE_PROFILES: { svg: true, svgFilters: true },
-		ADD_TAGS: [ 'use' ],
+		ADD_TAGS: [ 'use', 'span' ],
+		ADD_ATTR: [ 'transform', 'style', 'class' ],
 	} );
 	DOMPurify.removeHook( 'beforeSanitizeAttributes' );
 	return result;

@@ -16,12 +16,13 @@ import useIconAutoResolve from './useIconAutoResolve';
 /**
  * IconPickerTrigger — purely visual trigger button, no modal or internal state.
  * Use this when the parent block owns the modal (multi-slot or multi-trigger cases).
- * @param root0
- * @param root0.value
- * @param root0.label
- * @param root0.onOpen
- * @param root0.onClear
- * @param root0.isLoading
+ * @param {Object}   props
+ * @param {string}   props.value
+ * @param {string}   props.label
+ * @param {Function} props.onOpen
+ * @param {Function} props.onClear
+ * @param {boolean}  props.isLoading
+ * @param {boolean}  props.hideLabel
  */
 export const IconPickerTrigger = ( {
 	value,
@@ -49,7 +50,10 @@ export const IconPickerTrigger = ( {
 	}
 
 	return (
-		<BaseControl label={ hideLabel ? undefined : label } className="sbtl-icon-picker-base-control">
+		<BaseControl
+			label={ hideLabel ? undefined : label }
+			className="sbtl-icon-picker-base-control"
+		>
 			<HStack gap={ 2 } className="sbtl-icon-picker-control">
 				<div
 					className="sbtl-icon-picker-trigger"
@@ -109,15 +113,15 @@ export const IconPickerTrigger = ( {
  * IconPickerPreview — an inline canvas-area icon preview intended for use directly
  * in the block's editor output. Always clickable; shows the icon SVG when set,
  * or a dashed placeholder when empty. Use alongside IconPickerModal.
- * @param root0
- * @param root0.value
- * @param root0.onOpen
- * @param root0.label
- * @param root0.className
- * @param root0.style
- * @param root0.showPlaceholder
- * @param root0.hideTabindex
- * @param root0.showEditButton
+ * @param {Object}   props
+ * @param {string}   props.value
+ * @param {Function} props.onOpen
+ * @param {string}   props.label
+ * @param {string}   props.className
+ * @param {Object}   props.style
+ * @param {boolean}  props.showPlaceholder
+ * @param {boolean}  props.hideTabindex
+ * @param {boolean}  props.showEditButton
  */
 export const IconPickerPreview = ( {
 	value,
@@ -184,12 +188,13 @@ export const IconPickerPreview = ( {
  * IconPicker — convenience wrapper for single-slot usage.
  * Manages its own modal state internally. For multi-slot or multi-trigger
  * scenarios, use IconPickerTrigger + IconPickerModal directly.
- * @param root0
- * @param root0.value
- * @param root0.label
- * @param root0.onChange
- * @param root0.onSlugChange
- * @param root0.initialSlug
+ * @param {Object}   props
+ * @param {string}   props.value
+ * @param {string}   props.label
+ * @param {Function} props.onChange
+ * @param {Function} props.onSlugChange
+ * @param {string}   props.initialSlug
+ * @param {boolean}  props.hideLabel
  */
 const IconPicker = ( {
 	value,

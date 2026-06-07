@@ -167,7 +167,7 @@ export default function ListItemEdit( {
 		if ( ! hasCustomIcon && icon !== inheritedIcon ) {
 			setAttributes( { icon: inheritedIcon } );
 		}
-	}, [ inheritedIcon, hasCustomIcon ] );
+	}, [ inheritedIcon, hasCustomIcon, icon, setAttributes ] );
 
 	// The effective icon for the editor preview is always the saved icon
 	// (kept in sync above), or the inherited one before the first sync.
@@ -179,6 +179,12 @@ export default function ListItemEdit( {
 		( svg ) => setAttributes( { icon: svg } ),
 		( slug ) => setAttributes( { iconSlug: slug } )
 	);
+
+	const [ isMounting, setIsMounting ] = useState( true );
+	useEffect( () => {
+		const timeoutId = setTimeout( () => setIsMounting( false ), 150 );
+		return () => clearTimeout( timeoutId );
+	}, [] );
 
 	const handleIconChange = ( newIcon ) => {
 		if ( ! newIcon ) {
@@ -207,38 +213,6 @@ export default function ListItemEdit( {
 	const richTextRef = useMergeRefs( [ useEnterRef, useSpaceRef ] );
 	const onMerge = useMerge( clientId, mergeBlocks );
 
-	// When Gutenberg splits the list item on Enter (non-empty content), it focuses
-	// the new block's first interactive element — which is the icon edit button.
-	// After the split we redirect focus to the contenteditable instead.
-	const handleRichTextKeyDown = ( event ) => {
-		const isEnter = event.keyCode === 13;
-		const isBackspace = event.keyCode === 8;
-		if ( ! isEnter && ! isBackspace ) {
-			return;
-		}
-		// Enter only applies when there is content to split.
-		if ( isEnter && ! content.length ) {
-			return;
-		}
-		// Let Gutenberg's default merge/split logic run, then fix focus.
-		requestAnimationFrame( () => {
-			const active =
-				useEnterRef.current?.ownerDocument?.activeElement ||
-				useSpaceRef.current?.ownerDocument?.activeElement;
-			if (
-				active &&
-				active.classList.contains( 'sbtl-icon-picker-canvas__edit' )
-			) {
-				const editable = active
-					.closest( '[data-block]' )
-					?.querySelector( '[contenteditable]' );
-				if ( editable ) {
-					editable.focus();
-				}
-			}
-		} );
-	};
-
 	return (
 		<>
 			<li { ...innerBlocksProps }>
@@ -246,9 +220,14 @@ export default function ListItemEdit( {
 					<IconPickerPreview
 						value={ effectiveIcon }
 						onOpen={ () => setIsIconModalOpen( true ) }
-						className={ ! url ? 'sbtl-icon-list-item__icon' : undefined }
+						className={
+							! url ? 'sbtl-icon-list-item__icon' : undefined
+						}
 						showPlaceholder={ false }
-						style={ iconAlign ? { alignSelf: iconAlign } : undefined }
+						style={
+							iconAlign ? { alignSelf: iconAlign } : undefined
+						}
+						hideTabindex={ isMounting }
 					/>
 					<RichText
 						ref={ richTextRef }
@@ -261,8 +240,9 @@ export default function ListItemEdit( {
 						aria-label={ __( 'List text' ) }
 						placeholder={ placeholder || __( 'List' ) }
 						onMerge={ onMerge }
-						onKeyDown={ handleRichTextKeyDown }
-						allowedFormats={ url ? [ 'core/bold', 'core/italic' ] : undefined }
+						allowedFormats={
+							url ? [ 'core/bold', 'core/italic' ] : undefined
+						}
 					/>
 				</span>
 				{ innerBlocksProps.children }

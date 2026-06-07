@@ -17,27 +17,6 @@ import { store as blockEditorStore } from '@wordpress/block-editor';
  */
 import useOutdentListItem from './use-outdent-list-item';
 
-/**
- * Polls until [data-block] with the given clientId has a [contenteditable]
- * child, then focuses it. Gives up after ~300 ms.
- * @param clientId
- * @param attempt
- */
-function focusBlockEditable( clientId, attempt = 0 ) {
-	if ( attempt > 10 ) {
-		return;
-	}
-	const blockEl = document.querySelector( `[data-block="${ clientId }"]` );
-	const editable = blockEl?.querySelector( '[contenteditable]' );
-	if ( editable ) {
-		editable.focus();
-	} else {
-		requestAnimationFrame( () =>
-			focusBlockEditable( clientId, attempt + 1 )
-		);
-	}
-}
-
 export default function useEnter( props ) {
 	const { replaceBlocks, selectionChange } = useDispatch( blockEditorStore );
 	const { getBlock, getBlockRootClientId, getBlockIndex, getBlockName } =
@@ -63,10 +42,6 @@ export default function useEnter( props ) {
 				) === 'sbtl/icon-list-item';
 			if ( canOutdent ) {
 				outdentListItem();
-				// After the block re-renders at its new position, focus its RichText
-				// directly so Enter doesn't leave focus on the icon edit button.
-				const targetId = propsRef.current.clientId;
-				focusBlockEditable( targetId );
 				return;
 			}
 			// Here we are in top level list so we need to split.
@@ -105,8 +80,6 @@ export default function useEnter( props ) {
 			// We manually change the selection here because we are replacing
 			// a different block than the selected one.
 			selectionChange( middle.clientId );
-			// Ensure focus lands in the new block's editable, not the icon button.
-			focusBlockEditable( middle.clientId );
 		}
 
 		element.addEventListener( 'keydown', onKeyDown );
