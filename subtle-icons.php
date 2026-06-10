@@ -4,7 +4,7 @@
  * Plugin URI:        https://subtleblocks.com/icons
  * Description:       Add 100k+ SVG icons (Lucide, Material, FontAwesome) directly to Gutenberg blocks and Advanced Custom Fields. A native, zero-bloat icon picker.
  * Requires PHP:      7.4
- * Version:           1.1.0
+ * Version:           1.1.1
  * Author:            Subtle Blocks
  * Author URI:        https://subtleblocks.com
  * License:           GPL-2.0-or-later
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'SBTL_BLOCKS_PLUGIN_FILE', __FILE__ );
-define( 'SBTL_BLOCKS_VERSION', '1.1.0' );
+define( 'SBTL_BLOCKS_VERSION', '1.1.1' );
 
 /**
  * Registers the block using the metadata loaded from the `block.json` file.

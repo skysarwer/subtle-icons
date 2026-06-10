@@ -1,7 +1,5 @@
 /* stylelint-disable no-descending-specificity */
 .sbtl-icon-text:is(p, h1, h2, h3, h4, h5, h6) {
-	max-width: 100%;
-	min-width: min-content;
 
 	.sbtl-icon-region {
 		display: inline-flex;
@@ -99,4 +97,10 @@
 			align-items: flex-start;
 		}
 	}
+}
+
+// Lower specificity rules
+:where(.sbtl-icon-text) {
+	max-width: 100%;
+	min-width: min-content;
 }
