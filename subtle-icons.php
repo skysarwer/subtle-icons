@@ -18,6 +18,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( defined( 'SBTL_BLOCKS_PLUGIN_FILE' ) ) {
+	return;
+}
+
 define( 'SBTL_BLOCKS_PLUGIN_FILE', __FILE__ );
 define( 'SBTL_BLOCKS_VERSION', '1.1.1' );
 

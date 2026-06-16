@@ -1,12 +1,21 @@
 import { __ } from '@wordpress/i18n';
-import { Modal, TextControl, Button, Spinner } from '@wordpress/components';
+import {
+	Modal,
+	TextControl,
+	Button,
+	Spinner,
+	SelectControl,
+	__experimentalToggleGroupControl,
+	__experimentalToggleGroupControlOption,
+} from '@wordpress/components';
 import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
-import { copy, check } from '@wordpress/icons';
+import { copy, check, funnel, close } from '@wordpress/icons';
 import { Icon, getIcon, loadIcons } from '@iconify/react';
 import sanitizeSvg from './sanitizeSvg';
 import IconPickerPage from './IconPickerPage';
 import BrowseGrid from './BrowseGrid';
+import { useGridKeyboardNav } from './useGridKeyboardNav';
 import { ICONS_PER_PAGE, isIconifySlug } from './constants';
 import PlaceHolderSVG from '../PlaceHolderSVG';
 
@@ -29,6 +38,10 @@ const IconPickerModal = ( {
 	const [ activeCategory, setActiveCategory ] = useState( 'general' );
 	const [ searchQuery, setSearchQuery ] = useState( '' );
 	const [ debouncedQuery, setDebouncedQuery ] = useState( '' );
+	const [ filterOpen, setFilterOpen ] = useState( false );
+	const [ filterMode, setFilterMode ] = useState( 'default' );
+	const [ customCollection, setCustomCollection ] = useState( 'lucide' );
+	const [ availableCollections, setAvailableCollections ] = useState( [] );
 
 	const [ totalPages, setTotalPages ] = useState( 0 );
 	const [ activePage, setActivePage ] = useState( 1 );
@@ -52,9 +65,56 @@ const IconPickerModal = ( {
 	const searchInputRef = useRef( null );
 	const scrollContainerRef = useRef( null );
 	const textareaRef = useRef( null );
+	const collectionsFetched = useRef( false );
+
+	const gridNav = useGridKeyboardNav();
 
 	// Derived: true in browse mode (no search query), false in search mode.
 	const isBrowse = ! debouncedQuery;
+
+	let queryParam = '';
+	if ( filterMode === 'custom' && customCollection ) {
+		queryParam = `&collections=${ encodeURIComponent( customCollection ) }`;
+	} else if ( filterMode === 'all' ) {
+		queryParam = `&collections=all`;
+	}
+
+	// Auto-reset 'all' filter when returning to browse mode
+	useEffect( () => {
+		if ( isBrowse && filterMode === 'all' ) {
+			setFilterMode( 'default' );
+		}
+	}, [ isBrowse, filterMode ] );
+
+	// Fetch available collections when custom or all mode is activated
+	useEffect( () => {
+		if (
+			( filterMode === 'custom' || filterMode === 'all' ) &&
+			! collectionsFetched.current
+		) {
+			collectionsFetched.current = true;
+			apiFetch( { path: '/subtle-icons/v1/collections' } )
+				.then( ( data ) => {
+					// Iconify api returns an object map of collections
+					if ( typeof data === 'object' && data !== null ) {
+						const collections = Object.keys( data ).map(
+							( prefix ) => ( {
+								value: prefix,
+								label: data[ prefix ].name || prefix,
+							} )
+						);
+						collections.sort( ( a, b ) =>
+							a.label.localeCompare( b.label )
+						);
+						setAvailableCollections( collections );
+						if ( collections.length > 0 && ! customCollection ) {
+							setCustomCollection( collections[ 0 ].value );
+						}
+					}
+				} )
+				.catch( () => {} );
+		}
+	}, [ filterMode, availableCollections.length, customCollection ] );
 
 	// Prefetch browse data and warm the Iconify bundle on first mount,
 	// so the cache is populated before the user opens the modal.
@@ -115,74 +175,90 @@ const IconPickerModal = ( {
 		return () => clearTimeout( timer );
 	}, [ searchQuery ] );
 
+	// Focus search input exactly once when the modal opens
+	useEffect( () => {
+		if ( isOpen ) {
+			setTimeout( () => searchInputRef.current?.focus(), 100 );
+		}
+	}, [ isOpen ] );
+
 	// Initial Load / Search Change
 	useEffect( () => {
+		const fetchInitialMetadata = async () => {
+			setTotalPages( 0 );
+			setAllIcons( [] );
+			setActivePage( 1 );
+			setVisiblePages( new Set( [ 1 ] ) );
+			setIsInitialLoading( true );
+
+			try {
+				// BRANCH A: BROWSE MODE (Load Once)
+				if ( ! debouncedQuery ) {
+					// Check cache first
+					const cacheKey = `browse_all_${ filterMode }_${ customCollection }`; // Simplified key, could depend on categories if we had them
+					const cached = getCachedIcons( cacheKey );
+
+					if ( cached ) {
+						setAllIcons( cached );
+						setTotalPages(
+							Math.ceil( cached.length / ICONS_PER_PAGE )
+						);
+						setIsInitialLoading( false );
+						return;
+					}
+
+					// Fetch full list
+					// We likely don't need 'dist' params for full fetch in our modified endpoint,
+					// but we keep the same endpoint structure.
+					const response = await apiFetch( {
+						path: `/subtle-icons/v1/icons?page=1&per_page=99999${ queryParam }`, // Arbitrary high number or ignored by server
+					} );
+
+					if ( response && response.icons ) {
+						const icons = response.icons;
+						setCachedIcons( cacheKey, icons );
+						setAllIcons( icons );
+						setTotalPages(
+							Math.ceil( icons.length / ICONS_PER_PAGE )
+						);
+					}
+				}
+				// BRANCH B: SEARCH MODE (Server-side Pagination)
+				else {
+					// Fetch just first page to get metadata
+					const response = await apiFetch( {
+						path: `/subtle-icons/v1/icons?search=${ encodeURIComponent(
+							debouncedQuery
+						) }&page=1&per_page=${ ICONS_PER_PAGE }${ queryParam }`,
+					} );
+					if ( response ) {
+						setTotalPages( response.total_pages || 0 );
+					}
+				}
+			} catch ( error ) {
+				// eslint-disable-next-line no-console
+				console.error( 'Error fetching metadata:', error );
+				setTotalPages( 0 );
+			} finally {
+				setIsInitialLoading( false );
+			}
+		};
+
 		if ( isOpen && activeCategory !== 'custom' ) {
 			// Logic split:
 			// 1. If debouncedQuery is empty -> BROWSE MODE (Client-side)
 			// 2. If debouncedQuery is present -> SEARCH MODE (Server-side)
 
 			fetchInitialMetadata();
-			setTimeout( () => searchInputRef.current?.focus(), 100 );
 		}
-	}, [ isOpen, activeCategory, debouncedQuery ] );
-
-	const fetchInitialMetadata = async () => {
-		setTotalPages( 0 );
-		setAllIcons( [] );
-		setActivePage( 1 );
-		setVisiblePages( new Set( [ 1 ] ) );
-		setIsInitialLoading( true );
-		try {
-			// BRANCH A: BROWSE MODE (Load Once)
-			if ( ! debouncedQuery ) {
-				// Check cache first
-				const cacheKey = 'browse_all'; // Simplified key, could depend on categories if we had them
-				const cached = getCachedIcons( cacheKey );
-
-				if ( cached ) {
-					setAllIcons( cached );
-					setTotalPages(
-						Math.ceil( cached.length / ICONS_PER_PAGE )
-					);
-					setIsInitialLoading( false );
-					return;
-				}
-
-				// Fetch full list
-				// We likely don't need 'dist' params for full fetch in our modified endpoint,
-				// but we keep the same endpoint structure.
-				const response = await apiFetch( {
-					path: `/subtle-icons/v1/icons?page=1&per_page=99999`, // Arbitrary high number or ignored by server
-				} );
-
-				if ( response && response.icons ) {
-					const icons = response.icons;
-					setCachedIcons( cacheKey, icons );
-					setAllIcons( icons );
-					setTotalPages( Math.ceil( icons.length / ICONS_PER_PAGE ) );
-				}
-			}
-			// BRANCH B: SEARCH MODE (Server-side Pagination)
-			else {
-				// Fetch just first page to get metadata
-				const response = await apiFetch( {
-					path: `/subtle-icons/v1/icons?search=${ encodeURIComponent(
-						debouncedQuery
-					) }&page=1&per_page=${ ICONS_PER_PAGE }`,
-				} );
-				if ( response ) {
-					setTotalPages( response.total_pages || 0 );
-				}
-			}
-		} catch ( error ) {
-			// eslint-disable-next-line no-console
-			console.error( 'Error fetching metadata:', error );
-			setTotalPages( 0 );
-		} finally {
-			setIsInitialLoading( false );
-		}
-	};
+	}, [
+		isOpen,
+		activeCategory,
+		debouncedQuery,
+		filterMode,
+		customCollection,
+		queryParam,
+	] );
 
 	const handleIconSelect = useCallback( ( icon ) => {
 		// Selecting a grid icon clears any custom SVG — mutual exclusion.
@@ -508,12 +584,15 @@ const IconPickerModal = ( {
 
 				return (
 					<IconPickerPage
-						key={ `${ debouncedQuery }-${ pageIndex }` }
+						key={ `${ debouncedQuery }-${ filterMode }-${ customCollection }-${ pageIndex }` }
 						pageIndex={ pageIndex }
 						searchQuery={ debouncedQuery }
 						selectedIcon={ selection.slug }
 						onSelect={ handleIconSelect }
 						isVisible={ visiblePages.has( pageIndex ) }
+						queryParam={ queryParam }
+						filterMode={ filterMode }
+						collections={ availableCollections }
 					/>
 				);
 			} );
@@ -524,6 +603,7 @@ const IconPickerModal = ( {
 				<div
 					className="sbtl-icon-picker-grid-wrapper"
 					ref={ scrollContainerRef }
+					{ ...gridNav }
 				>
 					{ searchResultsContent }
 				</div>
@@ -581,7 +661,7 @@ const IconPickerModal = ( {
 				</div>
 
 				<div className="sbtl-icon-picker-content">
-					{ activeCategory !== 'custom' ? (
+					{ activeCategory !== 'custom' && (
 						<>
 							<div className="sbtl-icon-picker-search-container">
 								<TextControl
@@ -593,15 +673,97 @@ const IconPickerModal = ( {
 										'subtle-icons'
 									) }
 								/>
+								{searchQuery && (
+									<Button 
+										variant="tertiary"
+										className="sbtl-icon-picker-search-clear"
+										label={ __( 'Clear', 'subtle-icons' ) }
+										icon={ close }
+										onClick={ () => setSearchQuery( '' ) }
+									/>
+								)}
+								<Button
+									variant="tertiary"
+									className="sbtl-icon-picker-filter-toggle"
+									label={ __( 'Filter', 'subtle-icons' ) }
+									icon={ funnel }
+									onClick={ () =>
+										setFilterOpen( ( open ) => ! open )
+									}
+									aria-pressed={ filterOpen }
+									isPressed={ filterOpen }
+								/>
+								<div
+									className="sbtl-icon-picker-filter-container"
+								>
+									<div>
+										{ filterOpen && ( 
+											<>
+												<__experimentalToggleGroupControl
+													label={ __(
+														'Filter by',
+													) }
+													hideLabelFromVision
+													value={ filterMode }
+													onChange={ setFilterMode }
+													isBlock
+												>
+													<__experimentalToggleGroupControlOption
+														value="default"
+														label={ __(
+															'Default',
+															'subtle-icons'
+														) }
+													/>
+													<__experimentalToggleGroupControlOption
+														value="custom"
+														label={ __(
+															'Collection',
+															'subtle-icons'
+														) }
+													/>
+													{ ! isBrowse && (
+														<__experimentalToggleGroupControlOption
+															value="all"
+															label={ __(
+																'All',
+																'subtle-icons'
+															) }
+														/>
+													) }
+												</__experimentalToggleGroupControl>
+												{ filterMode === 'custom' && (
+													<div
+														className="sbtl-icon-picker-collection-select"
+														style={ { marginTop: '8px' } }
+													>
+														<SelectControl
+															label={ __(
+																'Collection',
+																'subtle-icons'
+															) }
+															hideLabelFromVision
+															value={ customCollection }
+															options={
+																availableCollections
+															}
+															onChange={ ( val ) =>
+																setCustomCollection(
+																	val
+																)
+															}
+														/>
+													</div>
+												) }
+											</>
+										) }
+									</div>
+								</div>
 							</div>
-
-							<div className="sbtl-icon-picker-scroll-header">
-								{ /* Optional header info like "Total icons: ..." */ }
-							</div>
-
 							{ generalCategoryContent }
 						</>
-					) : (
+					) }
+					{ activeCategory === 'custom' && (
 						<div className="sbtl-icon-picker-custom-svg-container">
 							<p>
 								{ __(

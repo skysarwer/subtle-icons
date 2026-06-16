@@ -79,10 +79,57 @@
 	padding: 12px 24px;
 	border-bottom: 1px solid #eee;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+	display: flex;
+	gap: 0.5em;
+	flex-wrap: wrap;
 
 
 	> div > .components-base-control__field {
 		margin-bottom: 0;
+	}
+
+	> .components-base-control:first-child {
+		width: calc(100% - 36px - 0.5em);
+
+		* {
+			height: 100%;
+		}
+	}
+
+	> .components-button {
+		width: 36px;
+		height: 36px;
+	}
+
+	> .sbtl-icon-picker-search-clear {
+		position: absolute;
+		right: calc(60px + 0.5em);
+		color: var(--wp-admin-theme-color--rgb, #1e1e1e);
+
+		svg {
+			transform: scale(0.8);
+		}
+	}
+
+	> .sbtl-icon-picker-filter-container {
+		width: 100%;
+		display: grid;
+		grid-template-rows: 0fr; 
+		transition: grid-template-rows 0.3s ease;
+
+		> div {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+	}
+
+	&:has(> .sbtl-icon-picker-filter-toggle[aria-pressed="true"]) {
+		> .sbtl-icon-picker-filter-container {
+			grid-template-rows: 1fr;
+			margin-top: 8px;
+			margin-bottom: 4px;
+		}
 	}
 }
 
@@ -92,6 +139,12 @@
 	gap: 12px;
 	overflow-y: auto;
 	padding-bottom: 140px;
+}
+
+.sbtl-icon-picker-grid-wrapper {
+	&:focus {
+		outline: none;
+	}
 }
 
 .sbtl-icon-picker-item {

@@ -29,9 +29,9 @@ Powered by the massive [Iconify](https://icon-sets.iconify.design/) ecosystem, e
 
 ### Four Native Gutenberg Icon Blocks
 * **Icon Button Block:** Prompt visitors to take action with a native-feeling button block supporting leading and trailing icons.
+* **Icon List Block:** Create clean lists with icons that match your theme and improve scanability.
 * **Icon + Text Block:** Pair an icon with text for notices, callouts, and feature highlights.
 * **Icon Block:** A standalone SVG icon block with sizing, thickness, and color controls.
-* **Icon List Block:** Build beautiful, responsive lists with custom leading icons.
 
 ### Advanced Custom Fields (ACF) Integration
 Bring icons to your structured content. Subtle Icons adds a fully integrated Icon Picker field to ACF. Add icons to taxonomies, repeaters, options pages, and custom blocks seamlessly.
@@ -57,6 +57,23 @@ No! The custom blocks work perfectly out of the box. The ACF field is just a bon
 = Are the icons loaded locally or remotely? =
 The Icon Picker connects to Iconify via a proxy API to search icons, but the SVG code is embedded directly into your content. No third-party frontend assets are loaded on your live site.
 
+= How is data sent to Iconify? = 
+The Iconify API is called only in the WordPress admin and used for icon search and discovery. There are two key points of contact:
+
+* **Server-to-Server (Proxy):** Search queries (keywords) and icon retrievals (set prefix and icon name) are routed through a REST endpoint on your WordPress server. Iconify only sees your server's IP address for these requests.
+* **Direct from Browser:** Icon preview thumbnails in the search grid are loaded directly from the editor's browser (via the @iconify/react library). The editor's IP address and standard browser headers are visible to Iconify for these image requests.
+
+**API Endpoints (all operated by the Iconify project):**
+
+* **Primary:** [api.iconify.design](https://api.iconify.design)
+* **Fallbacks:** [api.simplesvg.com](https://api.simplesvg.com), [api.unisvg.com](https://api.unisvg.com)
+
+**Iconify Policies & Links:**
+
+* [API documentation](https://iconify.design/docs/api/)
+* [Privacy policy](https://iconify.design/privacy/)
+
+
 = How are the SVGs sanitized against malicious code? =
 Every icon is cleaned up twice before it ever touches your database — once in the browser the moment an icon is chosen, and again on the server when the post is saved. Both passes use strict allowlists that permit only the elements a real icon needs. Anything that could execute code or load an external resource is removed automatically, regardless of where the SVG came from.
 
@@ -68,6 +85,9 @@ The icon search itself only works for logged-in users who can already edit posts
 2. The ACF Icon Picker being used for a custom Subjects taxonomy.
 
 == Changelog ==
+= 1.2.0 = 
+* Icon Collection filter added to the Icon Picker
+* Improved keyboard accessibility for the Icon Picker
 = 1.1.1 = 
 * Fix Icon + Text alignment bug 
 = 1.1.0 = 
@@ -95,17 +115,4 @@ To build from source:
 
 This plugin uses the [Iconify](https://iconify.design/) API to power the Icon Picker. The API is never called on the public frontend; it only runs in the WordPress admin when actively used by a logged-in user with post-editing capabilities. No personally identifiable information (PII) is transmitted.
 
-= How Data is Sent =
-
-* **Server-to-Server (Proxy):** Search queries (keywords) and icon retrievals (set prefix and icon name) are routed through a REST endpoint on your WordPress server. Iconify only sees your server's IP address for these requests.
-* **Direct from Browser:** Icon preview thumbnails in the search grid are loaded directly from the editor's browser (via the @iconify/react library). The editor's IP address and standard browser headers are visible to Iconify for these image requests.
-
-= API Endpoints (all operated by the Iconify project): =
-
-* **Primary:** [api.iconify.design](https://api.iconify.design)
-* **Fallbacks:** [api.simplesvg.com](https://api.simplesvg.com), [api.unisvg.com](https://api.unisvg.com)
-
-= Iconify Policies & Links: =
-
-* [API documentation](https://iconify.design/docs/api/)
-* [Privacy policy](https://iconify.design/privacy/)
+For more details, see ["How is data sent to Iconify"](#how%20is%20data%20sent%20to%20iconify) in our FAQs. 

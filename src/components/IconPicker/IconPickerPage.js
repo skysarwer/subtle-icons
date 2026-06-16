@@ -13,7 +13,16 @@ import { ICONS_PER_PAGE, prettifyIconSlug } from './constants';
  * callbacks needed.
  */
 const IconPickerPage = memo(
-	( { pageIndex, searchQuery, selectedIcon, onSelect, isVisible } ) => {
+	( {
+		pageIndex,
+		searchQuery,
+		selectedIcon,
+		onSelect,
+		isVisible,
+		queryParam = '',
+		filterMode = 'default',
+		collections = [],
+	} ) => {
 		const [ icons, setIcons ] = useState( [] );
 		const [ status, setStatus ] = useState( 'idle' ); // idle | loading | success | error
 
@@ -28,7 +37,7 @@ const IconPickerPage = memo(
 			apiFetch( {
 				path: `/subtle-icons/v1/icons?search=${ encodeURIComponent(
 					searchQuery
-				) }&page=${ pageIndex }&per_page=${ ICONS_PER_PAGE }`,
+				) }&page=${ pageIndex }&per_page=${ ICONS_PER_PAGE }${ queryParam }`,
 				signal: controller.signal,
 			} )
 				.then( ( response ) => {
@@ -42,7 +51,7 @@ const IconPickerPage = memo(
 				} );
 
 			return () => controller.abort();
-		}, [ isVisible, searchQuery, pageIndex ] );
+		}, [ isVisible, searchQuery, pageIndex, queryParam ] );
 
 		const renderContent = () => {
 			if ( status === 'error' ) {
@@ -89,22 +98,60 @@ const IconPickerPage = memo(
 				return null;
 			}
 
+			// Memoize collection lookup for performance if we're in 'all' mode.
+			const getCollectionLabel = ( prefix ) => {
+				if ( collections.length === 0 ) {
+					return prefix;
+				}
+				const collectionData = collections.find(
+					( c ) => c.value === prefix
+				);
+				return collectionData ? collectionData.label : prefix;
+			};
+
 			return (
 				<div className="sbtl-icon-picker-page">
-					{ icons.map( ( icon ) => (
-						<Tooltip key={ icon } text={ prettifyIconSlug( icon ) }>
-							<button
-								className={ `sbtl-icon-picker-item ${
-									selectedIcon === icon ? 'is-selected' : ''
-								}` }
-								onClick={ () => onSelect( icon ) }
-								type="button"
-								aria-label={ icon.replace( ':', ' ' ) }
-							>
-								<Icon icon={ icon } />
-							</button>
-						</Tooltip>
-					) ) }
+					{ icons.map( ( icon ) => {
+						let tooltipContent = prettifyIconSlug( icon );
+						if ( filterMode === 'all' ) {
+							const collectionPrefix =
+								icon.split( ':' )[ 0 ] || 'Unknown';
+							const collectionName =
+								getCollectionLabel( collectionPrefix );
+							tooltipContent = (
+								<>
+									{ tooltipContent }
+									<br />
+									<span
+										style={ {
+											opacity: 0.75,
+											fontSize: '0.9em',
+										} }
+									>
+										{ collectionName }
+									</span>
+								</>
+							);
+						}
+
+						return (
+							<Tooltip key={ icon } text={ tooltipContent }>
+								<button
+									className={ `sbtl-icon-picker-item ${
+										selectedIcon === icon
+											? 'is-selected'
+											: ''
+									}` }
+									onClick={ () => onSelect( icon ) }
+									type="button"
+									aria-label={ icon.replace( ':', ' ' ) }
+									tabIndex={ -1 }
+								>
+									<Icon icon={ icon } />
+								</button>
+							</Tooltip>
+						);
+					} ) }
 				</div>
 			);
 		};

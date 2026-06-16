@@ -10,6 +10,7 @@ import { Button, Tooltip } from '@wordpress/components';
 import { Icon } from '@iconify/react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { ICONS_PER_PAGE, prettifyIconSlug } from './constants';
+import { useGridKeyboardNav } from './useGridKeyboardNav';
 
 const GAP = 12;
 const MIN_ICON_SIZE = 64;
@@ -24,6 +25,7 @@ const MIN_ICON_SIZE = 64;
  */
 const BrowseGrid = memo( ( { icons, selectedIcon, onSelect } ) => {
 	const containerRef = useRef( null );
+	const gridNav = useGridKeyboardNav();
 	const [ metrics, setMetrics ] = useState( {
 		colCount: 7,
 		rowHeight: MIN_ICON_SIZE + GAP,
@@ -157,7 +159,11 @@ const BrowseGrid = memo( ( { icons, selectedIcon, onSelect } ) => {
 
 	return (
 		<>
-			<div ref={ containerRef } className="sbtl-icon-picker-grid-wrapper">
+			<div
+				ref={ containerRef }
+				className="sbtl-icon-picker-grid-wrapper"
+				{ ...gridNav }
+			>
 				<div
 					style={ {
 						height: rowVirtualizer.getTotalSize(),
@@ -205,6 +211,7 @@ const BrowseGrid = memo( ( { icons, selectedIcon, onSelect } ) => {
 												':',
 												' '
 											) }
+											tabIndex={ -1 }
 										>
 											<Icon icon={ icon } />
 										</button>

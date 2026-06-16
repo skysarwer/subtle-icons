@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 define( 'SBTL_ICONIFY_SEARCH_URL', 'https://api.iconify.design/search' );
 define( 'SBTL_ICONIFY_COLLECTION_URL', 'https://api.iconify.design/collection' );
+define( 'SBTL_ICONIFY_COLLECTIONS_URL', 'https://api.iconify.design/collections' );
 define( 'SBTL_MAX_COLLECTIONS', 10 );
 define( 'SBTL_MAX_SEARCH_TERMS', 5 );
 define( 'SBTL_MAX_PER_PAGE', 250 );
@@ -113,6 +114,18 @@ function sbtl_register_rest_routes() {
 			),
 		)
 	);
+
+	register_rest_route(
+		'subtle-icons/v1',
+		'/collections',
+		array(
+			'methods'             => WP_REST_Server::READABLE,
+			'callback'            => 'sbtl_get_collections',
+			'permission_callback' => function () {
+				return current_user_can( 'edit_posts' );
+			},
+		)
+	);
 }
 add_action( 'rest_api_init', 'sbtl_register_rest_routes' );
 
@@ -161,6 +174,10 @@ function sbtl_resolve_collections( $request ) {
 	$req_collections = $request->get_param( 'collections' );
 	if ( empty( $req_collections ) ) {
 		$req_collections = $request->get_param( 'collection' );
+	}
+
+	if ( $req_collections === 'all' ) {
+		return array( 'all' );
 	}
 
 	if ( ! empty( $req_collections ) ) {
@@ -254,16 +271,17 @@ function sbtl_handle_search( $terms, $collections_str, $page, $per_page ) {
 		$limit_per_term = max( 1, $limit_per_term );
 
 		foreach ( $terms as $term ) {
-			$response = sbtl_remote_get(
-				SBTL_ICONIFY_SEARCH_URL,
-				array(
-					'query'    => $term,
-					'prefixes' => $collections_str,
-					'limit'    => $limit_per_term,
-					// Always fetch from the start to build the master list.
-					'start'    => 0,
-				)
+			$args = array(
+				'query' => $term,
+				'limit' => $limit_per_term,
+				'start' => 0,
 			);
+			
+			if ( $collections_str !== 'all' ) {
+				$args['prefixes'] = $collections_str;
+			}
+
+			$response = sbtl_remote_get( SBTL_ICONIFY_SEARCH_URL, $args );
 
 			if ( is_wp_error( $response ) ) {
 				$had_errors = true;
@@ -479,4 +497,53 @@ function sbtl_get_svg( $request ) {
 	set_transient( $cache_key, $svg, SBTL_SVG_CACHE_TTL );
 
 	return new WP_REST_Response( array( 'svg' => $svg ), 200 );
+}
+
+/**
+ * Fetch all available collections from Iconify.
+ *
+ * @param WP_REST_Request $request The incoming request.
+ * @return WP_REST_Response|WP_Error
+ */
+function sbtl_get_collections( $request ) {
+	$cache_key = 'sbtl_all_collections';
+	$cached    = get_transient( $cache_key );
+
+	if ( false !== $cached ) {
+		return new WP_REST_Response( $cached, 200 );
+	}
+
+	$response = sbtl_remote_get( SBTL_ICONIFY_COLLECTIONS_URL );
+
+	if ( is_wp_error( $response ) ) {
+		return new WP_Error(
+			'collections_fetch_failed',
+			__( 'Failed to fetch collections from Iconify.', 'subtle-icons' ),
+			array( 'status' => 502 )
+		);
+	}
+
+	$code = wp_remote_retrieve_response_code( $response );
+	if ( $code < 200 || $code >= 300 ) {
+		return new WP_Error(
+			'collections_fetch_failed',
+			__( 'Iconify API returned an error.', 'subtle-icons' ),
+			array( 'status' => 502 )
+		);
+	}
+
+	$body = wp_remote_retrieve_body( $response );
+	$data = json_decode( $body, true );
+
+	if ( ! is_array( $data ) ) {
+		return new WP_Error(
+			'collections_fetch_failed',
+			__( 'Invalid data returned from Iconify API.', 'subtle-icons' ),
+			array( 'status' => 502 )
+		);
+	}
+
+	set_transient( $cache_key, $data, SBTL_BROWSE_CACHE_TTL );
+
+	return new WP_REST_Response( $data, 200 );
 }
