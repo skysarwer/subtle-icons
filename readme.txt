@@ -4,7 +4,7 @@ Tags:              icon, gutenberg, icon block, icon picker, acf
 Requires at least: 6.5
 Tested up to:      7.0
 Requires PHP:      7.4
-Stable tag:        1.2.0
+Stable tag:        1.2.1
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -115,4 +115,4 @@ To build from source:
 
 This plugin uses the [Iconify](https://iconify.design/) API to power the Icon Picker. The API is never called on the public frontend; it only runs in the WordPress admin when actively used by a logged-in user with post-editing capabilities. No personally identifiable information (PII) is transmitted.
 
-For more details, see ["How is data sent to Iconify"](#how%20is%20data%20sent%20to%20iconify) in our FAQs. 
+For more details, see ["How is data sent to Iconify"](#how%20is%20data%20sent%20to%20iconify%3F) in our FAQs. 
