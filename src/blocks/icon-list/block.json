@@ -6,7 +6,7 @@
 	"icon": "editor-ul",
 	"category": "sbtl",
 	"allowedBlocks": [ "sbtl/icon-list-item" ],
-	"description": "An organized collection of items displayed in a specific order.",
+	"description": "Create clean lists with icons that match your theme and improve scanability.",
 	"keywords": [ "bullet list", "ordered list", "numbered list" ],
 	"textdomain": "sbtl",
 	"attributes": {

@@ -6,7 +6,7 @@
 	"category": "text",
 	"parent": [ "sbtl/icon-list" ],
 	"allowedBlocks": [ "sbtl/icon-list" ],
-	"description": "An individual item within a list.",
+	"description": "An individual item within an icon list.",
 	"textdomain": "sbtl",
 	"attributes": {
 		"placeholder": {

@@ -4,7 +4,7 @@
  * Plugin URI:        https://subtleblocks.com/icons
  * Description:       Add 100k+ SVG icons (Lucide, Material, FontAwesome) directly to Gutenberg blocks and Advanced Custom Fields. A native, zero-bloat icon picker.
  * Requires PHP:      7.4
- * Version:           1.2.1
+ * Version:           1.2.2
  * Author:            Subtle Blocks
  * Author URI:        https://subtleblocks.com
  * License:           GPL-2.0-or-later
@@ -23,7 +23,7 @@ if ( defined( 'SBTL_BLOCKS_PLUGIN_FILE' ) ) {
 }
 
 define( 'SBTL_BLOCKS_PLUGIN_FILE', __FILE__ );
-define( 'SBTL_BLOCKS_VERSION', '1.2.1' );
+define( 'SBTL_BLOCKS_VERSION', '1.2.2' );
 
 /**
  * Registers the block using the metadata loaded from the `block.json` file.
@@ -65,7 +65,7 @@ add_action( 'init', 'sbtl_icons_block_init' );
  * @param array $categories Existing block categories.
  * @return array Modified categories.
  */
-function sbtl_block_categories( $categories ) {
+function sbtl_icon_categories( $categories ) {
 
 	$sbtl_category = array(
 		'slug'  => 'sbtl',
@@ -83,7 +83,7 @@ function sbtl_block_categories( $categories ) {
     return $categories_sorted;
 
 }
-add_filter( 'block_categories_all', 'sbtl_block_categories', 9 );
+add_filter( 'block_categories_all', 'sbtl_icon_categories', 9 );
 
 /**
  * SVG Icons
@@ -103,9 +103,9 @@ require_once plugin_dir_path( __FILE__ ) . 'inc/rest/icons.php';
 /**
  * ACF Field Type
  */
-function sbtl_register_acf_fields() {
+function sbtl_icons_register_acf_fields() {
 	if ( function_exists( 'acf_register_field_type' ) ) {
 		require_once plugin_dir_path( __FILE__ ) . 'inc/acf/class-sbtl-acf-field-icon-picker.php';
 	}
 }
-add_action( 'acf/init', 'sbtl_register_acf_fields' );
+add_action( 'acf/init', 'sbtl_icons_register_acf_fields' );

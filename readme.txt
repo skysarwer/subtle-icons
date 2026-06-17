@@ -4,7 +4,7 @@ Tags:              icon, gutenberg, icon block, icon picker, acf
 Requires at least: 6.5
 Tested up to:      7.0
 Requires PHP:      7.4
-Stable tag:        1.2.1
+Stable tag:        1.2.2
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,9 @@ The icon search itself only works for logged-in users who can already edit posts
 2. The ACF Icon Picker being used for a custom Subjects taxonomy.
 
 == Changelog ==
+= 1.2.2 =
+* Update block descriptions
+* Improve early exiting conditions
 = 1.2.0 = 
 * Icon Collection filter added to the Icon Picker
 * Improved keyboard accessibility for the Icon Picker

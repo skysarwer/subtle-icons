@@ -6,7 +6,7 @@
 	"title": "Icon Button",
 	"icon": "button",
 	"category": "sbtl",
-	"description": "Prompt visitors to take action with a button-style link that can include an SVG icon.",
+	"description": "Prompt visitors to take action with an interactive button that supports leading and trailing icons.",
 	"keywords": [ "link", "button", "icon" ],
 	"textdomain": "sbtl",
 	"attributes": {
