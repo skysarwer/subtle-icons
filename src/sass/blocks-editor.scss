@@ -240,11 +240,6 @@
 	background: #eee;
 	z-index: 9;
 	border-bottom: 1px solid #ddd;
-
-	button {
-		width: 50%;
-		justify-content: center;
-	}
 }
 
 // Nested color panel
@@ -396,5 +391,55 @@ div:has(> .sbtl-priority-styles-panel) {
 		// Need to set !important to override inline styles
 		max-height: unset !important;
 		padding: 16px;
+	}
+}
+
+
+.sbtl-range-text-control {
+	.components-range-control {
+  		margin-bottom: 0;
+
+		+ .components-base-control {
+			width: 64px;
+			margin-left: 8px;
+		}
+	}
+}
+
+.sbtl-field__hidden-help .components-base-control__help {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.sbtl-toggleable-panel {
+
+	.sbtl-toggleable-panel__title {
+		display: flex;
+		align-items: center;
+	}
+
+	// The collapse button keeps its native styling but shares the row.
+	.components-panel__body-toggle.sbtl-toggleable-panel__collapse {
+		flex: 1 1 auto;
+	}
+
+	// Toggle-only rows (no children) mirror the collapse button's padding
+	// so the title text lines up with collapsible siblings.
+	.sbtl-toggleable-panel__label {
+		flex: 1 1 auto;
+		padding: 16px;
+		font-weight: 600;
+	}
+
+	.sbtl-toggleable-panel__switch {
+		flex: 0 0 auto;
+		margin-right: 16px;
 	}
 }
